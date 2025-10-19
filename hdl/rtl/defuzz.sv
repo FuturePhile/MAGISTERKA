@@ -1,23 +1,34 @@
-// REQ: 050,210
-module defuzz(
-  input  logic       clk, rst_n,
-  input  logic [15:0] S_w,
-  input  logic [15:0] S_wg,
-  output logic [7:0]  G_out
+// defuzz.sv — G = round( (S_wg / max(S_w, EPS)) * 100 )
+// REQ-050: safe division with epsilon; output 0..100 % (uint8)
+// REQ-210: fixed-point Q1.15 on S_w and S_wg
+
+module defuzz (
+  input  logic        clk,
+  input  logic        rst_n,
+  input  logic [15:0] S_w,    // Q1.15
+  input  logic [15:0] S_wg,   // Q1.15
+  output logic [7:0]  G_out   // 0..100
 );
+  // Use small epsilon to avoid div-by-zero; 1 LSB of Q1.15 is fine.
   localparam logic [15:0] EPS = 16'd1;
-  logic [15:0] den;
-  logic [31:0] ratio, perc;
-  logic [7:0]  sat;
+
+  // Temp signals (avoid part-selects on expressions)
+  logic [15:0] den_q15;
+  logic [31:0] ratio_q15;  // Q1.15
+  logic [31:0] percent_u;  // unsigned 0..100 (integer domain)
+  logic [7:0]  sat_u8;
 
   always_comb begin
-    den   = (S_w < EPS) ? EPS : S_w;
-    ratio = ( (S_wg << 15) / den );      // Q1.15
-    perc  = ( ratio * 32'd100 ) >> 15;   // 0..100
-    sat   = (perc > 32'd100) ? 8'd100 : perc[7:0];
+    den_q15   = (S_w < EPS) ? EPS : S_w;
+    // Q1.15 / Q1.15 -> Q1.15 by shifting numerator left by 15
+    ratio_q15 = ( ( {16'd0, S_wg } ) << 15 ) / den_q15;
+    // Multiply by 100 (integer), keep it in 32-bit
+    percent_u = ( ratio_q15 * 32'd100 ) >> 15;
+    sat_u8    = (percent_u > 32'd100) ? 8'd100 : percent_u[7:0];
   end
 
-  always_ff @(posedge clk or negedge rst_n)
-    if(!rst_n) G_out <= 8'd0;
-    else       G_out <= sat;
+  always_ff @(posedge clk or negedge rst_n) begin
+    if (!rst_n) G_out <= 8'd0;
+    else        G_out <= sat_u8;
+  end
 endmodule
