@@ -50,7 +50,7 @@ module dt_estimator (
     sum32 = term1 + term2;
     dT_new_q15 = sum32[31:16];
 
-    dmax_q15 = {d_max, 8'd0};
+    dmax_q15 = {d_max, 7'd0};
     clip_hi  = (dT_new_q15 >  dmax_q15) ?  dmax_q15 : dT_new_q15;
     clip_lo  = (clip_hi    < -dmax_q15) ? -dmax_q15 : clip_hi;
   end
@@ -70,7 +70,7 @@ module dt_estimator (
     end else begin
       T_prev       <= T_cur;
       dT_prev_q15  <= clip_lo;
-      dT_out       <= clip_lo[15:8];  // truncate Q1.15 -> Q7.0
+      dT_out       <= clip_lo[14:7];  // Q0.7 -> int8 (Q7.0)
       dt_valid     <= 1'b1;
     end
   end

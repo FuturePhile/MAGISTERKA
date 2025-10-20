@@ -12,10 +12,12 @@ module trapezoid (
   // NOTE: For now we use division by variable denominators (synthesizable but heavy).
   // Later we can replace with a small sequential divider or reciprocal trick if timing/resources require.
   // Q7.0 → Q1.15; safe widths and guards
-  logic [8:0] xb, xa;
-  logic [8:0] dx1, dx2;
-  logic [8:0] den1, den2;
+  // Q7.0 → Q1.15; safe widths and guards
+  logic [8:0]  xb, xa;
+  logic [8:0]  dx1, dx2;
+  logic [8:0]  den1, den2;
   logic [15:0] num1, num2;
+  logic [23:0] num1_q15, num2_q15; // << NEW: widened for <<8
 
   always_comb begin
     mu = 16'd0; // default
@@ -32,7 +34,8 @@ module trapezoid (
       xb   = $unsigned($signed(x) - $signed(a));    // 0..(b-a)
       den1 = (dx1 == 9'd0) ? 9'd1 : dx1;            // guard /0
       num1 = {xb[7:0], 7'd0};                       // (x-a) << 7 -> Q8.7
-      mu   = (num1 << 8) / den1;                    // -> Q1.15
+      num1_q15 = {8'd0, num1} << 8;                 // Q8.7 -> Q1.15 (24b temp)
+      mu   = num1_q15 / den1;                       // -> Q1.15 (trunc)
     end
     else begin
       // right slope segment: (d-x)/(d-c)
@@ -40,8 +43,8 @@ module trapezoid (
       xa   = $unsigned($signed(d) - $signed(x));    // 0..(d-c)
       den2 = (dx2 == 9'd0) ? 9'd1 : dx2;
       num2 = {xa[7:0], 7'd0};
-      mu   = (num2 << 8) / den2;
+      num2_q15 = {8'd0, num2} << 8;                 // Q8.7 -> Q1.15 (24b temp)
+      mu   = num2_q15 / den2;
     end
   end
-
 endmodule

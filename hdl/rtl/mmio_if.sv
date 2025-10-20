@@ -99,19 +99,22 @@ module mmio_if (
         8'h02: T_reg  <= wdata;
         8'h03: if (!dt_mode) dT_reg <= wdata; // ignore write in internal dT mode
         // MF T (a,b,c,d) and dT (a,b,c,d) — fill per your map; examples:
-        8'h10: T_neg_a  <= wdata;  8'h11: T_neg_b  <= wdata;
-        8'h12: T_neg_c  <= wdata;  8'h13: T_neg_d  <= wdata;
-        8'h14: T_zero_a <= wdata;  8'h15: T_zero_b <= wdata;
-        8'h16: T_zero_c <= wdata;  8'h17: T_zero_d <= wdata;
-        8'h18: T_pos_a  <= wdata;  8'h19: T_pos_b  <= wdata;
-        8'h1A: T_pos_c  <= wdata;  8'h1B: T_pos_d  <= wdata;
 
-        8'h1C: dT_neg_a  <= wdata; 8'h1D: dT_neg_b  <= wdata;
-        8'h1E: dT_neg_c  <= wdata; 8'h1F: dT_neg_d  <= wdata;
-        8'h20: dT_zero_a <= wdata; 8'h21: dT_zero_b <= wdata;
-        8'h22: dT_zero_c <= wdata; 8'h23: dT_zero_d <= wdata;
-        8'h24: dT_pos_a  <= wdata; 8'h25: dT_pos_b  <= wdata;
-        8'h26: dT_pos_c  <= wdata; 8'h27: dT_pos_d  <= wdata;
+        8'h10: rdata = T_neg_a;   8'h11: rdata = T_neg_b;
+        8'h12: rdata = T_neg_c;   8'h13: rdata = T_neg_d;
+        8'h14: rdata = T_zero_a;  8'h15: rdata = T_zero_b;
+        8'h16: rdata = T_zero_c;  8'h17: rdata = T_zero_d;
+        8'h18: rdata = T_pos_a;   8'h19: rdata = T_pos_b;
+        8'h1A: rdata = T_pos_c;   8'h1B: rdata = T_pos_d;
+
+        // MF dT
+        8'h1C: rdata = dT_neg_a;  8'h1D: rdata = dT_neg_b;
+        8'h1E: rdata = dT_neg_c;  8'h1F: rdata = dT_neg_d;
+        8'h20: rdata = dT_zero_a; 8'h21: rdata = dT_zero_b;
+        8'h22: rdata = dT_zero_c; 8'h23: rdata = dT_zero_d;
+        8'h24: rdata = dT_pos_a;  8'h25: rdata = dT_pos_b;
+        8'h26: rdata = dT_pos_c;  8'h27: rdata = dT_pos_d;
+
 
         // singletons g_ij
         8'h30: g00 <= wdata; 8'h31: g01 <= wdata; 8'h32: g02 <= wdata;

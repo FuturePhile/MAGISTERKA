@@ -18,7 +18,10 @@ module rules9 (
   output logic [15:0] w21, // (pos,zero)
   output logic [15:0] w22  // (pos,pos)
 );
-  function automatic [15:0] fmin (input [15:0] a, input [15:0] b);
+  function automatic [15:0] fmin (
+    input logic [15:0] a, 
+    input logic [15:0] b
+    );
     fmin = (a < b) ? a : b;
   endfunction
 
