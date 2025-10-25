@@ -22,7 +22,7 @@ module rules9 (
     input logic [15:0] a, 
     input logic [15:0] b
     );
-    fmin = (a < b) ? a : b;
+    if (a < b) fmin = a; else fmin = b;
   endfunction
 
   always_comb begin
