@@ -25,6 +25,7 @@ module tb_trapezoid_req020;
   );
 
   // === Simple bit-accurate reference model (matches DUT arithmetic) ===
+  // Bit-accurate reference for trapezoid/triangle MF (fixed-point safe)
   function automatic logic [15:0] ref_mu (
       input logic signed [7:0] fx,
       input logic signed [7:0] fa,
@@ -32,8 +33,11 @@ module tb_trapezoid_req020;
       input logic signed [7:0] fc,
       input logic signed [7:0] fd
   );
-    logic [8:0]  dx1, dx2, n1, n2, t1, t2; // helper deltas (unsigned)
-    logic [15:0] out_mu;
+    logic  signed [8:0] dx1, dx2;    // denominators (guarded to 1)
+    logic  signed [8:0] t1, t2;      // deltas in Q7.0 domain (non-negative where used)
+    logic         [23:0] num;        // 24-bit accumulator for <<15 scaling
+    logic         [15:0] out_mu;
+
     out_mu = 16'd0;
 
     if ((fx <= fa) || (fx >= fd)) begin
@@ -41,19 +45,22 @@ module tb_trapezoid_req020;
     end else if ((fx >= fb) && (fx <= fc)) begin
       out_mu = 16'h7FFF; // 1.0 in Q1.15
     end else if ((fx > fa) && (fx < fb)) begin
-      dx1 = $unsigned($signed(fb) - $signed(fa));
-      t1  = $unsigned($signed(fx) - $signed(fa));
-      n1  = (dx1 == 0) ? 9'd1 : dx1;
-      // scale t1 from Q7.0 to Q1.15 using <<15 / n1 (implemented via left shift then divide)
-      out_mu = ( {7'd0, t1} << 8 ) << 8; // Q1.15 numerator pre-div
-      out_mu = out_mu / n1;              // truncation
+      dx1 = $signed(fb) - $signed(fa);
+      if (dx1 == 0) dx1 = 1;
+      t1  = $signed(fx) - $signed(fa);      // 1..(b-a-1)
+      num = $unsigned(t1);
+      num = num << 15;                      // scale to Q1.15 BEFORE division
+      out_mu = num / $unsigned(dx1);        // truncation (matches synth div)
     end else begin
-      dx2 = $unsigned($signed(fd) - $signed(fc));
-      t2  = $unsigned($signed(fd) - $signed(fx));
-      n2  = (dx2 == 0) ? 9'd1 : dx2;
-      out_mu = ( {7'd0, t2} << 8 ) << 8; // Q1.15 numerator pre-div
-      out_mu = out_mu / n2;
+      dx2 = $signed(fd) - $signed(fc);
+      if (dx2 == 0) dx2 = 1;
+      t2  = $signed(fd) - $signed(fx);
+      num = $unsigned(t2);
+      num = num << 15;
+      out_mu = num / $unsigned(dx2);
     end
+
+    if (out_mu > 16'h7FFF) out_mu = 16'h7FFF;
     return out_mu;
   endfunction
 
@@ -69,12 +76,15 @@ module tb_trapezoid_req020;
     exp_mu = ref_mu(x,a,b,c,d);
     // REQ-210: no overflow beyond 1.0 (Q1.15)
     if (mu > 16'h7FFF) begin
-      $error("[REQ-210] mu overflow: got=%0d at x=%0d", mu, $signed(x));
+      $error("ERROR: [REQ-210] mu overflow: got=%0d at x=%0d", mu, $signed(x));
     end
     // REQ-020: exact match to reference (bit-accurate model)
     if (mu !== exp_mu) begin
       $error("[REQ-020] mismatch x=%0d a=%0d b=%0d c=%0d d=%0d got=%0d exp=%0d",
              $signed(x),$signed(a),$signed(b),$signed(c),$signed(d), mu, exp_mu);
+    end else begin
+      $display("INFO: [REQ-020] observed: x=%0d a=%0d b=%0d c=%0d d=%0d mu=%0d", 
+              $signed(x),$signed(a),$signed(b),$signed(c),$signed(d), mu);
     end
   endtask
 
