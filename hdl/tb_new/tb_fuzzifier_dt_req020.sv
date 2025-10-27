@@ -100,6 +100,11 @@ module tb_fuzzifier_dt_req020;
       b_pos = a_pos + $urandom_range(0,25);
       c_pos = b_pos + $urandom_range(0,25);
       d_pos = c_pos + $urandom_range(0,25);
+      // Print randomized trapezoid params (dT fuzzifier)
+      $display("INFO: [REQ-020][RAND][dT] NEG:(a=%0d,b=%0d,c=%0d,d=%0d)  ZERO:(a=%0d,b=%0d,c=%0d,d=%0d)  POS:(a=%0d,b=%0d,c=%0d,d=%0d)",
+         $signed(a_neg), $signed(b_neg), $signed(c_neg), $signed(d_neg),
+         $signed(a_zero),$signed(b_zero),$signed(c_zero),$signed(d_zero),
+         $signed(a_pos), $signed(b_pos), $signed(c_pos), $signed(d_pos));
 
       check_all($urandom_range(-128,127));
       check_all($urandom_range(-128,127));
