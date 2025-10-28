@@ -34,6 +34,8 @@ module dt_estimator (
   // Clamp
   logic signed [15:0] dmax_q15, clip_hi, clip_lo;
 
+  logic signed [15:0] q07_adj;
+
   // Combinational math
   always_comb begin
     delta_q8     = $signed({{1{T_cur[7]}},  T_cur}) - $signed({{1{T_prev[7]}}, T_prev});
@@ -69,8 +71,14 @@ module dt_estimator (
     end else begin
       T_prev       <= T_cur;
       dT_prev_q15  <= clip_lo;
-      dT_out       <= clip_lo >>> 7;   // Q1.15 -> Q7.0, zachowuje znak
+
+      // Q0.7 -> s8 with truncation toward zero (fixes -1 drift on tiny magnitudes)
+      
+      q07_adj <= (clip_lo < 0) ? (clip_lo + 16'sd127) : clip_lo;
+      dT_out  <= q07_adj >>> 7;
+
       dt_valid     <= 1'b1;
     end
   end
+
 endmodule
