@@ -26,13 +26,16 @@ module dt_estimator (
   logic signed [15:0] delta_scaled;    // Q0.7
 
   // --- Arytmetyka EMA ---
-  // całkowite wagi: inv_a_u = 256 - alpha; a_u = alpha (0..256)
   logic [15:0]        inv_a_u, a_u;    // 0..256 (int)
   logic signed [31:0] term1, term2, sum32;
   logic signed [15:0] dT_new_q15;      // Q0.7
 
-  // --- Ograniczenie (clamp) i konwersja wyjścia ---
-  logic signed [15:0] dmax_q15, clip_hi, clip_lo, q07_adj; // Q0.7
+  // --- Ograniczenie (clamp) ---
+  logic signed [15:0] dmax_q15, clip_hi, clip_lo; // Q0.7
+
+  // --- Konwersja Q0.7 → Q7.0 (kombinacyjnie, bez rejestru pośredniego) ---
+  logic signed [15:0] q07_adj_comb;    // Q0.7 po „anty-dryfie”
+  logic signed [7:0]  q07_to_s8;       // Q7.0
 
   // --- Ścieżka kombinacyjna ---
   always_comb begin
@@ -55,6 +58,10 @@ module dt_estimator (
     dmax_q15 = $signed(d_max) <<< 7;
     clip_hi  = (dT_new_q15 >  dmax_q15) ?  dmax_q15 : dT_new_q15;
     clip_lo  = (clip_hi    < -dmax_q15) ? -dmax_q15 : clip_hi;
+
+    // Anty-dryf i konwersja do Q7.0 — KOMBInacyjnie (zero-latency)
+    q07_adj_comb = (clip_lo < 0) ? (clip_lo + 16'sd127) : clip_lo; // „trunc toward zero” dla <0
+    q07_to_s8    = $signed(q07_adj_comb >>> 7);
   end
 
   // --- Aktualizacja sekwencyjna + INIT ---
@@ -64,7 +71,6 @@ module dt_estimator (
       dT_prev_q15  <= '0;      // Q0.7
       dT_out       <= '0;      // Q7.0
       dt_valid     <= 1'b0;
-      q07_adj      <= '0;
     end else if (init) begin
       // INIT: wyzeruj EMA i złap bieżące T, bez „spike” na wyjściu
       T_prev       <= T_cur;   // następny delta = 0
@@ -74,13 +80,9 @@ module dt_estimator (
     end else begin
       // Zwykły krok EMA
       T_prev       <= T_cur;
-      dT_prev_q15  <= clip_lo; // Q0.7
-
-      // Q0.7 → Q7.0 (trunc toward zero / „anty-dryf” dla wartości ujemnych)
-      q07_adj <= (clip_lo < 0) ? (clip_lo + 16'sd127) : clip_lo;
-      dT_out  <= q07_adj >>> 7;
-
-      dt_valid <= 1'b1;
+      dT_prev_q15  <= clip_lo;     // Q0.7
+      dT_out       <= q07_to_s8;   // użyj wartości z TEGO cyklu (bez opóźnienia)
+      dt_valid     <= 1'b1;
     end
   end
 
