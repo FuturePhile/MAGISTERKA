@@ -40,70 +40,74 @@ module tb_dt_estimator_req060;
   // === Bit-accurate reference (mirrors RTL math) ===
   // Internal ref state (mirrors DUT registers)
   logic signed [7:0]  ref_T_prev;
-  logic signed [15:0] ref_dT_prev_q15;   // Q1.15
+  logic signed [15:0] ref_dT_prev_q15;   // Q0.7 (nazwa historyczna)
 
   function automatic signed [15:0] to_q15_from_s8 (input logic signed [7:0] x_s8);
-    // Q7.0 -> Q1.15 : <<7
+    // Q7.0 -> Q1.15 : <<7 (nieużywane, zachowane dla spójności)
     to_q15_from_s8 = {x_s8, 7'b0};
   endfunction
 
-  // Do one EMA update step with parameters; returns expected dT_out (Q7.0)
+  // --- PODMIANA: ref_step_expect dopasowana bit-dokładnie do RTL ---
   function automatic logic signed [7:0] ref_step_expect (
     input logic signed [7:0]  T_now,
     input logic        [7:0]  alpha_u8, // 0..255
-    input logic        [7:0]  k_div,
-    input logic        [7:0]  dmax_s8,
-    input bit                do_init,   // emulate INIT cycle behavior
-    input bit                do_reset   // emulate reset behavior
+    input logic        [7:0]  k_div,    // /2^k
+    input logic        [7:0]  dmax_s8,  // Q7.0
+    input bit                do_init,
+    input bit                do_reset
   );
-    // Local temporaries (mirror RTL widths)
-    logic signed [8:0]  delta_q8;
-    logic signed [15:0] delta_q15, delta_scaled;
-    logic [15:0]        alpha_q, one_q, inv_a;
+    // Lokalne tymczasowe (formaty jak w RTL)
+    logic signed [8:0]  delta_q8;         // Q8.0
+    logic signed [15:0] delta_q07;        // Q0.7
+    logic signed [15:0] delta_scaled;     // Q0.7
+    logic       [15:0]  inv_a_u, a_u;     // 0..256 (int)
     logic signed [31:0] term1, term2, sum32;
-    logic signed [15:0] dT_new_q15, dmax_q15, clip_hi, clip_lo;
+    logic signed [15:0] dT_new_q15;       // Q0.7
+    logic signed [15:0] dmax_q15, clip_hi, clip_lo; // Q0.7
+    logic signed [15:0] q07_adj;          // Q0.7 (po anty-dryfie)
 
     if (do_reset) begin
       ref_T_prev       = '0;
       ref_dT_prev_q15  = '0;
-      ref_step_expect  = 8'sd0;
-      return ref_step_expect;
+      return 8'sd0;
     end
 
     if (do_init) begin
       // INIT: capture T_now, clear EMA, dt_valid=0, dT_out=0
       ref_T_prev       = T_now;
       ref_dT_prev_q15  = '0;
-      ref_step_expect  = 8'sd0;
-      return ref_step_expect;
+      return 8'sd0;
     end
 
-    // delta = T_now - ref_T_prev (Q8.0), then Q1.15 by <<7, then >>>k
-    delta_q8     = $signed({T_now[7],T_now}) - $signed({ref_T_prev[7],ref_T_prev});
-    delta_q15    = {delta_q8, 7'b0};
-    delta_scaled = delta_q15 >>> k_div;
+    // --- delta w Q0.7 ---
+    delta_q8     = $signed({{1{T_now[7]}}, T_now}) - $signed({{1{ref_T_prev[7]}}, ref_T_prev}); // Q8.0
+    delta_q07    = $signed(delta_q8) <<< 7;                       // Q8.0 → Q0.7
+    delta_scaled = delta_q07 >>> k_div;                            // /2^k
 
-    alpha_q = {8'b0, alpha_u8};     // Q8.8
-    one_q   = 16'd256;              // 1.0 in Q8.8
-    inv_a   = one_q - alpha_q;
+    // --- wagi całkowite jak w RTL ---
+    inv_a_u      = 16'd256 - {8'b0, alpha_u8};
+    a_u          = {8'b0, alpha_u8};
 
-    term1   = $signed(ref_dT_prev_q15) * $signed({inv_a, 8'b0}); // Q1.15 * Q8.8 <<8
-    term2   = $signed(delta_scaled)    * $signed({alpha_q, 8'b0});
-    sum32   = term1 + term2;
-    dT_new_q15 = sum32[31:16];
+    // --- EMA: (prev*inv_a + delta*a) / 256 w Q0.7 ---
+    term1        = $signed(ref_dT_prev_q15) * $signed(inv_a_u);
+    term2        = $signed(delta_scaled)    * $signed(a_u);
+    sum32        = term1 + term2;
+    dT_new_q15   = $signed(sum32 >>> 8);                            // z powrotem Q0.7
 
-    dmax_q15 = {dmax_s8, 7'd0};
-    clip_hi  = (dT_new_q15 >  dmax_q15) ?  dmax_q15 : dT_new_q15;
-    clip_lo  = (clip_hi    < -dmax_q15) ? -dmax_q15 : clip_hi;
+    // --- clamp w Q0.7 ---
+    dmax_q15     = $signed(dmax_s8) <<< 7;                          // Q7.0 → Q0.7
+    clip_hi      = (dT_new_q15 >  dmax_q15) ?  dmax_q15 : dT_new_q15;
+    clip_lo      = (clip_hi    < -dmax_q15) ? -dmax_q15 : clip_hi;
 
-    // Update ref states like DUT (sequential)
-    ref_T_prev      = T_now;
-    ref_dT_prev_q15 = clip_lo;
+    // --- aktualizacja stanu referencyjnego ---
+    ref_T_prev       = T_now;
+    ref_dT_prev_q15  = clip_lo;
 
-    // DUT outputs Q0.7 = clip_lo[14:7]
-    ref_step_expect = clip_lo[14:7];
-    return ref_step_expect;
+    // --- Q0.7 → Q7.0 z „anty-dryfem” jak w RTL ---
+    q07_adj          = (clip_lo < 0) ? (clip_lo + 16'sd127) : clip_lo;
+    return $signed(q07_adj >>> 7);
   endfunction
+  // --- KONIEC PODMIANY ---
 
   // === Tasks / helpers ===
   task automatic apply_reset();
@@ -224,12 +228,10 @@ module tb_dt_estimator_req060;
     do_init_and_check("E0 reinit nominal");
 
     // Small ramp up then down
-    
     for (i=0; i<=10; i++) step_and_check($sformatf("E1 ramp↑ i=%0d", i), i*3, 1);
     for (i=10; i>=0; i--) step_and_check($sformatf("E2 ramp↓ i=%0d", i), i*3, 1);
 
     // Random walk (bounded)
-    
     for (j=0; j<50; j++) begin
       step = $urandom_range(-7,7);
       nxt  = $signed(T_cur) + step;
