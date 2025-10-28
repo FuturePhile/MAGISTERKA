@@ -24,6 +24,7 @@ module dt_estimator (
   logic signed [8:0]  delta_q8;        // Q8.0
   logic signed [15:0] delta_q07;       // Q0.7
   logic signed [15:0] delta_scaled;    // Q0.7
+  logic        [3:0]  k_dt_lim;        // bezpieczny zakres shifta 0..7
 
   // --- Arytmetyka EMA ---
   logic [15:0]        inv_a_u, a_u;    // 0..256 (int)
@@ -39,10 +40,13 @@ module dt_estimator (
 
   // --- Ścieżka kombinacyjna ---
   always_comb begin
+    // Limituj k_dt do [0..7], by uniknąć nieprzewidzianych przesunięć
+    k_dt_lim = (k_dt > 8'd7) ? 4'd7 : k_dt[3:0];
+
     // ∆T w Q0.7
     delta_q8     = $signed({{1{T_cur[7]}},  T_cur}) - $signed({{1{T_prev[7]}}, T_prev}); // Q8.0
     delta_q07    = $signed(delta_q8) <<< 7;        // Q8.0 → Q0.7
-    delta_scaled = delta_q07 >>> k_dt;             // /2^k (Q0.7)
+    delta_scaled = delta_q07 >>> k_dt_lim;         // /2^k (Q0.7)
 
     // Wagi całkowite (0..256)
     inv_a_u = 16'd256 - {8'b0, alpha};
@@ -59,7 +63,7 @@ module dt_estimator (
     clip_hi  = (dT_new_q15 >  dmax_q15) ?  dmax_q15 : dT_new_q15;
     clip_lo  = (clip_hi    < -dmax_q15) ? -dmax_q15 : clip_hi;
 
-    // Anty-dryf i konwersja do Q7.0 — KOMBInacyjnie (zero-latency)
+    // Anty-dryf i konwersja do Q7.0 — kombinacyjnie (zero-latency)
     q07_adj_comb = (clip_lo < 0) ? (clip_lo + 16'sd127) : clip_lo; // „trunc toward zero” dla <0
     q07_to_s8    = $signed(q07_adj_comb >>> 7);
   end

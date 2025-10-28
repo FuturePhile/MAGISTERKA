@@ -14,7 +14,7 @@ module tb_dt_estimator_req060;
   // === DUT ports ===
   logic              init;
   logic signed [7:0] T_cur;
-  logic       [7:0]  alpha;    // Q8.8 ~ alpha/256
+  logic       [7:0]  alpha;    // ~ alpha/256
   logic       [7:0]  k_dt;     // /2^k
   logic       [7:0]  d_max;    // |dT| clamp (Q7.0)
   logic signed [7:0] dT_out;   // Q7.0
@@ -47,7 +47,7 @@ module tb_dt_estimator_req060;
     to_q15_from_s8 = {x_s8, 7'b0};
   endfunction
 
-  // --- PODMIANA: ref_step_expect dopasowana bit-dokładnie do RTL ---
+  // --- Bit-accurate referencja: kopia arytmetyki z RTL ---
   function automatic logic signed [7:0] ref_step_expect (
     input logic signed [7:0]  T_now,
     input logic        [7:0]  alpha_u8, // 0..255
@@ -82,7 +82,11 @@ module tb_dt_estimator_req060;
     // --- delta w Q0.7 ---
     delta_q8     = $signed({{1{T_now[7]}}, T_now}) - $signed({{1{ref_T_prev[7]}}, ref_T_prev}); // Q8.0
     delta_q07    = $signed(delta_q8) <<< 7;                       // Q8.0 → Q0.7
-    delta_scaled = delta_q07 >>> k_div;                            // /2^k
+
+    // Limit k_div do 0..7 jak w RTL (ochrona)
+    logic [3:0] k_div_lim;
+    k_div_lim   = (k_div > 8'd7) ? 4'd7 : k_div[3:0];
+    delta_scaled = delta_q07 >>> k_div_lim;                        // /2^k
 
     // --- wagi całkowite jak w RTL ---
     inv_a_u      = 16'd256 - {8'b0, alpha_u8};
@@ -107,7 +111,6 @@ module tb_dt_estimator_req060;
     q07_adj          = (clip_lo < 0) ? (clip_lo + 16'sd127) : clip_lo;
     return $signed(q07_adj >>> 7);
   endfunction
-  // --- KONIEC PODMIANY ---
 
   // === Tasks / helpers ===
   task automatic apply_reset();
@@ -119,7 +122,9 @@ module tb_dt_estimator_req060;
   endtask
 
   task automatic pulse_init();
-    @(negedge clk); init = 1'b1; @(posedge clk); init = 1'b0;
+    // Utrzymuj INIT wysokie dokładnie w jednym cyklu zegara
+    @(negedge clk); init = 1'b1;
+    @(posedge clk); init = 1'b0;
   endtask
 
   task automatic step_and_check(
@@ -149,16 +154,25 @@ module tb_dt_estimator_req060;
 
   // INIT cycle check: dt_valid must be 0 and dT_out=0 on that cycle; next cycle valid=1
   task automatic do_init_and_check(string tag);
-    // Prepare some nonzero state by one step
+    // 1) Krok przed INIT (stan ≠ 0, żeby sprawdzić brak piku po INIT)
     step_and_check({tag," pre"}, 8'sd5, /*expect_valid*/1);
-    // Pulse INIT
-    @(negedge clk); pulse_init();
-    // On the INIT posedge, DUT drives zeros and dt_valid=0
-    @(posedge clk);
+
+    // 2) Podaj INIT tak, by było aktywne na najbliższym posedge
+    @(negedge clk); init = 1'b1;
+    @(posedge clk); // to jest cykl INIT
+    init = 1'b0;
+
+    // >>> KLUCZ: zsynchronizuj ref z zachowaniem DUT w cyklu INIT
+    // (capture T_now, clear EMA; na wyjściu 0, dt_valid=0)
+    void'(ref_step_expect(T_cur, alpha, k_dt, d_max,
+                          /*do_init*/1, /*do_reset*/0));
+
+    // 3) Sprawdź protokół na cyklu INIT
     assert (dt_valid == 1'b0) else $error("[REQ-062] %s dt_valid must be 0 on INIT cycle", tag);
     assert (dT_out  == 8'sd0) else $error("[REQ-062] %s dT_out must be 0 on INIT cycle", tag);
     $display("INFO: [EST] %s after INIT | dT=%0d valid=%0b", tag, $signed(dT_out), dt_valid);
-    // Next cycle, with same T, EMA restarts from 0 and valid=1
+
+    // 4) Następny krok po INIT z tym samym T — EMA startuje od zera, valid=1
     step_and_check({tag," post"}, T_cur, /*expect_valid*/1);
   endtask
 
@@ -178,8 +192,7 @@ module tb_dt_estimator_req060;
 
     // ---- A) Reset & INIT ----
     apply_reset();
-    // After reset, first active cycle: dt_valid stays 0 until one update after reset?
-    // DUT sets dt_valid=0 on reset; first non-init posedge -> dt_valid=1
+    // After reset, first active cycle: first non-init posedge -> dt_valid=1
     step_and_check("A1 after reset (first)", 8'sd0, /*expect_valid*/1);
 
     do_init_and_check("A2 INIT");
