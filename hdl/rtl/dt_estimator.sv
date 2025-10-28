@@ -36,10 +36,9 @@ module dt_estimator (
 
   // Combinational math
   always_comb begin
-    delta_q8    = $signed({T_cur[7], T_cur}) - $signed({T_prev[7], T_prev});   // Q8.0
-    delta_q15   = {delta_q8, 7'b0};                                            // *128 -> Q1.15
-    delta_scaled= delta_q15 >>> k_dt;                                          // /2^k
-
+    delta_q8     = $signed({{1{T_cur[7]}},  T_cur}) - $signed({{1{T_prev[7]}}, T_prev});
+    delta_q15    = {delta_q8, 7'b0};          // Q8.0 → Q1.15
+    delta_scaled = delta_q15 >>> k_dt;        // /2^k (arytmetycznie)
     alpha_q = {8'b0, alpha};
     one_q   = 16'd256;
     inv_a   = one_q - alpha_q;
