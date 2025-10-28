@@ -69,7 +69,7 @@ module dt_estimator (
     end else begin
       T_prev       <= T_cur;
       dT_prev_q15  <= clip_lo;
-      dT_out       <= clip_lo[14:7];  // Q0.7 -> int8 (Q7.0)
+      dT_out       <= clip_lo >>> 7;   // Q1.15 -> Q7.0, zachowuje znak
       dt_valid     <= 1'b1;
     end
   end
