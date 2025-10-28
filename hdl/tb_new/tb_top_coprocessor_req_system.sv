@@ -53,10 +53,12 @@ module tb_top_coprocessor_req320;
   logic [7:0]  Gexp;
 
   // Temps for INIT golden
-logic [15:0] _muTn,_muTz,_muTp,_muDn,_muDz,_muDp;
-logic [15:0] _w00,_w01,_w02,_w10,_w11,_w12,_w20,_w21,_w22;
-logic [19:0] _sumw,_sumwg;
-logic [7:0]  Gexp_init;
+logic [15:0] muTn_i, muTz_i, muTp_i;
+logic [15:0] muDn_i, muDz_i, muDp_i;
+logic [15:0] w00_i,w01_i,w02_i,w10_i,w11_i,w12_i,w20_i,w21_i,w22_i;
+logic [19:0] sumw_i, sumwg_i;
+
+logic [7:0] Gexp_init;
 
 
   // === Instantiate DUT ===
@@ -229,44 +231,51 @@ logic [7:0]  Gexp_init;
                tag, reg_mode, dt_mode, lat, G_out, Gexp);
   endtask
 
-  // Compute expected G for given T and dT=0 using the same bit-accurate path
+
+// Compute expected G for given T and dT=0 using the same bit-accurate path
 task automatic compute_gexp_at_dT0 (
   input  logic signed [7:0] Tin,
   input  logic              reg_mode_i,
   output logic       [7:0]  Gexp
 );
   // Fuzzify T
-  _muTn = ref_mu(Tin, T_neg_a,T_neg_b,T_neg_c,T_neg_d);
-  _muTz = ref_mu(Tin, T_zero_a,T_zero_b,T_zero_c,T_zero_d);
-  _muTp = ref_mu(Tin, T_pos_a, T_pos_b, T_pos_c, T_pos_d);
-  // Fuzzify dT=0 (per REQ-062 ΔT ← 0)
-  _muDn = ref_mu(8'sd0, dT_neg_a,dT_neg_b,dT_neg_c,dT_neg_d);
-  _muDz = ref_mu(8'sd0, dT_zero_a,dT_zero_b,dT_zero_c,dT_zero_d);
-  _muDp = ref_mu(8'sd0, dT_pos_a, dT_pos_b, dT_pos_c, dT_pos_d);
+  
+  muTn_i = ref_mu(Tin, T_neg_a, T_neg_b, T_neg_c, T_neg_d);
+  muTz_i = ref_mu(Tin, T_zero_a, T_zero_b, T_zero_c, T_zero_d);
+  muTp_i = ref_mu(Tin, T_pos_a,  T_pos_b,  T_pos_c,  T_pos_d);
+
+  // Fuzzify dT=0 (per REQ-062: ΔT ← 0)
+  
+  muDn_i = ref_mu(8'sd0, dT_neg_a, dT_neg_b, dT_neg_c, dT_neg_d);
+  muDz_i = ref_mu(8'sd0, dT_zero_a, dT_zero_b, dT_zero_c, dT_zero_d);
+  muDp_i = ref_mu(8'sd0, dT_pos_a,  dT_pos_b,  dT_pos_c,  dT_pos_d);
 
   // Rules (min)
-  _w00=q15_min(_muTn,_muDn); _w01=q15_min(_muTn,_muDz); _w02=q15_min(_muTn,_muDp);
-  _w10=q15_min(_muTz,_muDn); _w11=q15_min(_muTz,_muDz); _w12=q15_min(_muTz,_muDp);
-  _w20=q15_min(_muTp,_muDn); _w21=q15_min(_muTp,_muDz); _w22=q15_min(_muTp,_muDp);
+  
+  w00_i=q15_min(muTn_i,muDn_i); w01_i=q15_min(muTn_i,muDz_i); w02_i=q15_min(muTn_i,muDp_i);
+  w10_i=q15_min(muTz_i,muDn_i); w11_i=q15_min(muTz_i,muDz_i); w12_i=q15_min(muTz_i,muDp_i);
+  w20_i=q15_min(muTp_i,muDn_i); w21_i=q15_min(muTp_i,muDz_i); w22_i=q15_min(muTp_i,muDp_i);
 
   // Aggregation with reg_mode
-  _sumw = 20'd0; _sumwg = 20'd0;
-  _sumw += _w00; _sumwg += w_mul_g_q15(_w00,G00);
-  _sumw += _w02; _sumwg += w_mul_g_q15(_w02,G02);
-  _sumw += _w20; _sumwg += w_mul_g_q15(_w20,G20);
-  _sumw += _w22; _sumwg += w_mul_g_q15(_w22,G22);
+  
+  sumw_i  = 20'd0; sumwg_i = 20'd0;
+  sumw_i += w00_i; sumwg_i += w_mul_g_q15(w00_i,G00);
+  sumw_i += w02_i; sumwg_i += w_mul_g_q15(w02_i,G02);
+  sumw_i += w20_i; sumwg_i += w_mul_g_q15(w20_i,G20);
+  sumw_i += w22_i; sumwg_i += w_mul_g_q15(w22_i,G22);
   if (reg_mode_i) begin
-    _sumw += _w01; _sumwg += w_mul_g_q15(_w01,G01);
-    _sumw += _w10; _sumwg += w_mul_g_q15(_w10,G10);
-    _sumw += _w11; _sumwg += w_mul_g_q15(_w11,G11);
-    _sumw += _w12; _sumwg += w_mul_g_q15(_w12,G12);
-    _sumw += _w21; _sumwg += w_mul_g_q15(_w21,G21);
+    sumw_i += w01_i; sumwg_i += w_mul_g_q15(w01_i,G01);
+    sumw_i += w10_i; sumwg_i += w_mul_g_q15(w10_i,G10);
+    sumw_i += w11_i; sumwg_i += w_mul_g_q15(w11_i,G11);
+    sumw_i += w12_i; sumwg_i += w_mul_g_q15(w12_i,G12);
+    sumw_i += w21_i; sumwg_i += w_mul_g_q15(w21_i,G21);
   end
-  if (_sumw  > 20'd32767) _sumw  = 20'd32767;
-  if (_sumwg > 20'd32767) _sumwg = 20'd32767;
+  if (sumw_i  > 20'd32767) sumw_i  = 20'd32767;
+  if (sumwg_i > 20'd32767) sumwg_i = 20'd32767;
 
-  Gexp = ref_defuzz(_sumw[15:0], _sumwg[15:0]);
+  Gexp = ref_defuzz(sumw_i[15:0], sumwg_i[15:0]);
 endtask
+
 
 
   // === Test flow ===
@@ -351,12 +360,13 @@ endtask
     if (verbose) $display("INFO: [REQ-310] MAE over %0d samples = %0d (%%)", N, mae);
     assert (mae <= 1) else $error("[REQ-310] MAE=%0d%% > 1%%", mae);
 
-    // --- Block 3: DT_MODE=1 (REQ-060/061/062/230) ---
+    // --- Block 3: DT_MODE=1, estimator scenarios (REQ-060/061/062 + 230) ---
     dt_mode = 1'b1; 
     reg_mode = 1'b1;
 
     // Ustal T deterministycznie i policz golden dla dT=0 (po INIT)
     T_in = 0;
+
     compute_gexp_at_dT0(T_in, reg_mode, Gexp_init);
 
     // INIT → ΔT=0; pierwszy start powinien dać wynik jak dla (T, dT=0)
@@ -364,33 +374,45 @@ endtask
     pulse_start();
     wait_valid_count_cycles(lat1);
     assert (lat1 <= 10) else $error("[REQ-230] latency after INIT=%0d", lat1);
-    check_valid_one_shot();
-    @(posedge clk); // registered G_out
+    check_valid_one_shot(); @(posedge clk); // registered G_out
+
+    if (verbose) $display("INFO: [EST] after INIT | dt_mode=1 reg_mode=%0d T=%0d | lat=%0d | G=%0d (golden dT=0 → %0d)",
+                          reg_mode, $signed(T_in), lat1, G_out, Gexp_init);
+
     assert (G_out == Gexp_init)
       else $error("[REQ-062] after INIT got=%0d exp=%0d (T=%0d, dT=0)", G_out, Gexp_init, $signed(T_in));
 
-
-    // Steady at T=0 (2 runs)
-    T_in = 0;
+    // Steady at T=0 (2 runs): output bounded, brak spike'ów
     repeat (2) begin
-      pulse_start(); wait_valid_count_cycles(latS); assert (latS <= 10);
+      pulse_start();
+      wait_valid_count_cycles(latS);
+      assert (latS <= 10) else $error("[REQ-230] steady@T=0 latency=%0d", latS);
       check_valid_one_shot(); @(posedge clk);
+      if (verbose) $display("INFO: [EST] steady T=0 | lat=%0d | G=%0d", latS, G_out);
       assert (G_out <= 8'd100) else $error("[REQ-210] bound");
     end
 
-    // Ramp up: T from 0 to +40 step 2 (no spikes, bounded, lat ≤ 10)
+    // Ramp up: T 0→+40 step 2
     for (i=0; i<20; i++) begin
       T_in = i*2;
-      pulse_start(); wait_valid_count_cycles(latU); assert (latU <= 10);
+      pulse_start();
+      wait_valid_count_cycles(latU);
+      assert (latU <= 10);
       check_valid_one_shot(); @(posedge clk);
+      if (verbose) $display("INFO: [EST] ramp↑ step=%0d T=%0d | lat=%0d | G=%0d",
+                            i, $signed(T_in), latU, G_out);
       assert (G_out <= 8'd100);
     end
 
-    // Ramp down back to 0
+    // Ramp down: +40→0
     for (i=20; i>=0; i--) begin
       T_in = i*2;
-      pulse_start(); wait_valid_count_cycles(latD); assert (latD <= 10);
+      pulse_start();
+      wait_valid_count_cycles(latD);
+      assert (latD <= 10);
       check_valid_one_shot(); @(posedge clk);
+      if (verbose) $display("INFO: [EST] ramp↓ step=%0d T=%0d | lat=%0d | G=%0d",
+                            i, $signed(T_in), latD, G_out);
       assert (G_out <= 8'd100);
     end
 
@@ -399,13 +421,53 @@ endtask
     for (i=0; i<100; i++) begin
       step = $urandom_range(-5,5);
       nxt  = $signed(T_in) + step;
-      if (nxt > 127) nxt = 127;
-      if (nxt < -128) nxt = -128;
+      if (nxt > 127) nxt = 127; if (nxt < -128) nxt = -128;
       T_in = nxt[7:0];
-      pulse_start(); wait_valid_count_cycles(latRW); assert (latRW <= 10);
+      pulse_start();
+      wait_valid_count_cycles(latRW);
+      assert (latRW <= 10);
       check_valid_one_shot(); @(posedge clk);
+      if (verbose) $display("INFO: [EST] randwalk i=%0d step=%0d T=%0d | lat=%0d | G=%0d",
+                            i, step, $signed(T_in), latRW, G_out);
       assert (G_out <= 8'd100);
     end
+
+    // // Steady at T=0 (2 runs)
+    // T_in = 0;
+    // repeat (2) begin
+    //   pulse_start(); wait_valid_count_cycles(latS); assert (latS <= 10);
+    //   check_valid_one_shot(); @(posedge clk);
+    //   assert (G_out <= 8'd100) else $error("[REQ-210] bound");
+    // end
+
+    // // Ramp up: T from 0 to +40 step 2 (no spikes, bounded, lat ≤ 10)
+    // for (i=0; i<20; i++) begin
+    //   T_in = i*2;
+    //   pulse_start(); wait_valid_count_cycles(latU); assert (latU <= 10);
+    //   check_valid_one_shot(); @(posedge clk);
+    //   assert (G_out <= 8'd100);
+    // end
+
+    // // Ramp down back to 0
+    // for (i=20; i>=0; i--) begin
+    //   T_in = i*2;
+    //   pulse_start(); wait_valid_count_cycles(latD); assert (latD <= 10);
+    //   check_valid_one_shot(); @(posedge clk);
+    //   assert (G_out <= 8'd100);
+    // end
+
+    // // Random walk of T (length 100)
+    // T_in = 0;
+    // for (i=0; i<100; i++) begin
+    //   step = $urandom_range(-5,5);
+    //   nxt  = $signed(T_in) + step;
+    //   if (nxt > 127) nxt = 127;
+    //   if (nxt < -128) nxt = -128;
+    //   T_in = nxt[7:0];
+    //   pulse_start(); wait_valid_count_cycles(latRW); assert (latRW <= 10);
+    //   check_valid_one_shot(); @(posedge clk);
+    //   assert (G_out <= 8'd100);
+    // end
 
     $display("[REQ-010][REQ-020][REQ-030][REQ-040][REQ-050][REQ-060][REQ-061][REQ-062][REQ-210][REQ-230][REQ-320][REQ-310] system TB finished");
     $finish;
