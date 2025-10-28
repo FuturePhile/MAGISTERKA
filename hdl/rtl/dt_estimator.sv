@@ -29,6 +29,7 @@ module dt_estimator (
   logic [15:0] alpha_q;  // Q8.8
   logic [15:0] one_q;    // 1.0 = 256 in Q8.8
   logic [15:0] inv_a;    // (1 - alpha)
+  logic [15:0] inv_a_u, a_u;   // 0..256
   logic signed [31:0] term1, term2, sum32;
   logic signed [15:0] dT_new_q15;      // Q1.15
 
@@ -37,27 +38,24 @@ module dt_estimator (
 
   // Combinational math
   always_comb begin
-    // ∆T in Q8.0
+    // ∆T w Q8.0 → Q1.15
     delta_q8     = $signed({{1{T_cur[7]}},  T_cur}) - $signed({{1{T_prev[7]}}, T_prev});
-
-    // Q8.0 → Q1.15  (<< 15 — popr. skala)
     delta_q15    = $signed(delta_q8) <<< 15;
-
-    // Scale by 2^k (arith.) — stays in Q1.15
     delta_scaled = delta_q15 >>> k_dt;
 
-    // EMA weights in Q8.8
-    alpha_q = {8'b0, alpha};
-    one_q   = 16'd256;
-    inv_a   = one_q - alpha_q;
+    // Wagi (całkowite): inv_a = 256 - alpha, a = alpha
+    inv_a_u = 16'd256 - {8'b0, alpha};
+    a_u     = {8'b0, alpha};
 
-    // Multiply and accumulate: (Q1.15 * Q8.8)<<8 → 32b align, then >>16 → Q1.15
-    term1 = $signed(dT_prev_q15) * $signed({inv_a,  8'b0});
-    term2 = $signed(delta_scaled) * $signed({alpha_q,8'b0});
+    // (Q1.15 * int) + (Q1.15 * int) → potem podział przez 256
+    term1 = $signed(dT_prev_q15) * $signed(inv_a_u);
+    term2 = $signed(delta_scaled) * $signed(a_u);
     sum32 = term1 + term2;
-    dT_new_q15 = sum32[31:16]; // Q1.15
 
-    // Clamp in Q1.15 (D_MAX w Q7.0 → Q1.15)
+    // teraz znów w Q1.15
+    dT_new_q15 = $signed(sum32 >>> 8);
+
+    // Clamp w Q1.15 (D_MAX w Q7.0 → Q1.15)
     dmax_q15 = $signed(d_max) <<< 15;
     clip_hi  = (dT_new_q15 >  dmax_q15) ?  dmax_q15 : dT_new_q15;
     clip_lo  = (clip_hi    < -dmax_q15) ? -dmax_q15 : clip_hi;
