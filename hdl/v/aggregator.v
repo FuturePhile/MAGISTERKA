@@ -26,13 +26,19 @@ module aggregator (
   output reg [15:0] S_wg       // Q1.15
 );
 
-  // Percent (0..100) to Q1.15 (0..32767) with rounding and clamp
+  // Percent (0..100) -> Q1.15 (0..32767) bez dzielenia
+  // y = round( (gpct * 32767) / 100 )
+  // używamy: round(x/100) ≈ (x*10486 + 2^19) >> 20
   function [15:0] g2q15(input [7:0] gpct);
-    reg [31:0] tmp;
+    reg [23:0] p1;         // 8x16 -> 24 bity: gpct * 32767
+    reg [47:0] p2;         // 24x14 -> do 38 bitów (bezpiecznie 48)
+    reg [31:0] q;          // po shifcie
     begin
-      tmp   = (gpct * 32'd32767) + 32'd50;
-      tmp   = tmp / 32'd100;
-      g2q15 = (tmp > 32'd32767) ? 16'd32767 : tmp[15:0];
+      p1 = gpct * 16'd32767;       // 0 .. 3_276_700
+      p1 = p1 + 24'd50;            // kompensacja zaokrąglenia jak w oryginale
+      p2 = p1 * 14'd10486;         // ≈ p1 * (2^20 / 100)
+      q  = (p2 + 48'd524288) >> 20; // +2^19 do round half up
+      g2q15 = (q > 32'd32767) ? 16'd32767 : q[15:0];
     end
   endfunction
 
