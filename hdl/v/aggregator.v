@@ -1,122 +1,65 @@
-// aggregator.v - sums S_w and S_wg with g_ij given in percent
-// REQ-040: sum of w_ij and sum of (w_ij * g_ij)
-// REQ-050: supports both 4-rule (corners only) and 9-rule mode
-// REQ-210: fixed-point Q1.15 internally
+// aggregator.v — sumowanie wag i wag*G (bez „magii” skalowania)
+// Wejścia w_ij: Q1.15 (0..0x7FFF), g_ij: bajt 0..100
+// Wyjścia S_w, S_wg: Q1.15 (0..0x7FFF) — spójne skale dla defuzz
+
 module aggregator (
-  input         reg_mode,  // 0: corners only, 1: full 3x3
-  input  [15:0] w00,
-  input  [15:0] w01,
-  input  [15:0] w02,
-  input  [15:0] w10,
-  input  [15:0] w11,
-  input  [15:0] w12,
-  input  [15:0] w20,
-  input  [15:0] w21,
-  input  [15:0] w22,
-  input   [7:0] g00,       // percent 0..100
-  input   [7:0] g01,
-  input   [7:0] g02,
-  input   [7:0] g10,
-  input   [7:0] g11,
-  input   [7:0] g12,
-  input   [7:0] g20,
-  input   [7:0] g21,
-  input   [7:0] g22,
-  output reg [15:0] S_w,       // Q1.15
-  output reg [15:0] S_wg       // Q1.15
+  input        reg_mode,        // 1: 9 reguł, 0: 4 reguły (krzyż)
+  input  [15:0] w00, input [15:0] w01, input [15:0] w02,
+  input  [15:0] w10, input [15:0] w11, input [15:0] w12,
+  input  [15:0] w20, input [15:0] w21, input [15:0] w22,
+  input  [7:0]  g00, input [7:0]  g01, input [7:0]  g02,
+  input  [7:0]  g10, input [7:0]  g11, input [7:0]  g12,
+  input  [7:0]  g20, input [7:0]  g21, input [7:0]  g22,
+  output [15:0] S_w,             // Q1.15
+  output [15:0] S_wg             // Q1.15
 );
 
-  // Percent (0..100) -> Q1.15 (0..32767) bez dzielenia
-  // y = round( (gpct * 32767) / 100 )
-  // używamy: round(x/100) ≈ (x*10486 + 2^19) >> 20
-  function [15:0] g2q15(input [7:0] gpct);
-    reg [23:0] p1;         // 8x16 -> 24 bity: gpct * 32767
-    reg [47:0] p2;         // 24x14 -> do 38 bitów (bezpiecznie 48)
-    reg [31:0] q;          // po shifcie
-    begin
-      p1 = gpct * 16'd32767;       // 0 .. 3_276_700
-      p1 = p1 + 24'd50;            // kompensacja zaokrąglenia jak w oryginale
-      p2 = p1 * 14'd10486;         // ≈ p1 * (2^20 / 100)
-      q  = (p2 + 48'd524288) >> 20; // +2^19 do round half up
-      g2q15 = (q > 32'd32767) ? 16'd32767 : q[15:0];
-    end
-  endfunction
+  // wybór reguł według trybu
+  wire use9 = reg_mode;
 
-  // Helper: Q1.15 * Q1.15 -> Q1.15 with rounding
-  localparam [31:0] HALF_LSB_15 = 32'd1 << 14;
-  function [15:0] mul_q15(input [15:0] w, input [15:0] gq15);
-    begin
-      mul_q15 = (((w * gq15) + HALF_LSB_15) >> 15);
-    end
-  endfunction
+  // ——— suma wag ———
+  wire [18:0] sum_w_9 =
+      w00 + w01 + w02 +
+      w10 + w11 + w12 +
+      w20 + w21 + w22;
 
-  // Gate center/edge weights in 4-rule mode
-  wire [15:0] w01s;
-  wire [15:0] w10s;
-  wire [15:0] w11s;
-  wire [15:0] w12s;
-  wire [15:0] w21s;
-  assign w01s = reg_mode ? w01 : 16'd0;
-  assign w10s = reg_mode ? w10 : 16'd0;
-  assign w11s = reg_mode ? w11 : 16'd0;
-  assign w12s = reg_mode ? w12 : 16'd0;
-  assign w21s = reg_mode ? w21 : 16'd0;
+  // 4-regułowy „krzyż”: środek + osie (dostosuj jeśli chcesz inny zestaw)
+  wire [18:0] sum_w_4 =
+      w01 + w10 + w11 + w12 + w21;
 
-  // Precompute g in Q1.15
-  wire [15:0] g00_q15;
-  wire [15:0] g01_q15;
-  wire [15:0] g02_q15;
-  wire [15:0] g10_q15;
-  wire [15:0] g11_q15;
-  wire [15:0] g12_q15;
-  wire [15:0] g20_q15;
-  wire [15:0] g21_q15;
-  wire [15:0] g22_q15;
-  assign g00_q15 = g2q15(g00);
-  assign g01_q15 = g2q15(g01);
-  assign g02_q15 = g2q15(g02);
-  assign g10_q15 = g2q15(g10);
-  assign g11_q15 = g2q15(g11);
-  assign g12_q15 = g2q15(g12);
-  assign g20_q15 = g2q15(g20);
-  assign g21_q15 = g2q15(g21);
-  assign g22_q15 = g2q15(g22);
+  wire [18:0] sum_w_sel = use9 ? sum_w_9 : sum_w_4;
 
-  // Weighted terms: Q1.15 * Q1.15 -> Q1.15 with rounding
-  wire [15:0] gw00;
-  wire [15:0] gw01;
-  wire [15:0] gw02;
-  wire [15:0] gw10;
-  wire [15:0] gw11;
-  wire [15:0] gw12;
-  wire [15:0] gw20;
-  wire [15:0] gw21;
-  wire [15:0] gw22;
-  assign gw00 = mul_q15(w00 , g00_q15);
-  assign gw01 = mul_q15(w01s, g01_q15);
-  assign gw02 = mul_q15(w02 , g02_q15);
-  assign gw10 = mul_q15(w10s, g10_q15);
-  assign gw11 = mul_q15(w11s, g11_q15);
-  assign gw12 = mul_q15(w12s, g12_q15);
-  assign gw20 = mul_q15(w20 , g20_q15);
-  assign gw21 = mul_q15(w21s, g21_q15);
-  assign gw22 = mul_q15(w22 , g22_q15);
+  // clamp do Q1.15
+  assign S_w = (sum_w_sel[18:15] != 0) ? 16'h7FFF : sum_w_sel[15:0];
 
-  // Wide accumulators to avoid overflow when summing up to 9 terms
-  reg [19:0] sum_w_wide;
-  reg [19:0] sum_wg_wide;
-
-  always @(*) begin
-    sum_w_wide  = 20'd0;
-    sum_w_wide  = sum_w_wide + w00 + w02 + w20 + w22;
-    sum_w_wide  = sum_w_wide + w01s + w10s + w11s + w12s + w21s;
-
-    sum_wg_wide = 20'd0;
-    sum_wg_wide = sum_wg_wide + gw00 + gw02 + gw20 + gw22;
-    sum_wg_wide = sum_wg_wide + gw01 + gw10 + gw11 + gw12 + gw21;
-
-    S_w  = (sum_w_wide  > 20'd32767) ? 16'd32767 : sum_w_wide[15:0];
-    S_wg = (sum_wg_wide > 20'd32767) ? 16'd32767 : sum_wg_wide[15:0];
+  // ——— suma w*g/100 ———
+  // używamy szerokiej akumulacji, żeby nie gubić precyzji
+  function [31:0] mul_wg_div100;
+    input [15:0] w;
+    input [7:0]  g;   // 0..100
+    reg   [23:0] prod; // 16*8=24 bit
+  begin
+    prod = w * g;                 // max ≈ 0x7FFF * 100 ≈ 0x30D3C3
+    // dzielenie przez 100: aproksymacja dokładna dzieleniem (Vivado zrobi DSP/shift+add)
+    mul_wg_div100 = prod / 8'd100;
   end
+  endfunction
+
+  wire [31:0] sum_wg_9 =
+      mul_wg_div100(w00,g00) + mul_wg_div100(w01,g01) + mul_wg_div100(w02,g02) +
+      mul_wg_div100(w10,g10) + mul_wg_div100(w11,g11) + mul_wg_div100(w12,g12) +
+      mul_wg_div100(w20,g20) + mul_wg_div100(w21,g21) + mul_wg_div100(w22,g22);
+
+  wire [31:0] sum_wg_4 =
+      mul_wg_div100(w01,g01) +  // T=neg, dT=zero
+      mul_wg_div100(w10,g10) +  // T=zero, dT=neg
+      mul_wg_div100(w11,g11) +  // środek
+      mul_wg_div100(w12,g12) +  // T=zero, dT=pos
+      mul_wg_div100(w21,g21);   // T=pos,  dT=zero
+
+  wire [31:0] sum_wg_sel = use9 ? sum_wg_9 : sum_wg_4;
+
+  // clamp do 0x7FFF (Q1.15)
+  assign S_wg = (sum_wg_sel[31:15] != 0) ? 16'h7FFF : sum_wg_sel[15:0];
 
 endmodule

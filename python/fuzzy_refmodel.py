@@ -4,7 +4,7 @@ fuzzy_refmodel.py — Bit-accurate reference model for the Fuzzy Logic coprocess
 Covers REQ-010/020/030/040/050/210 (dt_mode=0 exact), and provides a pluggable estimator for REQ-060/061/062.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Tuple, Optional, List
 
 Q15_MAX = 32767
@@ -86,46 +86,60 @@ def aggregate(reg_mode: int,
     return S_w, S_wg
 
 def defuzz(S_w: int, S_wg: int) -> int:
-    # ratio_q15 = ((S_wg << 15) / max(S_w,1)); percent = (ratio_q15*100)>>15; clamp 0..100
+    # Bit-identycznie do RTL: +0.5 LSB przed >>15
     den = S_w if S_w >= 1 else 1
     ratio_q15 = (int(S_wg) << 15) // den
-    percent_u = (ratio_q15 * 100) >> 15
+    percent_u = (ratio_q15 * 100 + 16384) >> 15
     if percent_u > 100: percent_u = 100
     if percent_u < 0:   percent_u = 0
     return int(percent_u)
 
+
 # -------------------- Dataclasses --------------------
 
-@dataclass
+@dataclass(frozen=True)
 class MfThresholds:
-    a:int; b:int; c:int; d:int
+    a: int; b: int; c: int; d: int
 
-@dataclass
+@dataclass(frozen=True)
 class MfSet3:
-    neg:MfThresholds; zero:MfThresholds; pos:MfThresholds
+    neg: MfThresholds
+    zero: MfThresholds
+    pos: MfThresholds
 
-@dataclass
+@dataclass(frozen=True)
 class Singletons:
-    g00:int=100; g01:int=50;  g02:int=30
-    g10:int=50;  g11:int=50;  g12:int=50
-    g20:int=80;  g21:int=50;  g22:int=0
+    g00: int = 100; g01: int = 50;  g02: int = 30
+    g10: int = 50;  g11: int = 50;  g12: int = 50
+    g20: int = 80;  g21: int = 50;  g22: int = 0
 
 @dataclass
 class CoprocessorCfg:
-    mf_T:MfSet3
-    mf_dT:MfSet3
-    singletons:Singletons=Singletons()
+    # użyj default_factory dla obiektów (unikamy mutable default)
+    mf_T: MfSet3   = field(default_factory=lambda: MfSet3(
+        # T — zgodnie z TB: [-128,-64,-32,0], [-16,0,0,16], [0,32,64,127]
+        neg=MfThresholds(-128, -64, -32,   0),
+        zero=MfThresholds( -16,   0,   0,  16),
+        pos=MfThresholds(   0,  32,  64, 127),
+    ))
+    mf_dT: MfSet3  = field(default_factory=lambda: MfSet3(
+        # dT — zgodnie z TB: [-100,-50,-30,-5], [-10,0,0,10], [5,25,35,60]
+        neg=MfThresholds(-100, -50, -30,  -5),
+        zero=MfThresholds( -10,   0,   0,  10),
+        pos=MfThresholds(   5,  25,  35,  60),
+    ))
+    singletons: Singletons = field(default_factory=Singletons)
 
 DEFAULT_CFG = CoprocessorCfg(
     mf_T=MfSet3(
-        neg=MfThresholds(-128,-64,-32,0),
-        zero=MfThresholds(-16,0,0,16),
-        pos=MfThresholds(0,32,64,127),
+        neg=MfThresholds(-128,-128,-64,0),
+        zero=MfThresholds(-64,0,0,64),
+        pos=MfThresholds(0,64,127,127),
     ),
     mf_dT=MfSet3(
-        neg=MfThresholds(-100,-50,-30,-5),
-        zero=MfThresholds(-10,0,0,10),
-        pos=MfThresholds(5,25,35,60),
+        neg=MfThresholds(-128,-128,-64,0),
+        zero=MfThresholds(-64,0,0,64),
+        pos=MfThresholds(0,64,127,127),
     ),
     singletons=Singletons()
 )
@@ -225,9 +239,12 @@ class EstimatorRTLExact:
         self.T_prev = T_cur_s8
         self.dT_prev_q15 = clip
 
-        # dT_out = clip[14:7] -> s8
-        slice_14_7 = (clip >> 7) & 0xFF
-        dT_out_s8 = sxt(slice_14_7, 8)
+        # dT_out = clip[14:7] z ucięciem do zera jak w RTL
+        if clip < 0:
+            dT_out_s8 = sxt(((clip + 127) >> 7) & 0xFF, 8)
+        else:
+            dT_out_s8 = sxt(((clip      ) >> 7) & 0xFF, 8)
+
 
         was_valid = self.dt_valid
         self.dt_valid = True

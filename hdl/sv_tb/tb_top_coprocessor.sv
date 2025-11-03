@@ -122,6 +122,30 @@ module tb_top_coprocessor;
   logic [19:0] sumwg_i;
   logic  [7:0] Gexp_init;
 
+  // ==== CSV: globals & config ====
+  integer csv_fd;
+  string  csv_path;
+  string  run_id    = "tb_run";
+  string  git_rev   = "";
+  string  tool_ver  = "Questa";
+  string  source_id = "sv";
+  int     seed_meta = 0;
+
+  // Pola stałe wynikające z RTL (dla dt_mode=1 informacyjnie)
+  localparam int ALPHA_CONST = 32; // ALPHA_P in RTL
+  localparam int KDT_CONST   = 3;  // KDT_P   in RTL
+
+  // Lokalne liczniki indeksów (per-case)
+  int idx_grid, idx_rand, idx_est_init, idx_est_up, idx_est_down, idx_est_rw;
+
+  // Tymczasowe do wyliczenia S_w/S_wg/Gexp przy emisji CSV (GRID)
+  logic [15:0] t_muTn, t_muTz, t_muTp, t_muDn, t_muDz, t_muDp;
+  logic [15:0] t_w00, t_w01, t_w02, t_w10, t_w11, t_w12, t_w20, t_w21, t_w22;
+  logic [19:0] t_sumw, t_sumwg;
+  logic  [7:0] t_Gexp;
+
+
+
   // Instantiate DUT
   top_coprocessor dut (
     .clk(clk),
@@ -244,11 +268,75 @@ module tb_top_coprocessor;
     begin
       den = (Sw < EPS) ? EPS : Sw;
       ratio_q15 = ({16'd0, Swg} << 15) / den;
-      percent_u = (ratio_q15 * 32'd100) >> 15;
+      percent_u = (ratio_q15 * 32'd100 + 32'd16384) >> 15;
       out = (percent_u > 32'd100) ? 8'd100 : percent_u[7:0];
       return out;
     end
   endfunction
+
+  // ==== CSV: nagłówek (konkatenacja przez {...}) ====
+  task automatic csv_write_header();
+    if (csv_fd != 0) begin
+      string hdr;
+      hdr = {
+        "run_id,source,case_id,idx,reg_mode,dt_mode,",
+        "T_in,dT_in,alpha,k_dt,",
+        "Tneg_a,Tneg_b,Tneg_c,Tneg_d,",
+        "Tzero_a,Tzero_b,Tzero_c,Tzero_d,",
+        "Tpos_a,Tpos_b,Tpos_c,Tpos_d,",
+        "dTneg_a,dTneg_b,dTneg_c,dTneg_d,",
+        "dTzero_a,dTzero_b,dTzero_c,dTzero_d,",
+        "dTpos_a,dTpos_b,dTpos_c,dTpos_d,",
+        "S_w,S_wg,G_exp,G_impl,valid_impl,",
+        "tool_ver,git_rev,seed"
+      };
+      $fdisplay(csv_fd, "%s", hdr);
+    end
+  endtask
+
+
+
+
+  // ==== CSV: wiersz (format składany przez {...}) ====
+  task automatic csv_emit_line(
+    input string case_id, input int idx,
+    input int Sw, input int Swg, input int Gexp, input int Gimpl, input bit valid_bit
+  );
+    if (csv_fd != 0) begin
+      string fmt;
+      string line;
+      fmt = {
+        "%s,%s,%s,%0d,%0d,%0d,",
+        "%0d,%0d,%0d,%0d,",
+        "%0d,%0d,%0d,%0d,",
+        "%0d,%0d,%0d,%0d,",
+        "%0d,%0d,%0d,%0d,",
+        "%0d,%0d,%0d,%0d,",
+        "%0d,%0d,%0d,%0d,",
+        "%0d,%0d,%0d,%0d,",
+        "%0d,%0d,%0d,%0d,%0d,",
+        "%s,%s,%0d"
+      };
+      line = $sformatf(
+        fmt,
+        run_id, source_id, case_id, idx, reg_mode, dt_mode,
+        $signed(T_in), $signed(dT_in), ALPHA_CONST, KDT_CONST,
+        $signed(T_neg_a),  $signed(T_neg_b),  $signed(T_neg_c),  $signed(T_neg_d),
+        $signed(T_zero_a), $signed(T_zero_b), $signed(T_zero_c), $signed(T_zero_d),
+        $signed(T_pos_a),  $signed(T_pos_b),  $signed(T_pos_c),  $signed(T_pos_d),
+        $signed(dT_neg_a),  $signed(dT_neg_b),  $signed(dT_neg_c),  $signed(dT_neg_d),
+        $signed(dT_zero_a), $signed(dT_zero_b), $signed(dT_zero_c), $signed(dT_zero_d),
+        $signed(dT_pos_a),  $signed(dT_pos_b),  $signed(dT_pos_c),  $signed(dT_pos_d),
+        Sw, Swg, Gexp, Gimpl, valid_bit,
+        tool_ver, git_rev, seed_meta
+      );
+      $fdisplay(csv_fd, "%s", line);
+    end
+  endtask
+
+
+
+
 
   // Singletons (copy of DUT locals)
   localparam logic [7:0] G00 = 8'd100;
@@ -471,6 +559,27 @@ module tb_top_coprocessor;
 
   // Test flow
   initial begin
+    // ==== CSV: open file & parse plusargs ====
+    void'($value$plusargs("csv=%s", csv_path));
+    void'($value$plusargs("run_id=%s", run_id));
+    void'($value$plusargs("git_rev=%s", git_rev));
+    void'($value$plusargs("tool_ver=%s", tool_ver));
+    void'($value$plusargs("seed=%d", seed_meta));
+    if (csv_path.len() == 0) csv_path = "results_tb.csv";
+    // --- ensure output dir exists (Windows + Linux) ---
+    // Windows (cmd): utwórz katalog jeśli nie istnieje
+    void'($system("cmd /c if not exist out mkdir out"));
+    // Linux/macOS (sh): mkdir -p (ignoruje, jeśli jest)
+    void'($system("mkdir -p out >/dev/null 2>&1"));
+
+    csv_fd = $fopen(csv_path, "w");
+    if (csv_fd == 0) $display("WARN: CSV not opened (%s)", csv_path);
+    else begin
+      $display("INFO: CSV -> %s", csv_path);
+      csv_write_header();
+    end
+
+
     verbose  = $test$plusargs("verbose");
 
     // Reset
@@ -485,6 +594,15 @@ module tb_top_coprocessor;
     repeat (3) @(posedge clk);
     rst_n    = 1'b1;
     @(posedge clk);
+    // --- seed / indices ---
+    if (seed_meta != 0) void'($urandom(seed_meta));
+    idx_grid = 0;
+    idx_rand = 0;
+    idx_est_init = 0;
+    idx_est_up = 0;
+    idx_est_down = 0;
+    idx_est_rw = 0;
+
 
     // Block 1: DT_MODE=0, dense grid + A/B same vectors (REQ-010/020/030/040/050/210)
     dt_mode = 1'b0;
@@ -494,17 +612,67 @@ module tb_top_coprocessor;
     dTs[0] = -60; dTs[1] = -30; dTs[2] = -10; dTs[3] = 0;
     dTs[4] = 10;  dTs[5] = 30;  dTs[6] = 60;
 
+    // ---- DT_MODE=0 GRID: zapis CSV co próbkę ----
     for (int rm = 0; rm <= 1; rm = rm + 1) begin : REG_AB
       reg_mode = rm[0];
+      idx_grid = 0;
       for (i = 0; i < 10; i = i + 1) begin
         for (j = 0; j < 7; j = j + 1) begin
           T_in  = Ts[i][7:0];
           dT_in = dTs[j][7:0];
+
+          // policz „goldena”, uruchom DUT i sprawdź (jak dotąd)
           compute_and_check_expected($sformatf("Grid rm=%0d T=%0d dT=%0d",
-                                  reg_mode, $signed(T_in), $signed(dT_in)));
+                              reg_mode, $signed(T_in), $signed(dT_in)));
+
+          // Ponieważ compute_and_check_expected liczy wszystko lokalnie,
+          // przeliczymy Q&D S_w, S_wg, Gexp jeszcze raz tu (tym samym torem),
+          // żeby mieć je pod ręką do CSV:
+
+          t_muTn = ref_mu(T_in, T_neg_a,  T_neg_b,  T_neg_c,  T_neg_d);
+          t_muTz = ref_mu(T_in, T_zero_a, T_zero_b, T_zero_c, T_zero_d);
+          t_muTp = ref_mu(T_in, T_pos_a,  T_pos_b,  T_pos_c,  T_pos_d);
+          t_muDn = ref_mu(dT_in, dT_neg_a,  dT_neg_b,  dT_neg_c,  dT_neg_d);
+          t_muDz = ref_mu(dT_in, dT_zero_a, dT_zero_b, dT_zero_c, dT_zero_d);
+          t_muDp = ref_mu(dT_in, dT_pos_a,  dT_pos_b,  dT_pos_c,  dT_pos_d);
+
+          t_w00 = q15_min(t_muTn, t_muDn);
+          t_w01 = q15_min(t_muTn, t_muDz);
+          t_w02 = q15_min(t_muTn, t_muDp);
+          t_w10 = q15_min(t_muTz, t_muDn);
+          t_w11 = q15_min(t_muTz, t_muDz);
+          t_w12 = q15_min(t_muTz, t_muDp);
+          t_w20 = q15_min(t_muTp, t_muDn);
+          t_w21 = q15_min(t_muTp, t_muDz);
+          t_w22 = q15_min(t_muTp, t_muDp);
+
+          t_sumw  = 20'd0;
+          t_sumwg = 20'd0;
+
+          t_sumw  += t_w00; t_sumwg += w_mul_g_q15(t_w00, G00);
+          t_sumw  += t_w02; t_sumwg += w_mul_g_q15(t_w02, G02);
+          t_sumw  += t_w20; t_sumwg += w_mul_g_q15(t_w20, G20);
+          t_sumw  += t_w22; t_sumwg += w_mul_g_q15(t_w22, G22);
+
+          if (reg_mode) begin
+            t_sumw  += t_w01; t_sumwg += w_mul_g_q15(t_w01, G01);
+            t_sumw  += t_w10; t_sumwg += w_mul_g_q15(t_w10, G10);
+            t_sumw  += t_w11; t_sumwg += w_mul_g_q15(t_w11, G11);
+            t_sumw  += t_w12; t_sumwg += w_mul_g_q15(t_w12, G12);
+            t_sumw  += t_w21; t_sumwg += w_mul_g_q15(t_w21, G21);
+          end
+
+          if (t_sumw  > 20'd32767) t_sumw  = 20'd32767;
+          if (t_sumwg > 20'd32767) t_sumwg = 20'd32767;
+
+          t_Gexp = ref_defuzz(t_sumw[15:0], t_sumwg[15:0]);
+
+          csv_emit_line($sformatf("Grid_T=%0d_dT=%0d", $signed(T_in), $signed(dT_in)),
+                        idx_grid++, t_sumw[15:0], t_sumwg[15:0], t_Gexp, G_out, valid);
         end
       end
     end
+
 
     // Sum_w approx zero edge: extremes (expect G=0)
     reg_mode = 1'b1;
@@ -564,6 +732,8 @@ module tb_top_coprocessor;
       check_valid_one_shot();
       @(posedge clk);
 
+      csv_emit_line("Random", idx_rand++, sumw[15:0], sumwg[15:0], Gexp, G_out, valid);
+
       diff     = (G_out > Gexp) ? (G_out - Gexp) : (Gexp - G_out);
       mae_acc  = mae_acc + diff;
     end
@@ -588,6 +758,8 @@ module tb_top_coprocessor;
     assert (lat1 <= 10) else $error("[REQ-230] latency after INIT=%0d", lat1);
     check_valid_one_shot();
     @(posedge clk);
+
+    csv_emit_line("EST_INIT", idx_est_init++, -1, -1, -1, G_out, valid);
 
     if (verbose) begin
       $display("INFO: [EST] after INIT | dt_mode=1 reg_mode=%0d T=%0d | lat=%0d | G=%0d (golden dT=0 -> %0d)",
@@ -616,6 +788,7 @@ module tb_top_coprocessor;
       assert (latU <= 10);
       check_valid_one_shot();
       @(posedge clk);
+      csv_emit_line("EST_RampUp", idx_est_up++, -1, -1, -1, G_out, valid);
       if (verbose) $display("INFO: [EST] ramp_up step=%0d T=%0d | lat=%0d | G=%0d", i, $signed(T_in), latU, G_out);
       assert (G_out <= 8'd100);
     end
@@ -628,6 +801,7 @@ module tb_top_coprocessor;
       assert (latD <= 10);
       check_valid_one_shot();
       @(posedge clk);
+      csv_emit_line("EST_RampDown", idx_est_down++, -1, -1, -1, G_out, valid);
       if (verbose) $display("INFO: [EST] ramp_down step=%0d T=%0d | lat=%0d | G=%0d", i, $signed(T_in), latD, G_out);
       assert (G_out <= 8'd100);
     end
@@ -635,7 +809,8 @@ module tb_top_coprocessor;
     // Random walk of T (length 100)
     T_in = 8'sd0;
     for (i = 0; i < 100; i = i + 1) begin
-      step = $urandom_range(-5, 5);
+      // Questa bywa kapryśna z ujemnym zakresem w $urandom_range
+      step = $urandom_range(10, 0) - 5; // daje [-5..+5]
       nxt  = $signed(T_in) + step;
       if (nxt > 127) nxt = 127;
       if (nxt < -128) nxt = -128;
@@ -646,11 +821,17 @@ module tb_top_coprocessor;
       assert (latRW <= 10);
       check_valid_one_shot();
       @(posedge clk);
-
+      csv_emit_line("EST_RandWalk", idx_est_rw++, -1, -1, -1, G_out, valid);
       if (verbose) $display("INFO: [EST] randwalk i=%0d step=%0d T=%0d | lat=%0d | G=%0d",
                             i, step, $signed(T_in), latRW, G_out);
       assert (G_out <= 8'd100);
     end
+
+    if (csv_fd != 0) begin
+      $fflush(csv_fd);
+      $fclose(csv_fd);
+    end
+
 
     $display("[REQ-010][REQ-020][REQ-030][REQ-040][REQ-050][REQ-060][REQ-061][REQ-062][REQ-210][REQ-230][REQ-320][REQ-310] system TB finished");
     $finish;
