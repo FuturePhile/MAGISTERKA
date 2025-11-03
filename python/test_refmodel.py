@@ -67,7 +67,7 @@ def _csv_header(fd):
         "S_w,S_wg,G_exp,G_impl,valid_impl," \
         "tool_ver,git_rev,seed"
     )
-    fd.write(hdr + "")
+    fd.write(hdr + "\n")
 
 
 def _csv_emit(fd, run_id, source, case_id, idx, reg_mode, dt_mode,
@@ -87,7 +87,7 @@ def _csv_emit(fd, run_id, source, case_id, idx, reg_mode, dt_mode,
         f"{Sw},{Swg},{Gexp},{Gimpl},{1 if valid_impl else 0},"
         f"{tool_ver},{git_rev},{seed_meta}"
     )
-    fd.write(line)
+    fd.write(line + "\n")
 
 
 # ================== Pomocnicze: bit-accurate ścieżka jak w TB ==================
