@@ -274,65 +274,94 @@ module tb_top_coprocessor;
     end
   endfunction
 
-  // ==== CSV: nagłówek (konkatenacja przez {...}) ====
+    // --- Region classifier for coverage (neg=0, zero=1, pos=2, none=3)
+  function automatic int max3_idx_or_none(
+    input logic [15:0] a, input logic [15:0] b, input logic [15:0] c
+  );
+    if ((a|b|c) == 16'd0) return 3; // none
+    if ((a >= b) && (a >= c)) return 0;
+    if ((b >= a) && (b >= c)) return 1;
+    return 2;
+  endfunction
+
+  // --- Coverage scratch sampled on VALID
+  int cov_T, cov_D;
+  bit cov_sw0, cov_sweps;
+
+  // --- Compute classification and Σw bins with current settings
+  task automatic update_cov_vars();
+    logic [15:0] muTn_c, muTz_c, muTp_c;
+    logic [15:0] muDn_c, muDz_c, muDp_c;
+    logic [15:0] w00_c, w01_c, w02_c, w10_c, w11_c, w12_c, w20_c, w21_c, w22_c;
+    logic [19:0] Sw_c;
+    logic signed [7:0] dT_cov;
+    begin
+      dT_cov  = (dt_mode == 1'b0) ? dT_in : 8'sd0; // for coverage, DT_MODE=1 classifies vs 0
+      muTn_c = ref_mu(T_in, T_neg_a,  T_neg_b,  T_neg_c,  T_neg_d);
+      muTz_c = ref_mu(T_in, T_zero_a, T_zero_b, T_zero_c, T_zero_d);
+      muTp_c = ref_mu(T_in, T_pos_a,  T_pos_b,  T_pos_c,  T_pos_d);
+      muDn_c = ref_mu(dT_cov, dT_neg_a,  dT_neg_b,  dT_neg_c,  dT_neg_d);
+      muDz_c = ref_mu(dT_cov, dT_zero_a, dT_zero_b, dT_zero_c, dT_zero_d);
+      muDp_c = ref_mu(dT_cov, dT_pos_a,  dT_pos_b,  dT_pos_c,  dT_pos_d);
+
+      w00_c = q15_min(muTn_c, muDn_c);
+      w01_c = q15_min(muTn_c, muDz_c);
+      w02_c = q15_min(muTn_c, muDp_c);
+      w10_c = q15_min(muTz_c, muDn_c);
+      w11_c = q15_min(muTz_c, muDz_c);
+      w12_c = q15_min(muTz_c, muDp_c);
+      w20_c = q15_min(muTp_c, muDn_c);
+      w21_c = q15_min(muTp_c, muDz_c);
+      w22_c = q15_min(muTp_c, muDp_c);
+
+      Sw_c  = 20'd0;
+      Sw_c  += w00_c + w02_c + w20_c + w22_c;
+      if (reg_mode) Sw_c += w01_c + w10_c + w11_c + w12_c + w21_c;
+      if (Sw_c > 20'd32767) Sw_c = 20'd32767;
+
+      cov_T     = max3_idx_or_none(muTn_c, muTz_c, muTp_c);
+      cov_D     = max3_idx_or_none(muDn_c, muDz_c, muDp_c);
+      cov_sw0   = (Sw_c[15:0] == 16'd0);
+      cov_sweps = (Sw_c[15:0] >= 16'd1) && (Sw_c[15:0] <= 16'd4); // "near EPS"
+    end
+  endtask
+
+  // --- Covergroup: regions × modes × Σw bins  (REQ-320)
+  covergroup cg_req320 @(posedge valid);
+    cp_reg : coverpoint reg_mode { bins reg4={0}; bins reg9={1}; }
+    cp_dt  : coverpoint dt_mode  { bins ext={0};  bins est={1}; }
+    cp_T   : coverpoint cov_T    { bins neg={0};  bins zero={1}; bins pos={2}; bins none={3}; }
+    cp_D   : coverpoint cov_D    { bins neg={0};  bins zero={1}; bins pos={2}; bins none={3}; }
+    x_all  : cross cp_T, cp_D, cp_reg, cp_dt;
+    cp_sw0 : coverpoint cov_sw0   { bins yes={1}; bins no={0}; }
+    cp_sweps: coverpoint cov_sweps{ bins near={1}; bins notnear={0}; }
+  endgroup
+  cg_req320 cov_inst = new();
+
+
+  // ==== CSV: tiny header, easy to read ====
   task automatic csv_write_header();
     if (csv_fd != 0) begin
-      string hdr;
-      hdr = {
-        "run_id,source,case_id,idx,reg_mode,dt_mode,",
-        "T_in,dT_in,alpha,k_dt,",
-        "Tneg_a,Tneg_b,Tneg_c,Tneg_d,",
-        "Tzero_a,Tzero_b,Tzero_c,Tzero_d,",
-        "Tpos_a,Tpos_b,Tpos_c,Tpos_d,",
-        "dTneg_a,dTneg_b,dTneg_c,dTneg_d,",
-        "dTzero_a,dTzero_b,dTzero_c,dTzero_d,",
-        "dTpos_a,dTpos_b,dTpos_c,dTpos_d,",
-        "S_w,S_wg,G_exp,G_impl,valid_impl,",
-        "tool_ver,git_rev,seed"
-      };
-      $fdisplay(csv_fd, "%s", hdr);
+      // Minimal, human-friendly:
+      // run_id,case,idx,rm,dt,T,dT,Gexp,Gimpl
+      $fdisplay(csv_fd, "run_id,case,idx,rm,dt,T,dT,Gexp,Gimpl");
     end
   endtask
 
-
-
-
-  // ==== CSV: wiersz (format składany przez {...}) ====
+  // ==== CSV: tiny row (ignore Sw/Swg/valid in args to keep call-sites unchanged) ====
   task automatic csv_emit_line(
     input string case_id, input int idx,
-    input int Sw, input int Swg, input int Gexp, input int Gimpl, input bit valid_bit
+    input int Sw /*unused*/, input int Swg /*unused*/,
+    input int Gexp, input int Gimpl, input bit valid_bit /*unused*/
   );
     if (csv_fd != 0) begin
-      string fmt;
-      string line;
-      fmt = {
-        "%s,%s,%s,%0d,%0d,%0d,",
-        "%0d,%0d,%0d,%0d,",
-        "%0d,%0d,%0d,%0d,",
-        "%0d,%0d,%0d,%0d,",
-        "%0d,%0d,%0d,%0d,",
-        "%0d,%0d,%0d,%0d,",
-        "%0d,%0d,%0d,%0d,",
-        "%0d,%0d,%0d,%0d,",
-        "%0d,%0d,%0d,%0d,%0d,",
-        "%s,%s,%0d"
-      };
-      line = $sformatf(
-        fmt,
-        run_id, source_id, case_id, idx, reg_mode, dt_mode,
-        $signed(T_in), $signed(dT_in), ALPHA_CONST, KDT_CONST,
-        $signed(T_neg_a),  $signed(T_neg_b),  $signed(T_neg_c),  $signed(T_neg_d),
-        $signed(T_zero_a), $signed(T_zero_b), $signed(T_zero_c), $signed(T_zero_d),
-        $signed(T_pos_a),  $signed(T_pos_b),  $signed(T_pos_c),  $signed(T_pos_d),
-        $signed(dT_neg_a),  $signed(dT_neg_b),  $signed(dT_neg_c),  $signed(dT_neg_d),
-        $signed(dT_zero_a), $signed(dT_zero_b), $signed(dT_zero_c), $signed(dT_zero_d),
-        $signed(dT_pos_a),  $signed(dT_pos_b),  $signed(dT_pos_c),  $signed(dT_pos_d),
-        Sw, Swg, Gexp, Gimpl, valid_bit,
-        tool_ver, git_rev, seed_meta
-      );
-      $fdisplay(csv_fd, "%s", line);
+      // Only the essentials, same order as header:
+      $fdisplay(csv_fd, "%s,%s,%0d,%0d,%0d,%0d,%0d,%0d,%0d",
+                run_id, case_id, idx, reg_mode, dt_mode,
+                $signed(T_in), $signed(dT_in), Gexp, Gimpl);
     end
   endtask
+
 
 
 
@@ -488,6 +517,7 @@ module tb_top_coprocessor;
       Gexp_l = ref_defuzz(sumw_l[15:0], sumwg_l[15:0]);
 
       // Drive and check
+      update_cov_vars();
       pulse_start();
       wait_valid_count_cycles(lat);
       assert (lat <= 10) else $error("[REQ-230] %s latency=%0d > 10", tag, lat);
@@ -680,6 +710,48 @@ module tb_top_coprocessor;
     dT_in    = 127;
     compute_and_check_expected("Edge sum_w approx 0");
 
+    // Near-EPS case: hunt a vector with 1..4 LSB of Σw, ensure safe defuzz (no blowup)
+    bit found_eps = 0;
+    logic signed [7:0] eps_T, eps_dT;
+
+    for (int ii = 0; ii < 10 && !found_eps; ii++) begin
+      for (int jj = 0; jj < 7 && !found_eps; jj++) begin
+        logic [15:0] muTn_e = ref_mu(Ts[ii], T_neg_a, T_neg_b, T_neg_c, T_neg_d);
+        logic [15:0] muTz_e = ref_mu(Ts[ii], T_zero_a, T_zero_b, T_zero_c, T_zero_d);
+        logic [15:0] muTp_e = ref_mu(Ts[ii], T_pos_a,  T_pos_b,  T_pos_c,  T_pos_d);
+        logic [15:0] muDn_e = ref_mu(dTs[jj], dT_neg_a, dT_neg_b, dT_neg_c, dT_neg_d);
+        logic [15:0] muDz_e = ref_mu(dTs[jj], dT_zero_a,dT_zero_b,dT_zero_c,dT_zero_d);
+        logic [15:0] muDp_e = ref_mu(dTs[jj], dT_pos_a, dT_pos_b, dT_pos_c, dT_pos_d);
+        logic [19:0] Sw_e = 20'd0;
+        Sw_e += q15_min(muTn_e, muDn_e);
+        Sw_e += q15_min(muTn_e, muDp_e);
+        Sw_e += q15_min(muTp_e, muDn_e);
+        Sw_e += q15_min(muTp_e, muDp_e);
+        if (reg_mode) Sw_e += q15_min(muTn_e, muDz_e)
+                          +  q15_min(muTz_e, muDn_e)
+                          +  q15_min(muTz_e, muDz_e)
+                          +  q15_min(muTz_e, muDp_e)
+                          +  q15_min(muTp_e, muDz_e);
+
+        if (Sw_e[15:0] >= 16'd1 && Sw_e[15:0] <= 16'd4) begin
+          eps_T  = Ts[ii];
+          eps_dT = dTs[jj];
+          found_eps = 1;
+        end
+      end
+    end
+
+    if (found_eps) begin
+      T_in  = eps_T;
+      dT_in = eps_dT;
+      update_cov_vars();
+      compute_and_check_expected($sformatf("NearEPS T=%0d dT=%0d", $signed(T_in), $signed(dT_in)));
+      csv_emit_line("NearEPS", 0, -1, -1, -1, G_out, 1'b0);
+    end else begin
+      $display("WARN: could not find NearEPS case in coarse grid; skip.");
+    end
+
+
     // Block 2: DT_MODE=0, random MAE over >=1000 samples (REQ-310 <=1%)
     N       = 1000;
     mae_acc = 0;
@@ -727,6 +799,7 @@ module tb_top_coprocessor;
 
       Gexp = ref_defuzz(sumw[15:0], sumwg[15:0]);
 
+      update_cov_vars();
       pulse_start();
       wait_valid_count_cycles(latR);
       check_valid_one_shot();
@@ -742,6 +815,44 @@ module tb_top_coprocessor;
     if (verbose) $display("INFO: [REQ-310] MAE over %0d samples = %0d (percent points)", N, mae);
     assert (mae <= 1) else $error("[REQ-310] MAE=%0d%% > 1%%", mae);
 
+    // A/B stability on same inputs (no glitches across mode flips)
+    logic [7:0] G_rm0, G_rm1;
+    T_in  = 8'sd32;
+    dT_in = -8'sd10;
+
+    // REG_MODE=0
+    reg_mode = 1'b0;
+    update_cov_vars();
+    pulse_start();
+    wait_valid_count_cycles(lat);
+    check_valid_one_shot();
+    @(posedge clk);
+    G_rm0 = G_out;
+    csv_emit_line("AB_Toggle_reg0", 0, -1, -1, -1, G_out, 1'b0);
+
+    // REG_MODE=1
+    reg_mode = 1'b1;
+    update_cov_vars();
+    pulse_start();
+    wait_valid_count_cycles(lat);
+    check_valid_one_shot();
+    @(posedge clk);
+    G_rm1 = G_out;
+    csv_emit_line("AB_Toggle_reg1", 0, -1, -1, -1, G_out, 1'b0);
+
+    // Flip back to 0 (no lingering state)
+    reg_mode = 1'b0;
+    update_cov_vars();
+    pulse_start();
+    wait_valid_count_cycles(lat);
+    check_valid_one_shot();
+    @(posedge clk);
+
+    // Sanity
+    assert (G_rm0 <= 8'd100 && G_rm1 <= 8'd100)
+      else $error("[REQ-030] AB toggle produced invalid G");
+
+
     // Block 3: DT_MODE=1, estimator scenarios (REQ-060/061/062 + 230)
     dt_mode  = 1'b1;
     reg_mode = 1'b1;
@@ -753,6 +864,7 @@ module tb_top_coprocessor;
 
     // INIT -> dT=0; first start should match golden for (T, dT=0)
     pulse_init();
+    update_cov_vars();
     pulse_start();
     wait_valid_count_cycles(lat1);
     assert (lat1 <= 10) else $error("[REQ-230] latency after INIT=%0d", lat1);
@@ -771,6 +883,7 @@ module tb_top_coprocessor;
 
     // Steady at T=0 (two runs)
     repeat (2) begin
+      update_cov_vars();
       pulse_start();
       wait_valid_count_cycles(latS);
       assert (latS <= 10);
@@ -783,6 +896,7 @@ module tb_top_coprocessor;
     // Ramp up: T 0->+40 step 2
     for (i = 0; i < 20; i = i + 1) begin
       T_in = i * 2;
+      update_cov_vars();
       pulse_start();
       wait_valid_count_cycles(latU);
       assert (latU <= 10);
@@ -796,6 +910,7 @@ module tb_top_coprocessor;
     // Ramp down: +40->0
     for (i = 20; i >= 0; i = i - 1) begin
       T_in = i * 2;
+      update_cov_vars();
       pulse_start();
       wait_valid_count_cycles(latD);
       assert (latD <= 10);
@@ -815,7 +930,7 @@ module tb_top_coprocessor;
       if (nxt > 127) nxt = 127;
       if (nxt < -128) nxt = -128;
       T_in = nxt[7:0];
-
+      update_cov_vars();
       pulse_start();
       wait_valid_count_cycles(latRW);
       assert (latRW <= 10);
