@@ -37,7 +37,7 @@ REG_G_OUT  = 0x04  # wynik G (0..255)
 
 # ======= Prymitywy =======
 def set_addr(a: int):
-    a &= (1<<ADDR_BITS)-1
+    a &= (1 << ADDR_BITS) - 1
     for i in range(ADDR_BITS):
         A[i].value((a >> i) & 1)
 
@@ -124,33 +124,9 @@ def run_once_ext(T_val: int, dT_val: int) -> int:
         raise RuntimeError("VALID timeout")
     return read_reg(REG_G_OUT)
 
-def cmd_status():
-    s = read_reg(REG_STATUS)
-    print("STATUS=0x%02X valid=%d" % (s, s & 1))
-
-
-# ======= Auto-demo po starcie =======
-def demo_once():
-    print("BOOT OK")
-    print("ADDR_BASE=%d  RDATA_BASE=%d  WDATA_BASE=%d  CS/WR/RD/RDY=%d/%d/%d/%d" %
-          (ADDR_BASE_GP, RDATA_BASE_GP, WDATA_BASE_GP, CS_GP, WR_GP, RD_GP, RDY_GP))
-    try:
-        # przykład: T=+20, dT=+5
-        set_modes_9rules_dt_external()
-        cmd_status()
-        G = run_once_ext(20, 5)
-        print("G =", G)
-    except Exception as e:
-        print("ERROR:", e)
-    print("READY. Type: repl()")
-
-if __name__ == "__main__":
-    demo_once()
-    # wpisz w REPL: repl()
-
 # ========= VIS CSV helpers (match TB) =========
 def _open_csv_on_pico(filename: str):
-    # zapis z LF; nagłówek jak w TB (Gexp = -1 na sprzęcie)
+    # Zapis z LF; nagłówek jak w TB (Gexp = -1 na sprzęcie)
     f = open(filename, "w")
     f.write("T,dT,Gimpl,Gexp\n")
     return f
@@ -162,7 +138,8 @@ def vis_T_at_dt0_csv(path="vis_T_at_dt0.csv"):
     dT = 0
     for T in range(-128, 128, 2):
         G = run_once_ext(T, dT)
-        f.write("%d,%d,%d,%d\n" % (T & 0xFF if T < 0 else T, dT & 0xFF if dT < 0 else dT, G, -1))
+        # Zapisujemy T,dT jako wartości ze znakiem (parytet z TB VIS)
+        f.write("{},{},{},{}\n".format(T, dT, G, -1))
     f.flush(); f.close()
     print("INFO: VIS_T_at_dt0 ->", path)
 
@@ -173,7 +150,7 @@ def vis_dT_lines_csv(path="vis_dT_lines.csv"):
     for T in (-32, 0, 32):
         for dT in range(-60, 61, 4):
             G = run_once_ext(T, dT)
-            f.write("%d,%d,%d,%d\n" % (T & 0xFF if T < 0 else T, dT & 0xFF if dT < 0 else dT, G, -1))
+            f.write("{},{},{},{}\n".format(T, dT, G, -1))
     f.flush(); f.close()
     print("INFO: VIS_dT_lines ->", path)
 
@@ -184,11 +161,11 @@ def vis_heatmap_csv(path="vis_heatmap.csv"):
     for T in range(-64, 65, 8):
         for dT in range(-60, 61, 5):
             G = run_once_ext(T, dT)
-            f.write("%d,%d,%d,%d\n" % (T & 0xFF if T < 0 else T, dT & 0xFF if dT < 0 else dT, G, -1))
+            f.write("{},{},{},{}\n".format(T, dT, G, -1))
     f.flush(); f.close()
     print("INFO: VIS_heatmap ->", path)
 
-# (opcjonalnie) prosty grid 10x7 jak w TB Block 1, jedna warstwa CSV z minimalnym meta
+# (opcjonalnie) prosty grid 10x7 jak w TB Block 1
 def grid_10x7_csv(path="grid_10x7.csv"):
     """DT_MODE=0, REG_MODE=1, GRID T(10)×dT(7) — tożsame punkty jak TB GRID."""
     Ts  = [-128, -64, -32, -16, 0, 16, 32, 64, 96, 127]
@@ -198,11 +175,11 @@ def grid_10x7_csv(path="grid_10x7.csv"):
     for T in Ts:
         for dT in dTs:
             G = run_once_ext(T, dT)
-            f.write("%d,%d,%d,%d\n" % (T & 0xFF if T < 0 else T, dT & 0xFF if dT < 0 else dT, G, -1))
+            f.write("{},{},{},{}\n".format(T, dT, G, -1))
     f.flush(); f.close()
     print("INFO: GRID_10x7 ->", path)
 
-# ========= REPL commands for convenience =========
+# ========= REPL (rozszerzony o VIS) =========
 def repl_help():
     print("cmds:")
     print("  wr a v        -> write reg (np. wr 0x02 20)")
@@ -212,13 +189,17 @@ def repl_help():
     print("  init          -> pulse INIT")
     print("  start         -> pulse START")
     print("  status        -> print STATUS + valid bit")
-    print("  goext T dT    -> run once (ext dT)")
+    print("  goext T dT    -> cały cykl: T,dT,INIT,START,wait,read G")
     print("  vis_t0        -> make vis_T_at_dt0.csv")
     print("  vis_lines     -> make vis_dT_lines.csv")
     print("  vis_heatmap   -> make vis_heatmap.csv")
     print("  grid          -> make grid_10x7.csv")
     print("  dump <file>   -> print file to console")
     print("  help")
+
+def cmd_status():
+    s = read_reg(REG_STATUS)
+    print("STATUS=0x%02X valid=%d" % (s, s & 1))
 
 def _dump_file(p):
     try:
@@ -245,7 +226,8 @@ def repl():
                 a = int(parts[1], 0); v = int(parts[2], 0)
                 write_reg(a, v); print("ok")
             elif cmd == "rd" and len(parts) == 2:
-                a = int(parts[1], 0); print("0x%02X" % read_reg(a))
+                a = int(parts[1], 0)
+                print("0x%02X" % read_reg(a))
             elif cmd == "modes_ext":
                 set_modes_9rules_dt_external(); print("ok")
             elif cmd == "modes_int":
@@ -257,8 +239,10 @@ def repl():
             elif cmd == "status":
                 cmd_status()
             elif cmd == "goext" and len(parts) == 3:
-                T = int(parts[1], 0); dT = int(parts[2], 0)
-                G = run_once_ext(T, dT); print("G =", G)
+                T  = int(parts[1], 0)
+                dT = int(parts[2], 0)
+                G = run_once_ext(T, dT)
+                print("G =", G)
             elif cmd == "vis_t0":
                 vis_T_at_dt0_csv(); print("done")
             elif cmd == "vis_lines":
@@ -275,3 +259,22 @@ def repl():
                 print("??? (help)")
         except Exception as e:
             print("ERR:", e)
+
+# ======= Auto-demo po starcie =======
+def demo_once():
+    print("BOOT OK")
+    print("ADDR_BASE=%d  RDATA_BASE=%d  WDATA_BASE=%d  CS/WR/RD/RDY=%d/%d/%d/%d" %
+          (ADDR_BASE_GP, RDATA_BASE_GP, WDATA_BASE_GP, CS_GP, WR_GP, RD_GP, RDY_GP))
+    try:
+        # przykład: T=+20, dT=+5
+        set_modes_9rules_dt_external()
+        cmd_status()
+        G = run_once_ext(20, 5)
+        print("G =", G)
+    except Exception as e:
+        print("ERROR:", e)
+    print("READY. Type: repl()")
+
+if __name__ == "__main__":
+    demo_once()
+    # wpisz w REPL: repl()
