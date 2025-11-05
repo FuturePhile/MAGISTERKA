@@ -124,62 +124,10 @@ def run_once_ext(T_val: int, dT_val: int) -> int:
         raise RuntimeError("VALID timeout")
     return read_reg(REG_G_OUT)
 
-# ======= Prosty REPL =======
-def repl_help():
-    print("cmds:")
-    print("  wr a v        -> write reg (np. wr 0x02 20)")
-    print("  rd a          -> read reg  (np. rd 0x04)")
-    print("  modes_ext     -> 9 rules + dT external")
-    print("  modes_int     -> 9 rules + dT internal")
-    print("  init          -> pulse INIT")
-    print("  start         -> pulse START")
-    print("  status        -> print STATUS + valid bit")
-    print("  goext T dT    -> cały cykl: T,dT,INIT,START,wait,read G")
-    print("  help")
-
 def cmd_status():
     s = read_reg(REG_STATUS)
     print("STATUS=0x%02X valid=%d" % (s, s & 1))
 
-def repl():
-    repl_help()
-    while True:
-        try:
-            line = input(">> ").strip()
-        except EOFError:
-            break
-        if not line:
-            continue
-        parts = line.split()
-        cmd = parts[0].lower()
-        try:
-            if cmd == "wr" and len(parts) == 3:
-                a = int(parts[1], 0); v = int(parts[2], 0)
-                write_reg(a, v); print("ok")
-            elif cmd == "rd" and len(parts) == 2:
-                a = int(parts[1], 0)
-                print("0x%02X" % read_reg(a))
-            elif cmd == "modes_ext":
-                set_modes_9rules_dt_external(); print("ok")
-            elif cmd == "modes_int":
-                set_modes_9rules_dt_internal(); print("ok")
-            elif cmd == "init":
-                pulse_init(); print("ok")
-            elif cmd == "start":
-                pulse_start(); print("ok")
-            elif cmd == "status":
-                cmd_status()
-            elif cmd == "goext" and len(parts) == 3:
-                T  = int(parts[1], 0)
-                dT = int(parts[2], 0)
-                G = run_once_ext(T, dT)
-                print("G =", G)
-            elif cmd == "help":
-                repl_help()
-            else:
-                print("??? (help)")
-        except Exception as e:
-            print("ERR:", e)
 
 # ======= Auto-demo po starcie =======
 def demo_once():
