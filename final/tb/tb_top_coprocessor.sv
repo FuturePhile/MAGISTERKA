@@ -428,22 +428,13 @@ module tb_top_coprocessor;
   endtask
 
   task automatic check_valid_one_shot();
-    int w = 0;
-    // We call this right after wait_valid_count_cycles(), so VALID is high now.
-    do begin
-      w++;
-      @(posedge clk);
-    end while (valid);
-
-    assert (w == 1)
-      else $error("[REQ-230] VALID width=%0d cycles (expected 1)  T=%0d dT=%0d rm=%0d dt=%0d",
-                  w, $signed(T_in), $signed(dT_in), reg_mode, dt_mode);
+    if (!valid) @(posedge clk);
+    assert (valid) else $error("[REQ-230] valid not high when expected");
+    @(posedge clk);
+    assert (!valid) else $error("[REQ-230] valid must be a 1-cycle pulse");
   endtask
 
-
-  task automatic compute_and_check_expected(
-    input string tag
-  );
+  task automatic compute_and_check_expected(input string tag);
     logic [15:0] muTn_l;
     logic [15:0] muTz_l;
     logic [15:0] muTp_l;
