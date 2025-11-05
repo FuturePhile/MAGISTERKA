@@ -199,3 +199,131 @@ def demo_once():
 if __name__ == "__main__":
     demo_once()
     # wpisz w REPL: repl()
+
+# ========= VIS CSV helpers (match TB) =========
+def _open_csv_on_pico(filename: str):
+    # zapis z LF; nagłówek jak w TB (Gexp = -1 na sprzęcie)
+    f = open(filename, "w")
+    f.write("T,dT,Gimpl,Gexp\n")
+    return f
+
+def vis_T_at_dt0_csv(path="vis_T_at_dt0.csv"):
+    """DT_MODE=0, REG_MODE=1, dT=0, T=-128..127 step 2 (jak TB)."""
+    set_modes_9rules_dt_external()
+    f = _open_csv_on_pico(path)
+    dT = 0
+    for T in range(-128, 128, 2):
+        G = run_once_ext(T, dT)
+        f.write("%d,%d,%d,%d\n" % (T & 0xFF if T < 0 else T, dT & 0xFF if dT < 0 else dT, G, -1))
+    f.flush(); f.close()
+    print("INFO: VIS_T_at_dt0 ->", path)
+
+def vis_dT_lines_csv(path="vis_dT_lines.csv"):
+    """DT_MODE=0, REG_MODE=1, T in {-32,0,32}, dT=-60..60 step 4 (jak TB)."""
+    set_modes_9rules_dt_external()
+    f = _open_csv_on_pico(path)
+    for T in (-32, 0, 32):
+        for dT in range(-60, 61, 4):
+            G = run_once_ext(T, dT)
+            f.write("%d,%d,%d,%d\n" % (T & 0xFF if T < 0 else T, dT & 0xFF if dT < 0 else dT, G, -1))
+    f.flush(); f.close()
+    print("INFO: VIS_dT_lines ->", path)
+
+def vis_heatmap_csv(path="vis_heatmap.csv"):
+    """DT_MODE=0, REG_MODE=1, T=-64..64 step 8, dT=-60..60 step 5 (jak TB)."""
+    set_modes_9rules_dt_external()
+    f = _open_csv_on_pico(path)
+    for T in range(-64, 65, 8):
+        for dT in range(-60, 61, 5):
+            G = run_once_ext(T, dT)
+            f.write("%d,%d,%d,%d\n" % (T & 0xFF if T < 0 else T, dT & 0xFF if dT < 0 else dT, G, -1))
+    f.flush(); f.close()
+    print("INFO: VIS_heatmap ->", path)
+
+# (opcjonalnie) prosty grid 10x7 jak w TB Block 1, jedna warstwa CSV z minimalnym meta
+def grid_10x7_csv(path="grid_10x7.csv"):
+    """DT_MODE=0, REG_MODE=1, GRID T(10)×dT(7) — tożsame punkty jak TB GRID."""
+    Ts  = [-128, -64, -32, -16, 0, 16, 32, 64, 96, 127]
+    dTs = [-60, -30, -10, 0, 10, 30, 60]
+    set_modes_9rules_dt_external()
+    f = _open_csv_on_pico(path)
+    for T in Ts:
+        for dT in dTs:
+            G = run_once_ext(T, dT)
+            f.write("%d,%d,%d,%d\n" % (T & 0xFF if T < 0 else T, dT & 0xFF if dT < 0 else dT, G, -1))
+    f.flush(); f.close()
+    print("INFO: GRID_10x7 ->", path)
+
+# ========= REPL commands for convenience =========
+def repl_help():
+    print("cmds:")
+    print("  wr a v        -> write reg (np. wr 0x02 20)")
+    print("  rd a          -> read reg  (np. rd 0x04)")
+    print("  modes_ext     -> 9 rules + dT external")
+    print("  modes_int     -> 9 rules + dT internal")
+    print("  init          -> pulse INIT")
+    print("  start         -> pulse START")
+    print("  status        -> print STATUS + valid bit")
+    print("  goext T dT    -> run once (ext dT)")
+    print("  vis_t0        -> make vis_T_at_dt0.csv")
+    print("  vis_lines     -> make vis_dT_lines.csv")
+    print("  vis_heatmap   -> make vis_heatmap.csv")
+    print("  grid          -> make grid_10x7.csv")
+    print("  dump <file>   -> print file to console")
+    print("  help")
+
+def _dump_file(p):
+    try:
+        with open(p, "r") as f:
+            for line in f:
+                # bez CRLF, czyste LF
+                print(line.rstrip("\n"))
+    except Exception as e:
+        print("ERR:", e)
+
+def repl():
+    repl_help()
+    while True:
+        try:
+            line = input(">> ").strip()
+        except EOFError:
+            break
+        if not line:
+            continue
+        parts = line.split()
+        cmd = parts[0].lower()
+        try:
+            if cmd == "wr" and len(parts) == 3:
+                a = int(parts[1], 0); v = int(parts[2], 0)
+                write_reg(a, v); print("ok")
+            elif cmd == "rd" and len(parts) == 2:
+                a = int(parts[1], 0); print("0x%02X" % read_reg(a))
+            elif cmd == "modes_ext":
+                set_modes_9rules_dt_external(); print("ok")
+            elif cmd == "modes_int":
+                set_modes_9rules_dt_internal(); print("ok")
+            elif cmd == "init":
+                pulse_init(); print("ok")
+            elif cmd == "start":
+                pulse_start(); print("ok")
+            elif cmd == "status":
+                cmd_status()
+            elif cmd == "goext" and len(parts) == 3:
+                T = int(parts[1], 0); dT = int(parts[2], 0)
+                G = run_once_ext(T, dT); print("G =", G)
+            elif cmd == "vis_t0":
+                vis_T_at_dt0_csv(); print("done")
+            elif cmd == "vis_lines":
+                vis_dT_lines_csv(); print("done")
+            elif cmd == "vis_heatmap":
+                vis_heatmap_csv(); print("done")
+            elif cmd == "grid":
+                grid_10x7_csv(); print("done")
+            elif cmd == "dump" and len(parts) == 2:
+                _dump_file(parts[1])
+            elif cmd == "help":
+                repl_help()
+            else:
+                print("??? (help)")
+        except Exception as e:
+            print("ERR:", e)
