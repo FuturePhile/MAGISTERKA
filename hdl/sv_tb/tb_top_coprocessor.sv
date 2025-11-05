@@ -144,7 +144,8 @@ module tb_top_coprocessor;
   logic [19:0] t_sumw, t_sumwg;
   logic  [7:0] t_Gexp;
 
-
+  // For A/B toggle stability block
+  logic [7:0] G_rm0, G_rm1;
 
   // Instantiate DUT
   top_coprocessor dut (
@@ -274,7 +275,7 @@ module tb_top_coprocessor;
     end
   endfunction
 
-    // --- Region classifier for coverage (neg=0, zero=1, pos=2, none=3)
+  // --- Region classifier for coverage (neg=0, zero=1, pos=2, none=3)
   function automatic int max3_idx_or_none(
     input logic [15:0] a, input logic [15:0] b, input logic [15:0] c
   );
@@ -326,18 +327,35 @@ module tb_top_coprocessor;
     end
   endtask
 
-  // --- Covergroup: regions × modes × Σw bins  (REQ-320)
-  covergroup cg_req320 @(posedge valid);
-    cp_reg : coverpoint reg_mode { bins reg4={0}; bins reg9={1}; }
-    cp_dt  : coverpoint dt_mode  { bins ext={0};  bins est={1}; }
-    cp_T   : coverpoint cov_T    { bins neg={0};  bins zero={1}; bins pos={2}; bins none={3}; }
-    cp_D   : coverpoint cov_D    { bins neg={0};  bins zero={1}; bins pos={2}; bins none={3}; }
-    x_all  : cross cp_T, cp_D, cp_reg, cp_dt;
-    cp_sw0 : coverpoint cov_sw0   { bins yes={1}; bins no={0}; }
-    cp_sweps: coverpoint cov_sweps{ bins near={1}; bins notnear={0}; }
-  endgroup
-  cg_req320 cov_inst = new();
+  // ===== Manual coverage (license-free) for REQ-320 =====
+  int cov_counts [0:3][0:3][0:1][0:1]; // [Tbin][Dbin][reg_mode][dt_mode]
+  int cov_sw0_yes, cov_sw0_no;
+  int cov_sweps_yes, cov_sweps_no;
 
+  task automatic cov_touch();
+    if (cov_T >= 0 && cov_T <= 3 && cov_D >= 0 && cov_D <= 3)
+      cov_counts[cov_T][cov_D][reg_mode][dt_mode]++;
+    if (cov_sw0)   cov_sw0_yes++;   else cov_sw0_no++;
+    if (cov_sweps) cov_sweps_yes++; else cov_sweps_no++;
+  endtask
+
+  task automatic cov_dump_summary();
+    integer t,d,r,dm;
+    string row;
+    $display("=== REQ-320 coverage summary (manual) ===");
+    for (r = 0; r < 2; r++) begin
+      for (dm = 0; dm < 2; dm++) begin
+        for (t = 0; t < 4; t++) begin
+          row = "";
+          for (d = 0; d < 4; d++) row = {row, $sformatf("%0d ", cov_counts[t][d][r][dm])};
+          $display("rm=%0d dt=%0d | Tbin=%0d | Dbins=%s", r, dm, t, row);
+        end
+      end
+    end
+    $display("Σw==0 hits: %0d, Σw>0 hits: %0d", cov_sw0_yes, cov_sw0_no);
+    $display("Σw≈EPS hits: %0d, others: %0d", cov_sweps_yes, cov_sweps_no);
+  endtask
+  // =====================================================
 
   // ==== CSV: tiny header, easy to read ====
   task automatic csv_write_header();
@@ -361,11 +379,6 @@ module tb_top_coprocessor;
                 $signed(T_in), $signed(dT_in), Gexp, Gimpl);
     end
   endtask
-
-
-
-
-
 
   // Singletons (copy of DUT locals)
   localparam logic [7:0] G00 = 8'd100;
@@ -522,6 +535,7 @@ module tb_top_coprocessor;
       wait_valid_count_cycles(lat);
       assert (lat <= 10) else $error("[REQ-230] %s latency=%0d > 10", tag, lat);
       check_valid_one_shot();
+      cov_touch(); // <--- manual coverage sample
       @(posedge clk);
 
       if (G_out !== Gexp_l) begin
@@ -595,11 +609,9 @@ module tb_top_coprocessor;
     void'($value$plusargs("git_rev=%s", git_rev));
     void'($value$plusargs("tool_ver=%s", tool_ver));
     void'($value$plusargs("seed=%d", seed_meta));
-    if (csv_path.len() == 0) csv_path = "results_tb.csv";
+    if (csv_path.len() == 0) csv_path = "out/results_tb.csv";
     // --- ensure output dir exists (Windows + Linux) ---
-    // Windows (cmd): utwórz katalog jeśli nie istnieje
     void'($system("cmd /c if not exist out mkdir out"));
-    // Linux/macOS (sh): mkdir -p (ignoruje, jeśli jest)
     void'($system("mkdir -p out >/dev/null 2>&1"));
 
     csv_fd = $fopen(csv_path, "w");
@@ -608,7 +620,6 @@ module tb_top_coprocessor;
       $display("INFO: CSV -> %s", csv_path);
       csv_write_header();
     end
-
 
     verbose  = $test$plusargs("verbose");
 
@@ -633,7 +644,6 @@ module tb_top_coprocessor;
     idx_est_down = 0;
     idx_est_rw = 0;
 
-
     // Block 1: DT_MODE=0, dense grid + A/B same vectors (REQ-010/020/030/040/050/210)
     dt_mode = 1'b0;
     Ts[0] = -128; Ts[1] = -64; Ts[2] = -32; Ts[3] = -16; Ts[4] = 0;
@@ -655,10 +665,7 @@ module tb_top_coprocessor;
           compute_and_check_expected($sformatf("Grid rm=%0d T=%0d dT=%0d",
                               reg_mode, $signed(T_in), $signed(dT_in)));
 
-          // Ponieważ compute_and_check_expected liczy wszystko lokalnie,
-          // przeliczymy Q&D S_w, S_wg, Gexp jeszcze raz tu (tym samym torem),
-          // żeby mieć je pod ręką do CSV:
-
+          // Q&D recompute for CSV
           t_muTn = ref_mu(T_in, T_neg_a,  T_neg_b,  T_neg_c,  T_neg_d);
           t_muTz = ref_mu(T_in, T_zero_a, T_zero_b, T_zero_c, T_zero_d);
           t_muTp = ref_mu(T_in, T_pos_a,  T_pos_b,  T_pos_c,  T_pos_d);
@@ -703,7 +710,6 @@ module tb_top_coprocessor;
       end
     end
 
-
     // Sum_w approx zero edge: extremes (expect G=0)
     reg_mode = 1'b1;
     T_in     = -128;
@@ -711,46 +717,53 @@ module tb_top_coprocessor;
     compute_and_check_expected("Edge sum_w approx 0");
 
     // Near-EPS case: hunt a vector with 1..4 LSB of Σw, ensure safe defuzz (no blowup)
-    bit found_eps = 0;
-    logic signed [7:0] eps_T, eps_dT;
+    begin : NEAR_EPS
+      bit found_eps;
+      logic signed [7:0] eps_T, eps_dT;
+      int ii, jj;
+      logic [15:0] muTn_e, muTz_e, muTp_e, muDn_e, muDz_e, muDp_e;
+      logic [19:0] Sw_e;
 
-    for (int ii = 0; ii < 10 && !found_eps; ii++) begin
-      for (int jj = 0; jj < 7 && !found_eps; jj++) begin
-        logic [15:0] muTn_e = ref_mu(Ts[ii], T_neg_a, T_neg_b, T_neg_c, T_neg_d);
-        logic [15:0] muTz_e = ref_mu(Ts[ii], T_zero_a, T_zero_b, T_zero_c, T_zero_d);
-        logic [15:0] muTp_e = ref_mu(Ts[ii], T_pos_a,  T_pos_b,  T_pos_c,  T_pos_d);
-        logic [15:0] muDn_e = ref_mu(dTs[jj], dT_neg_a, dT_neg_b, dT_neg_c, dT_neg_d);
-        logic [15:0] muDz_e = ref_mu(dTs[jj], dT_zero_a,dT_zero_b,dT_zero_c,dT_zero_d);
-        logic [15:0] muDp_e = ref_mu(dTs[jj], dT_pos_a, dT_pos_b, dT_pos_c, dT_pos_d);
-        logic [19:0] Sw_e = 20'd0;
-        Sw_e += q15_min(muTn_e, muDn_e);
-        Sw_e += q15_min(muTn_e, muDp_e);
-        Sw_e += q15_min(muTp_e, muDn_e);
-        Sw_e += q15_min(muTp_e, muDp_e);
-        if (reg_mode) Sw_e += q15_min(muTn_e, muDz_e)
-                          +  q15_min(muTz_e, muDn_e)
-                          +  q15_min(muTz_e, muDz_e)
-                          +  q15_min(muTz_e, muDp_e)
-                          +  q15_min(muTp_e, muDz_e);
+      found_eps = 0;
 
-        if (Sw_e[15:0] >= 16'd1 && Sw_e[15:0] <= 16'd4) begin
-          eps_T  = Ts[ii];
-          eps_dT = dTs[jj];
-          found_eps = 1;
+      for (ii = 0; ii < 10 && !found_eps; ii++) begin
+        for (jj = 0; jj < 7 && !found_eps; jj++) begin
+          muTn_e = ref_mu(Ts[ii], T_neg_a,  T_neg_b,  T_neg_c,  T_neg_d);
+          muTz_e = ref_mu(Ts[ii], T_zero_a, T_zero_b, T_zero_c, T_zero_d);
+          muTp_e = ref_mu(Ts[ii], T_pos_a,  T_pos_b,  T_pos_c,  T_pos_d);
+          muDn_e = ref_mu(dTs[jj], dT_neg_a,  dT_neg_b,  dT_neg_c,  dT_neg_d);
+          muDz_e = ref_mu(dTs[jj], dT_zero_a, dT_zero_b, dT_zero_c, dT_zero_d);
+          muDp_e = ref_mu(dTs[jj], dT_pos_a,  dT_pos_b,  dT_pos_c,  dT_pos_d);
+
+          Sw_e  = 20'd0;
+          Sw_e += q15_min(muTn_e, muDn_e);
+          Sw_e += q15_min(muTn_e, muDp_e);
+          Sw_e += q15_min(muTp_e, muDn_e);
+          Sw_e += q15_min(muTp_e, muDp_e);
+          if (reg_mode) Sw_e += q15_min(muTn_e, muDz_e)
+                            +  q15_min(muTz_e, muDn_e)
+                            +  q15_min(muTz_e, muDz_e)
+                            +  q15_min(muTz_e, muDp_e)
+                            +  q15_min(muTp_e, muDz_e);
+
+          if (Sw_e[15:0] >= 16'd1 && Sw_e[15:0] <= 16'd4) begin
+            eps_T     = Ts[ii];
+            eps_dT    = dTs[jj];
+            found_eps = 1;
+          end
         end
       end
-    end
 
-    if (found_eps) begin
-      T_in  = eps_T;
-      dT_in = eps_dT;
-      update_cov_vars();
-      compute_and_check_expected($sformatf("NearEPS T=%0d dT=%0d", $signed(T_in), $signed(dT_in)));
-      csv_emit_line("NearEPS", 0, -1, -1, -1, G_out, 1'b0);
-    end else begin
-      $display("WARN: could not find NearEPS case in coarse grid; skip.");
+      if (found_eps) begin
+        T_in  = eps_T;
+        dT_in = eps_dT;
+        update_cov_vars();
+        compute_and_check_expected($sformatf("NearEPS T=%0d dT=%0d", $signed(T_in), $signed(dT_in)));
+        csv_emit_line("NearEPS", 0, -1, -1, -1, G_out, 1'b0);
+      end else begin
+        $display("WARN: could not find NearEPS case in coarse grid; skip.");
+      end
     end
-
 
     // Block 2: DT_MODE=0, random MAE over >=1000 samples (REQ-310 <=1%)
     N       = 1000;
@@ -758,8 +771,8 @@ module tb_top_coprocessor;
     reg_mode = 1'b1;
 
     for (i = 0; i < N; i = i + 1) begin
-      T_in  = $urandom_range(-128, 127);
-      dT_in = $urandom_range(-128, 127);
+      T_in  = ( $urandom() % 256 ) - 128;
+      dT_in = ( $urandom() % 256 ) - 128;
 
       muTn = ref_mu(T_in, T_neg_a,  T_neg_b,  T_neg_c,  T_neg_d);
       muTz = ref_mu(T_in, T_zero_a, T_zero_b, T_zero_c, T_zero_d);
@@ -803,6 +816,7 @@ module tb_top_coprocessor;
       pulse_start();
       wait_valid_count_cycles(latR);
       check_valid_one_shot();
+      cov_touch(); // <--- manual coverage sample
       @(posedge clk);
 
       csv_emit_line("Random", idx_rand++, sumw[15:0], sumwg[15:0], Gexp, G_out, valid);
@@ -816,7 +830,6 @@ module tb_top_coprocessor;
     assert (mae <= 1) else $error("[REQ-310] MAE=%0d%% > 1%%", mae);
 
     // A/B stability on same inputs (no glitches across mode flips)
-    logic [7:0] G_rm0, G_rm1;
     T_in  = 8'sd32;
     dT_in = -8'sd10;
 
@@ -826,6 +839,7 @@ module tb_top_coprocessor;
     pulse_start();
     wait_valid_count_cycles(lat);
     check_valid_one_shot();
+    cov_touch(); // <--- manual coverage sample
     @(posedge clk);
     G_rm0 = G_out;
     csv_emit_line("AB_Toggle_reg0", 0, -1, -1, -1, G_out, 1'b0);
@@ -836,6 +850,7 @@ module tb_top_coprocessor;
     pulse_start();
     wait_valid_count_cycles(lat);
     check_valid_one_shot();
+    cov_touch(); // <--- manual coverage sample
     @(posedge clk);
     G_rm1 = G_out;
     csv_emit_line("AB_Toggle_reg1", 0, -1, -1, -1, G_out, 1'b0);
@@ -846,11 +861,98 @@ module tb_top_coprocessor;
     pulse_start();
     wait_valid_count_cycles(lat);
     check_valid_one_shot();
+    cov_touch(); // <--- manual coverage sample
     @(posedge clk);
 
     // Sanity
     assert (G_rm0 <= 8'd100 && G_rm1 <= 8'd100)
       else $error("[REQ-030] AB toggle produced invalid G");
+
+    // --- VIS 1: T sweep at dT=0 (expect flat 50 with current singletons) ---
+    begin : VIS_T_AT_DT0
+      integer vis_fd1;
+      string vis_path1;
+      int Ti;
+
+      vis_path1 = "out/vis_T_at_dt0.csv";
+      vis_fd1 = $fopen(vis_path1, "w");
+      if (vis_fd1 != 0) $fdisplay(vis_fd1, "T,dT,Gimpl,Gexp");
+
+      reg_mode = 1'b1;   // full 3x3
+      dt_mode  = 1'b0;   // external dT
+      dT_in    = 8'sd0;
+
+      for (Ti = -128; Ti <= 127; Ti += 2) begin
+        T_in = Ti[7:0];
+        // compute golden and run DUT
+        compute_and_check_expected("VIS_T_at_dt0");
+        if (vis_fd1 != 0) $fdisplay(vis_fd1, "%0d,%0d,%0d,%0d",
+                                    $signed(T_in), $signed(dT_in), G_out, Gexp);
+      end
+
+      if (vis_fd1 != 0) begin $fflush(vis_fd1); $fclose(vis_fd1); end
+      $display("INFO: VIS_T_at_dt0 -> %s", vis_path1);
+    end
+
+    // --- VIS 2: dT sweeps at fixed T values (shows non-50 outputs) ---
+    begin : VIS_DT_LINES
+      integer vis_fd2;
+      string vis_path2;
+      int Dj;
+      int TT[0:2];
+
+      vis_path2 = "out/vis_dT_lines.csv";
+      vis_fd2 = $fopen(vis_path2, "w");
+      if (vis_fd2 != 0) $fdisplay(vis_fd2, "T,dT,Gimpl,Gexp");
+
+      reg_mode = 1'b1;
+      dt_mode  = 1'b0;
+
+      // choose 3 representative T values (neg/zero/pos-ish)
+      TT[0] = -32; TT[1] = 0; TT[2] = 32;
+
+      for (int k = 0; k < 3; k++) begin
+        T_in = TT[k][7:0];
+        for (Dj = -60; Dj <= 60; Dj += 4) begin
+          dT_in = Dj[7:0];
+          compute_and_check_expected("VIS_dT_line");
+          if (vis_fd2 != 0) $fdisplay(vis_fd2, "%0d,%0d,%0d,%0d",
+                                      $signed(T_in), $signed(dT_in), G_out, Gexp);
+        end
+      end
+
+      if (vis_fd2 != 0) begin $fflush(vis_fd2); $fclose(vis_fd2); end
+      $display("INFO: VIS_dT_lines -> %s", vis_path2);
+    end
+
+    // --- VIS 3: 2D heatmap grid over T and dT ---
+    begin : VIS_HEATMAP
+      integer vis_fd3;
+      string vis_path3;
+      int Ti, Dj;
+
+      vis_path3 = "out/vis_heatmap.csv";
+      vis_fd3 = $fopen(vis_path3, "w");
+      if (vis_fd3 != 0) $fdisplay(vis_fd3, "T,dT,Gimpl,Gexp");
+
+      reg_mode = 1'b1;
+      dt_mode  = 1'b0;
+
+      // coarse but smooth grid
+      for (Ti = -64; Ti <= 64; Ti += 8) begin
+        for (Dj = -60; Dj <= 60; Dj += 5) begin
+          T_in  = Ti[7:0];
+          dT_in = Dj[7:0];
+          compute_and_check_expected("VIS_heatmap");
+          if (vis_fd3 != 0) $fdisplay(vis_fd3, "%0d,%0d,%0d,%0d",
+                                      $signed(T_in), $signed(dT_in), G_out, Gexp);
+        end
+      end
+
+      if (vis_fd3 != 0) begin $fflush(vis_fd3); $fclose(vis_fd3); end
+      $display("INFO: VIS_heatmap -> %s", vis_path3);
+    end
+
 
 
     // Block 3: DT_MODE=1, estimator scenarios (REQ-060/061/062 + 230)
@@ -869,6 +971,7 @@ module tb_top_coprocessor;
     wait_valid_count_cycles(lat1);
     assert (lat1 <= 10) else $error("[REQ-230] latency after INIT=%0d", lat1);
     check_valid_one_shot();
+    cov_touch(); // <--- manual coverage sample
     @(posedge clk);
 
     csv_emit_line("EST_INIT", idx_est_init++, -1, -1, -1, G_out, valid);
@@ -888,6 +991,7 @@ module tb_top_coprocessor;
       wait_valid_count_cycles(latS);
       assert (latS <= 10);
       check_valid_one_shot();
+      cov_touch(); // <--- manual coverage sample
       @(posedge clk);
       if (verbose) $display("INFO: [EST] steady T=0 | lat=%0d | G=%0d", latS, G_out);
       assert (G_out <= 8'd100);
@@ -901,6 +1005,7 @@ module tb_top_coprocessor;
       wait_valid_count_cycles(latU);
       assert (latU <= 10);
       check_valid_one_shot();
+      cov_touch(); // <--- manual coverage sample
       @(posedge clk);
       csv_emit_line("EST_RampUp", idx_est_up++, -1, -1, -1, G_out, valid);
       if (verbose) $display("INFO: [EST] ramp_up step=%0d T=%0d | lat=%0d | G=%0d", i, $signed(T_in), latU, G_out);
@@ -915,6 +1020,7 @@ module tb_top_coprocessor;
       wait_valid_count_cycles(latD);
       assert (latD <= 10);
       check_valid_one_shot();
+      cov_touch(); // <--- manual coverage sample
       @(posedge clk);
       csv_emit_line("EST_RampDown", idx_est_down++, -1, -1, -1, G_out, valid);
       if (verbose) $display("INFO: [EST] ramp_down step=%0d T=%0d | lat=%0d | G=%0d", i, $signed(T_in), latD, G_out);
@@ -935,6 +1041,7 @@ module tb_top_coprocessor;
       wait_valid_count_cycles(latRW);
       assert (latRW <= 10);
       check_valid_one_shot();
+      cov_touch(); // <--- manual coverage sample
       @(posedge clk);
       csv_emit_line("EST_RandWalk", idx_est_rw++, -1, -1, -1, G_out, valid);
       if (verbose) $display("INFO: [EST] randwalk i=%0d step=%0d T=%0d | lat=%0d | G=%0d",
@@ -945,6 +1052,133 @@ module tb_top_coprocessor;
     if (csv_fd != 0) begin
       $fflush(csv_fd);
       $fclose(csv_fd);
+    end
+
+    // Print manual coverage summary (REQ-320)
+    cov_dump_summary();
+
+    // --- REQ: boundary behavior at fa/fb/fc/fd (and ±1)
+    begin : EDGE_TESTS
+      int k;
+      logic signed [7:0] Tvecs [0:7];
+      logic signed [7:0] dTvecs[0:7];
+
+      // capture current thresholds into vectors
+      Tvecs[0]=T_neg_a; Tvecs[1]=T_neg_b; Tvecs[2]=T_neg_c; Tvecs[3]=T_neg_d;
+      Tvecs[4]=T_pos_a; Tvecs[5]=T_pos_b; Tvecs[6]=T_pos_c; Tvecs[7]=T_pos_d;
+
+      dTvecs[0]=dT_neg_a; dTvecs[1]=dT_neg_b; dTvecs[2]=dT_neg_c; dTvecs[3]=dT_neg_d;
+      dTvecs[4]=dT_pos_a; dTvecs[5]=dT_pos_b; dTvecs[6]=dT_pos_c; dTvecs[7]=dT_pos_d;
+
+      reg_mode = 1'b1; dt_mode = 1'b0;
+
+      // T at edges, dT=0
+      dT_in = 8'sd0;
+      for (k=0;k<8;k++) begin
+        T_in = Tvecs[k];
+        compute_and_check_expected($sformatf("EDGE_T@%0d_dT=0", $signed(T_in)));
+        assert (!$isunknown({valid,G_out})) else $error("X/Z on outputs (EDGE_T)");
+      end
+
+      // dT at edges, T=0
+      T_in = 8'sd0;
+      for (k=0;k<8;k++) begin
+        dT_in = dTvecs[k];
+        compute_and_check_expected($sformatf("EDGE_dT@%0d_T=0", $signed(dT_in)));
+        assert (!$isunknown({valid,G_out})) else $error("X/Z on outputs (EDGE_dT)");
+      end
+    end
+
+    // --- REQ: degenerate MFs (b==a, d==c) must be safe and finite
+    begin : DEGEN_TRAP
+      // Save originals
+      automatic logic signed [7:0] s_T_zero_b = T_zero_b;
+      automatic logic signed [7:0] s_T_zero_c = T_zero_c;
+
+      // Force ZERO MF to degenerate shoulders
+      T_zero_b = T_zero_a; // b==a -> left slope len 0
+      T_zero_c = T_zero_d; // d==c -> right slope len 0
+
+      reg_mode = 1'b1; dt_mode = 1'b0;
+      T_in = 8'sd0;
+
+      foreach (dTs[j]) begin
+        dT_in = dTs[j];
+        compute_and_check_expected("DEGEN_ZERO_T");
+        assert (!$isunknown({valid,G_out})) else $error("X/Z (DEGEN_ZERO)");
+      end
+
+      // restore
+      T_zero_b = s_T_zero_b;
+      T_zero_c = s_T_zero_c;
+    end
+
+
+    // --- Back-to-back STARTs -> two clean VALID pulses, no glitch
+    begin : START_B2B
+      reg_mode = 1'b1; dt_mode = 1'b0; T_in = 8'sd16; dT_in = -8'sd8;
+      pulse_start(); wait_valid_count_cycles(lat); check_valid_one_shot(); @(posedge clk);
+      pulse_start(); wait_valid_count_cycles(lat); check_valid_one_shot(); @(posedge clk);
+    end
+
+    // --- START while VALID (1-cycle overlap poke)
+    begin : START_OVERLAP
+      reg_mode = 1'b1; dt_mode = 1'b0; T_in = -8'sd20; dT_in = 8'sd25;
+      // fire first
+      pulse_start(); wait_valid_count_cycles(lat);
+      // schedule a start that rises on same cycle as VALID (approx)
+      fork
+        begin
+          @(posedge clk); start <= 1'b1; @(posedge clk); start <= 1'b0;
+        end
+        begin
+          @(posedge valid); // observe overlap
+        end
+      join
+      // Expect exactly one VALID per START overall
+      check_valid_one_shot(); @(posedge clk);
+    end
+
+    // --- INIT and START same cycle: must be safe and in-range (and generally equal to dT=0 golden)
+    begin : INIT_VS_START
+      reg_mode = 1'b1; dt_mode = 1'b1; T_in = 8'sd0;
+      compute_gexp_at_dT0(T_in, reg_mode, Gexp_init);
+
+      @(negedge clk);
+      init  <= 1'b1;
+      start <= 1'b1;
+      @(posedge clk);
+      init  <= 1'b0;
+      start <= 1'b0;
+
+      wait_valid_count_cycles(lat1);
+      check_valid_one_shot(); @(posedge clk);
+
+      assert (G_out <= 8'd100) else $error("Out of range after INIT∧START");
+      // Optional if this is the spec: assert (G_out == Gexp_init);
+    end
+
+    // --- A few legal MF layouts to prove configurability
+    begin : PARAM_SWEEP
+      int v;
+      reg_mode = 1'b1; dt_mode = 1'b0;
+
+      // Sweep ZERO width and POS spacing a bit
+      for (v=0; v<3; v++) begin
+        // widen ZERO by 2*v around 0 (keep monotonic a<=b<=c<=d)
+        T_zero_a = -16 - 2*v; T_zero_b = 0; T_zero_c = 0; T_zero_d = 16 + 2*v;
+        // move POS a bit
+        T_pos_a  = 0; T_pos_b = 32 + 2*v; T_pos_c = 64 + 2*v; T_pos_d = 127;
+
+        // small grid check
+        foreach (Ts[i]) begin
+          foreach (dTs[j]) begin
+            T_in  = Ts[i]; dT_in = dTs[j];
+            compute_and_check_expected($sformatf("PARAM_SWEEP_v%0d", v));
+            assert (!$isunknown({valid,G_out})) else $error("X/Z (PARAM_SWEEP)");
+          end
+        end
+      end
     end
 
 
