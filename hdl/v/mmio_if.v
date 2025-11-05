@@ -77,45 +77,18 @@ module mmio_if (
   // Rejestry + generacja W1P
   always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-      // --- MMIO RESET (dopasowane do TB set_mf_defaults) ---
-      reg_mode  <= 1'b1;   // 9-rule (zostaw, jeśli tak chcesz startować)
-      dt_mode   <= 1'b1;   // estymator dT na starcie; ok, TB i tak przełącza
-
+      reg_mode  <= 1'b1;      // 9-rule
+      dt_mode   <= 1'b1;      // internal dT
       T_in      <= 8'sd0;
       dT_in     <= 8'sd0;
 
-      // T (NEG / ZERO / POS) — a <= b <= c <= d
-      T_neg_a   <= 8'h80;  // -128
-      T_neg_b   <= 8'hC0;  //  -64
-      T_neg_c   <= 8'hE0;  //  -32
-      T_neg_d   <= 8'h00;  //    0
+      T_neg_a   <= 8'h80; T_neg_b   <= 8'h80; T_neg_c   <= 8'hC0; T_neg_d   <= 8'h00;
+      T_zero_a  <= 8'hC0; T_zero_b  <= 8'h00; T_zero_c  <= 8'h00; T_zero_d  <= 8'h40;
+      T_pos_a   <= 8'h00; T_pos_b   <= 8'h40; T_pos_c   <= 8'h80; T_pos_d   <= 8'h80;
 
-      T_zero_a  <= 8'hF0;  //  -16
-      T_zero_b  <= 8'h00;  //    0
-      T_zero_c  <= 8'h00;  //    0   (degenerate plateau w=0, zgodnie z TB)
-      T_zero_d  <= 8'h10;  //  +16
-
-      T_pos_a   <= 8'h00;  //    0
-      T_pos_b   <= 8'h20;  //  +32
-      T_pos_c   <= 8'h40;  //  +64
-      T_pos_d   <= 8'h7F;  // +127
-
-      // dT (NEG / ZERO / POS) — a <= b <= c <= d
-      dT_neg_a  <= 8'h9C;  // -100
-      dT_neg_b  <= 8'hCE;  //  -50
-      dT_neg_c  <= 8'hE2;  //  -30
-      dT_neg_d  <= 8'hFB;  //   -5
-
-      dT_zero_a <= 8'hF6;  //  -10
-      dT_zero_b <= 8'h00;  //    0
-      dT_zero_c <= 8'h00;  //    0
-      dT_zero_d <= 8'h0A;  //  +10
-
-      dT_pos_a  <= 8'h05;  //   +5
-      dT_pos_b  <= 8'h19;  //  +25
-      dT_pos_c  <= 8'h23;  //  +35
-      dT_pos_d  <= 8'h3C;  //  +60
-
+      dT_neg_a  <= 8'h80; dT_neg_b  <= 8'h80; dT_neg_c  <= 8'hC0; dT_neg_d  <= 8'h00;
+      dT_zero_a <= 8'hC0; dT_zero_b <= 8'h00; dT_zero_c <= 8'h00; dT_zero_d <= 8'h40;
+      dT_pos_a  <= 8'h00; dT_pos_b  <= 8'h40; dT_pos_c  <= 8'h80; dT_pos_d  <= 8'h80;
 
       start_w1      <= 1'b0;
       init_w1       <= 1'b0;
