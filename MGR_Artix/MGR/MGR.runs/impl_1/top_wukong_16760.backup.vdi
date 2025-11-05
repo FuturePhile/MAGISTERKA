@@ -1,0 +1,1812 @@
+#-----------------------------------------------------------
+# Vivado v2025.1.1 (64-bit)
+# SW Build 6233196 on Thu Sep 11 21:27:30 MDT 2025
+# IP Build 6232796 on Fri Sep 12 01:46:16 MDT 2025
+# SharedData Build 6233195 on Thu Sep 11 17:56:43 MDT 2025
+# Start of session at: Wed Nov  5 17:42:59 2025
+# Process ID         : 16760
+# Current directory  : C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/impl_1
+# Command line       : vivado.exe -log top_wukong.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source top_wukong.tcl -notrace
+# Log file           : C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/impl_1/top_wukong.vdi
+# Journal file       : C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/impl_1\vivado.jou
+# Running On         : LAPTOP-RN2A8KVB
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 19045
+# Processor Detail   : 11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz
+# CPU Frequency      : 2803 MHz
+# CPU Physical cores : 4
+# CPU Logical cores  : 8
+# Host memory        : 16965 MB
+# Swap memory        : 7464 MB
+# Total Virtual      : 24429 MB
+# Available Virtual  : 8313 MB
+#-----------------------------------------------------------
+source top_wukong.tcl -notrace
+create_project: Time (s): cpu = 00:00:08 ; elapsed = 00:00:05 . Memory (MB): peak = 495.012 ; gain = 215.664
+Command: link_design -top top_wukong -part xc7a100tfgg676-1
+Design is defaulting to srcset: sources_1
+Design is defaulting to constrset: constrs_1
+INFO: [Device 21-403] Loading part xc7a100tfgg676-1
+INFO: [Project 1-5699] Read binary netlist with skipMacroContent - 1
+INFO: [Project 1-454] Reading design checkpoint 'c:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.gen/sources_1/ip/clk_wiz_0/clk_wiz_0.dcp' for cell 'clk_div_20'
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.063 . Memory (MB): peak = 729.602 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 628 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2025.1.1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [c:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.gen/sources_1/ip/clk_wiz_0/clk_wiz_0_board.xdc] for cell 'clk_div_20/inst'
+Finished Parsing XDC File [c:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.gen/sources_1/ip/clk_wiz_0/clk_wiz_0_board.xdc] for cell 'clk_div_20/inst'
+Parsing XDC File [c:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.gen/sources_1/ip/clk_wiz_0/clk_wiz_0.xdc] for cell 'clk_div_20/inst'
+INFO: [Timing 38-35] Done setting XDC timing constraints. [c:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.gen/sources_1/ip/clk_wiz_0/clk_wiz_0.xdc:54]
+INFO: [Timing 38-2] Deriving generated clocks [c:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.gen/sources_1/ip/clk_wiz_0/clk_wiz_0.xdc:54]
+get_clocks: Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 1421.156 ; gain = 560.078
+Finished Parsing XDC File [c:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.gen/sources_1/ip/clk_wiz_0/clk_wiz_0.xdc] for cell 'clk_div_20/inst'
+Parsing XDC File [C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.srcs/constrs_1/new/wukong_pico.xdc]
+CRITICAL WARNING: [Constraints 18-1055] Clock 'sys_clk' completely overrides clock 'clk', which is referenced by one or more other constraints. Any constraints that refer to the overridden clock will be ignored.
+New: create_clock -period 20.000 -name sys_clk [get_ports clk], [C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.srcs/constrs_1/new/wukong_pico.xdc:73]
+Previous: create_clock -period 20.000 [get_ports clk], [c:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.gen/sources_1/ip/clk_wiz_0/clk_wiz_0.xdc:53]
+Resolution: Review the constraint files and remove the redundant clock definition(s). If the clock constraints are not saved in a file, you can first save the constraints to an XDC file and reload the design once the constraints have been corrected.
+INFO: [Timing 38-2] Deriving generated clocks [C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.srcs/constrs_1/new/wukong_pico.xdc:74]
+Finished Parsing XDC File [C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.srcs/constrs_1/new/wukong_pico.xdc]
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1430.758 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+12 Infos, 0 Warnings, 1 Critical Warnings and 0 Errors encountered.
+link_design completed successfully
+link_design: Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 1430.758 ; gain = 923.070
+Command: opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a100t'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a100t'
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 1430.758 ; gain = 0.000
+
+Starting Cache Timing Information Task
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Ending Cache Timing Information Task | Checksum: 245050198
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.288 . Memory (MB): peak = 1441.504 ; gain = 10.746
+
+Starting Logic Optimization Task
+
+Phase 1 Initialization
+
+Phase 1.1 Core Generation And Design Setup
+Phase 1.1 Core Generation And Design Setup | Checksum: 245050198
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 1853.004 ; gain = 0.000
+
+Phase 1.2 Setup Constraints And Sort Netlist
+Phase 1.2 Setup Constraints And Sort Netlist | Checksum: 245050198
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.009 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Phase 1 Initialization | Checksum: 245050198
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.010 . Memory (MB): peak = 1853.004 ; gain = 0.000
+
+Phase 2 Timer Update And Timing Data Collection
+
+Phase 2.1 Timer Update
+Phase 2.1 Timer Update | Checksum: 245050198
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.157 . Memory (MB): peak = 1853.004 ; gain = 0.000
+
+Phase 2.2 Timing Data Collection
+Phase 2.2 Timing Data Collection | Checksum: 245050198
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.167 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Phase 2 Timer Update And Timing Data Collection | Checksum: 245050198
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.168 . Memory (MB): peak = 1853.004 ; gain = 0.000
+
+Phase 3 Retarget
+INFO: [Opt 31-1851] Number of loadless carry chains removed were: 0
+INFO: [Opt 31-1834] Total Chains To Be Transformed Were: 0 AND Number of Transformed insts Created are: 0
+INFO: [Opt 31-138] Pushed 1 inverter(s) to 1 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 3 Retarget | Checksum: 26b92f15b
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.236 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Retarget | Checksum: 26b92f15b
+INFO: [Opt 31-389] Phase Retarget created 0 cells and removed 1 cells
+INFO: [Opt 31-1021] In phase Retarget, 1 netlist objects are constrained preventing optimization. Please run opt_design with -debug_log to get more detail. 
+
+Phase 4 Constant propagation
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Phase 4 Constant propagation | Checksum: 2d3c74758
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.290 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Constant propagation | Checksum: 2d3c74758
+INFO: [Opt 31-389] Phase Constant propagation created 0 cells and removed 0 cells
+
+Phase 5 Sweep
+INFO: [Constraints 18-11670] Building netlist checker database with flags, 0x8
+Done building netlist checker database: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Phase 5 Sweep | Checksum: 35203817c
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.356 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Sweep | Checksum: 35203817c
+INFO: [Opt 31-389] Phase Sweep created 1 cells and removed 0 cells
+
+Phase 6 BUFG optimization
+Phase 6 BUFG optimization | Checksum: 35203817c
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.412 . Memory (MB): peak = 1853.004 ; gain = 0.000
+BUFG optimization | Checksum: 35203817c
+INFO: [Opt 31-662] Phase BUFG optimization created 0 cells of which 0 are BUFGs and removed 0 cells.
+
+Phase 7 Shift Register Optimization
+INFO: [Opt 31-1064] SRL Remap converted 0 SRLs to 0 registers and converted 0 registers of register chains to 0 SRLs
+Phase 7 Shift Register Optimization | Checksum: 35203817c
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.419 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Shift Register Optimization | Checksum: 35203817c
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Phase 8 Post Processing Netlist
+Phase 8 Post Processing Netlist | Checksum: 35203817c
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.432 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Post Processing Netlist | Checksum: 35203817c
+INFO: [Opt 31-389] Phase Post Processing Netlist created 0 cells and removed 0 cells
+
+Phase 9 Finalization
+
+Phase 9.1 Finalizing Design Cores and Updating Shapes
+Phase 9.1 Finalizing Design Cores and Updating Shapes | Checksum: 2f391fed0
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.693 . Memory (MB): peak = 1853.004 ; gain = 0.000
+
+Phase 9.2 Verifying Netlist Connectivity
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.014 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Phase 9.2 Verifying Netlist Connectivity | Checksum: 2f391fed0
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.709 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Phase 9 Finalization | Checksum: 2f391fed0
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.710 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Opt_design Change Summary
+=========================
+
+
+-------------------------------------------------------------------------------------------------------------------------
+|  Phase                        |  #Cells created  |  #Cells Removed  |  #Constrained objects preventing optimizations  |
+-------------------------------------------------------------------------------------------------------------------------
+|  Retarget                     |               0  |               1  |                                              1  |
+|  Constant propagation         |               0  |               0  |                                              0  |
+|  Sweep                        |               1  |               0  |                                              0  |
+|  BUFG optimization            |               0  |               0  |                                              0  |
+|  Shift Register Optimization  |               0  |               0  |                                              0  |
+|  Post Processing Netlist      |               0  |               0  |                                              0  |
+-------------------------------------------------------------------------------------------------------------------------
+
+
+Ending Logic Optimization Task | Checksum: 2f391fed0
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.712 . Memory (MB): peak = 1853.004 ; gain = 0.000
+
+Starting Power Optimization Task
+INFO: [Pwropt 34-132] Skipping clock gating for clocks with a period < 2.00 ns.
+Ending Power Optimization Task | Checksum: 2f391fed0
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.010 . Memory (MB): peak = 1853.004 ; gain = 0.000
+
+Starting Final Cleanup Task
+Ending Final Cleanup Task | Checksum: 2f391fed0
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1853.004 ; gain = 0.000
+
+Starting Netlist Obfuscation Task
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Ending Netlist Obfuscation Task | Checksum: 2f391fed0
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.003 . Memory (MB): peak = 1853.004 ; gain = 0.000
+INFO: [Common 17-83] Releasing license: Implementation
+33 Infos, 0 Warnings, 1 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:00:06 ; elapsed = 00:00:05 . Memory (MB): peak = 1853.004 ; gain = 422.246
+INFO: [Vivado 12-24828] Executing command : report_drc -file top_wukong_drc_opted.rpt -pb top_wukong_drc_opted.pb -rpx top_wukong_drc_opted.rpx
+Command: report_drc -file top_wukong_drc_opted.rpt -pb top_wukong_drc_opted.pb -rpx top_wukong_drc_opted.rpx
+INFO: [IP_Flow 19-1839] IP Catalog is up to date.
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Vivado_Tcl 2-168] The results of DRC are in file C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/impl_1/top_wukong_drc_opted.rpt.
+report_drc completed successfully
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Wrote PlaceDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Wrote PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Writing XDEF routing.
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.023 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Wrote RouteStorage: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.027 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Wrote Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Wrote Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.011 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Write Physdb Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.046 . Memory (MB): peak = 1853.004 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/impl_1/top_wukong_opt.dcp' has been generated.
+Command: place_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a100t'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a100t'
+INFO: [Common 17-83] Releasing license: Implementation
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 2 CPUs
+
+Starting Placer Task
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.003 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: 254ce6552
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 1853.004 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.003 . Memory (MB): peak = 1853.004 ; gain = 0.000
+
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device | Checksum: 196b84c1c
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.587 . Memory (MB): peak = 1858.234 ; gain = 5.230
+
+Phase 1.3 Build Placer Netlist Model
+Phase 1.3 Build Placer Netlist Model | Checksum: 1b662b289
+
+Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 1.4 Constrain Clocks/Macros
+Phase 1.4 Constrain Clocks/Macros | Checksum: 1b662b289
+
+Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 1874.340 ; gain = 21.336
+Phase 1 Placer Initialization | Checksum: 1b662b289
+
+Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 2 Global Placement
+
+Phase 2.1 Floorplanning
+Phase 2.1 Floorplanning | Checksum: 1af056e59
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:02 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 2.2 Update Timing before SLR Path Opt
+Phase 2.2 Update Timing before SLR Path Opt | Checksum: 276c9581e
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:02 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 2.3 Post-Processing in Floorplanning
+Phase 2.3 Post-Processing in Floorplanning | Checksum: 276c9581e
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:02 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 2.4 Global Place Phase1
+Phase 2.4 Global Place Phase1 | Checksum: 21f7d76e8
+
+Time (s): cpu = 00:00:18 ; elapsed = 00:00:10 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 2.5 Global Place Phase2
+
+Phase 2.5.1 UpdateTiming Before Physical Synthesis
+Phase 2.5.1 UpdateTiming Before Physical Synthesis | Checksum: 1f34ac87d
+
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:10 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 2.5.2 Physical Synthesis In Placer
+INFO: [Physopt 32-1035] Found 146 LUTNM shape to break, 48 LUT instances to create LUTNM shape
+INFO: [Physopt 32-1044] Break lutnm for timing: one critical 9, two critical 137, total 146, new lutff created 0
+INFO: [Physopt 32-1138] End 1 Pass. Optimized 157 nets or LUTs. Breaked 146 LUTs, combined 11 existing LUTs and moved 0 existing LUT
+INFO: [Physopt 32-65] No nets found for high-fanout optimization.
+INFO: [Physopt 32-232] Optimized 0 net. Created 0 new instance.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-456] No candidate cells for DSP register optimization found in the design.
+INFO: [Physopt 32-775] End 2 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-1123] No candidate cells found for Shift Register to Pipeline optimization
+INFO: [Physopt 32-775] End 2 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-1401] No candidate cells found for Shift Register optimization.
+INFO: [Physopt 32-677] No candidate cells for Shift Register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-526] No candidate cells for BRAM register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-846] No candidate cells for URAM register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-846] No candidate cells for URAM register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-949] No candidate nets found for dynamic/static region interface net replication
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1874.340 ; gain = 0.000
+
+Summary of Physical Synthesis Optimizations
+============================================
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+|  Optimization                                     |  Added Cells  |  Removed Cells  |  Optimized Cells/Nets  |  Dont Touch  |  Iterations  |  Elapsed   |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+|  LUT Combining                                    |          146  |             11  |                   157  |           0  |           1  |  00:00:00  |
+|  Retime                                           |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Very High Fanout                                 |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  DSP Register                                     |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Shift Register to Pipeline                       |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Shift Register                                   |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  BRAM Register                                    |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  URAM Register                                    |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Dynamic/Static Region Interface Net Replication  |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Total                                            |          146  |             11  |                   157  |           0  |           9  |  00:00:00  |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Phase 2.5.2 Physical Synthesis In Placer | Checksum: 103fe8bb4
+
+Time (s): cpu = 00:00:19 ; elapsed = 00:00:11 . Memory (MB): peak = 1874.340 ; gain = 21.336
+Phase 2.5 Global Place Phase2 | Checksum: 10cc0b21b
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:11 . Memory (MB): peak = 1874.340 ; gain = 21.336
+Phase 2 Global Placement | Checksum: 10cc0b21b
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:11 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 3 Detail Placement
+
+Phase 3.1 Commit Multi Column Macros
+Phase 3.1 Commit Multi Column Macros | Checksum: 18d6beefa
+
+Time (s): cpu = 00:00:20 ; elapsed = 00:00:11 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 3.2 Commit Most Macros & LUTRAMs
+Phase 3.2 Commit Most Macros & LUTRAMs | Checksum: 17e7a63fd
+
+Time (s): cpu = 00:00:22 ; elapsed = 00:00:12 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 3.3 Area Swap Optimization
+Phase 3.3 Area Swap Optimization | Checksum: 1e7e86cd2
+
+Time (s): cpu = 00:00:22 ; elapsed = 00:00:12 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 3.4 Pipeline Register Optimization
+Phase 3.4 Pipeline Register Optimization | Checksum: 186cc5783
+
+Time (s): cpu = 00:00:22 ; elapsed = 00:00:12 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 3.5 Fast Optimization
+Phase 3.5 Fast Optimization | Checksum: 1f76d1e59
+
+Time (s): cpu = 00:00:25 ; elapsed = 00:00:14 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 3.6 Small Shape Detail Placement
+Phase 3.6 Small Shape Detail Placement | Checksum: 1b7453101
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:15 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 3.7 Re-assign LUT pins
+Phase 3.7 Re-assign LUT pins | Checksum: 259c6ec9c
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:16 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 3.8 Pipeline Register Optimization
+Phase 3.8 Pipeline Register Optimization | Checksum: 267be24fa
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:16 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 3.9 Fast Optimization
+Phase 3.9 Fast Optimization | Checksum: 1c6de332d
+
+Time (s): cpu = 00:00:31 ; elapsed = 00:00:20 . Memory (MB): peak = 1874.340 ; gain = 21.336
+Phase 3 Detail Placement | Checksum: 1c6de332d
+
+Time (s): cpu = 00:00:32 ; elapsed = 00:00:20 . Memory (MB): peak = 1874.340 ; gain = 21.336
+
+Phase 4 Post Placement Optimization and Clean-Up
+
+Phase 4.1 Post Commit Optimization
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Phase 4.1.1 Post Placement Optimization
+Post Placement Optimization Initialization | Checksum: 1c5321345
+
+Phase 4.1.1.1 BUFG Insertion
+
+Starting Physical Synthesis Task
+
+Phase 1 Physical Synthesis Initialization
+INFO: [Physopt 32-721] Multithreading enabled for phys_opt_design using a maximum of 2 CPUs
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-6.723 | TNS=-45.146 |
+Phase 1 Physical Synthesis Initialization | Checksum: d6053ac5
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.093 . Memory (MB): peak = 1902.375 ; gain = 0.000
+INFO: [Place 46-56] BUFG insertion identified 0 candidate nets. Inserted BUFG: 0, Replicated BUFG Driver: 0, Skipped due to Placement/Routing Conflicts: 0, Skipped due to Timing Degradation: 0, Skipped due to netlist editing failed: 0.
+Ending Physical Synthesis Task | Checksum: 24f6c1720
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.124 . Memory (MB): peak = 1902.375 ; gain = 0.000
+Phase 4.1.1.1 BUFG Insertion | Checksum: 1c5321345
+
+Time (s): cpu = 00:00:33 ; elapsed = 00:00:21 . Memory (MB): peak = 1902.375 ; gain = 49.371
+
+Phase 4.1.1.2 Post Placement Timing Optimization
+INFO: [Place 30-746] Post Placement Timing Summary WNS=-4.735. For the most accurate timing information please run report_timing.
+Phase 4.1.1.2 Post Placement Timing Optimization | Checksum: 1de2382dc
+
+Time (s): cpu = 00:00:53 ; elapsed = 00:00:38 . Memory (MB): peak = 1902.375 ; gain = 49.371
+
+Time (s): cpu = 00:00:53 ; elapsed = 00:00:38 . Memory (MB): peak = 1902.375 ; gain = 49.371
+Phase 4.1 Post Commit Optimization | Checksum: 1de2382dc
+
+Time (s): cpu = 00:00:53 ; elapsed = 00:00:38 . Memory (MB): peak = 1902.375 ; gain = 49.371
+
+Phase 4.2 Post Placement Cleanup
+Phase 4.2 Post Placement Cleanup | Checksum: 1de2382dc
+
+Time (s): cpu = 00:00:53 ; elapsed = 00:00:38 . Memory (MB): peak = 1902.375 ; gain = 49.371
+
+Phase 4.3 Placer Reporting
+
+Phase 4.3.1 Print Estimated Congestion
+INFO: [Place 30-612] Post-Placement Estimated Congestion 
+ ____________________________________________________
+|           | Global Congestion | Short Congestion  |
+| Direction | Region Size       | Region Size       |
+|___________|___________________|___________________|
+|      North|                1x1|                2x2|
+|___________|___________________|___________________|
+|      South|                1x1|                1x1|
+|___________|___________________|___________________|
+|       East|                2x2|                4x4|
+|___________|___________________|___________________|
+|       West|                2x2|                2x2|
+|___________|___________________|___________________|
+
+Phase 4.3.1 Print Estimated Congestion | Checksum: 1de2382dc
+
+Time (s): cpu = 00:00:53 ; elapsed = 00:00:39 . Memory (MB): peak = 1902.375 ; gain = 49.371
+Phase 4.3 Placer Reporting | Checksum: 1de2382dc
+
+Time (s): cpu = 00:00:53 ; elapsed = 00:00:39 . Memory (MB): peak = 1902.375 ; gain = 49.371
+
+Phase 4.4 Final Placement Cleanup
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1902.375 ; gain = 0.000
+
+Time (s): cpu = 00:00:53 ; elapsed = 00:00:39 . Memory (MB): peak = 1902.375 ; gain = 49.371
+Phase 4 Post Placement Optimization and Clean-Up | Checksum: 210f8de00
+
+Time (s): cpu = 00:00:53 ; elapsed = 00:00:39 . Memory (MB): peak = 1902.375 ; gain = 49.371
+Ending Placer Task | Checksum: 1b769dd19
+
+Time (s): cpu = 00:00:53 ; elapsed = 00:00:39 . Memory (MB): peak = 1902.375 ; gain = 49.371
+76 Infos, 0 Warnings, 1 Critical Warnings and 0 Errors encountered.
+place_design completed successfully
+place_design: Time (s): cpu = 00:00:56 ; elapsed = 00:00:40 . Memory (MB): peak = 1902.375 ; gain = 49.371
+INFO: [Vivado 12-24838] Running report commands "report_control_sets, report_io, report_utilization" in parallel.
+Running report generation with 2 threads.
+INFO: [Vivado 12-24828] Executing command : report_utilization -file top_wukong_utilization_placed.rpt -pb top_wukong_utilization_placed.pb
+INFO: [Vivado 12-24828] Executing command : report_control_sets -verbose -file top_wukong_control_sets_placed.rpt
+report_control_sets: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 1902.375 ; gain = 0.000
+INFO: [Vivado 12-24828] Executing command : report_io -file top_wukong_io_placed.rpt
+report_io: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.104 . Memory (MB): peak = 1902.375 ; gain = 0.000
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Write ShapeDB Complete: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.021 . Memory (MB): peak = 1908.000 ; gain = 0.016
+Wrote PlaceDB: Time (s): cpu = 00:00:02 ; elapsed = 00:00:00.497 . Memory (MB): peak = 1909.961 ; gain = 1.961
+Wrote PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1909.961 ; gain = 0.000
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Wrote RouteStorage: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.017 . Memory (MB): peak = 1909.961 ; gain = 0.000
+Wrote Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.011 . Memory (MB): peak = 1909.961 ; gain = 0.000
+Wrote Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.009 . Memory (MB): peak = 1909.961 ; gain = 0.000
+Write Physdb Complete: Time (s): cpu = 00:00:02 ; elapsed = 00:00:00.545 . Memory (MB): peak = 1909.961 ; gain = 1.961
+INFO: [Common 17-1381] The checkpoint 'C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/impl_1/top_wukong_placed.dcp' has been generated.
+Command: phys_opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a100t'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a100t'
+
+Starting Initial Update Timing Task
+
+Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.547 . Memory (MB): peak = 1914.402 ; gain = 4.441
+INFO: [Vivado_Tcl 4-1435] PhysOpt_Tcl_Interface Runtime Before Starting Physical Synthesis Task | CPU: 1.00s |  WALL: 0.58s
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.003 . Memory (MB): peak = 1914.402 ; gain = 0.000
+
+Starting Physical Synthesis Task
+
+Phase 1 Physical Synthesis Initialization
+INFO: [Physopt 32-721] Multithreading enabled for phys_opt_design using a maximum of 2 CPUs
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-4.622 | TNS=-31.285 |
+Phase 1 Physical Synthesis Initialization | Checksum: 1ecf62f98
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.450 . Memory (MB): peak = 1915.418 ; gain = 1.016
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-4.622 | TNS=-31.285 |
+
+Phase 2 DSP Register Optimization
+INFO: [Physopt 32-456] No candidate cells for DSP register optimization found in the design.
+INFO: [Physopt 32-775] End 2 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Phase 2 DSP Register Optimization | Checksum: 1ecf62f98
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.465 . Memory (MB): peak = 1915.418 ; gain = 1.016
+
+Phase 3 Critical Path Optimization
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-4.622 | TNS=-31.285 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/D[4]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net clk_div_20/inst/clk_out1_clk_wiz_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/G_out[4]_i_2_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/sat_u8[4]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_defuzz/A[3].  Re-placed instance u_top_coprocessor/u_defuzz/G_out4_i_13
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_defuzz/A[3]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-4.610 | TNS=-31.201 |
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_defuzz/A[1].  Re-placed instance u_top_coprocessor/u_defuzz/G_out4_i_15
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_defuzz/A[1]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-4.583 | TNS=-31.012 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/A[3]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/ratio_q151. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/G_out4_i_19_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-242] Processed net u_top_coprocessor/u_defuzz/G_out4_i_20_n_0. Rewired (signal push) u_top_coprocessor/u_defuzz/ratio_q152_n_78 to 1 loads. Replicated 0 times.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_defuzz/G_out4_i_20_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-4.557 | TNS=-30.830 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/G_out4_i_18_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/G_out4_n_90. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/B[2]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-601] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_34_n_0. Net driver u_top_coprocessor/u_aggregator/ratio_q152_i_34 was replaced.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_34_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-4.537 | TNS=-30.690 |
+INFO: [Physopt 32-710] Processed net u_top_coprocessor/u_aggregator/B[2]. Critical path length was reduced through logic transformation on cell u_top_coprocessor/u_aggregator/ratio_q152_i_13_comp.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_34_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-4.481 | TNS=-30.298 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/B[10]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_34_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_34_n_0. Critical path length was reduced through logic transformation on cell u_top_coprocessor/u_aggregator/ratio_q152_i_34_comp_1.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_94_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-4.469 | TNS=-30.214 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_95_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/sum_wg_9[20]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_233_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 27 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_384_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-4.368 | TNS=-29.507 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_94_n_0_repN. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/sum_wg_9[15]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_38_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_127_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-571] Net u_top_coprocessor/u_aggregator/ratio_q152_i_123_n_0 was not replicated.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_123_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_260_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_270_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 30 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_539_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-4.320 | TNS=-29.171 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_126_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_122_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_251_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_261_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_271_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 30 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_546_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-4.219 | TNS=-28.464 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_262_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_272_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 30 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_553_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-4.026 | TNS=-27.113 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 17 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_91_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.937 | TNS=-26.490 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_91_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/sum_wg_4[19]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_35_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_103_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.920 | TNS=-26.371 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_94_n_0_repN_1. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/sum_wg_4[20]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_93_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 21 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_232_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.919 | TNS=-26.364 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/sum_wg_4[15]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_37_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_39_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_132_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_128_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_128
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_128_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.883 | TNS=-26.112 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_128_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_258_n_5. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_268_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 30 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_532_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.657 | TNS=-24.530 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/sum_wg_9[18]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_36_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_111_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-571] Net u_top_coprocessor/u_aggregator/ratio_q152_i_107_n_0 was not replicated.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_107_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_250_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_260_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_500_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 10 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_496_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.647 | TNS=-24.460 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_544_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_541_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_541
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_541_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.598 | TNS=-24.117 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_498_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_494_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_494
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_494_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.584 | TNS=-24.019 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_536_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/mul_wg_div100_return[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_409_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_687_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1034_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.584 | TNS=-24.019 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1026_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1478_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.583 | TNS=-24.012 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 15 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_494_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.582 | TNS=-24.005 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_537_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 15 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_534_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.579 | TNS=-23.984 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1031_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_410_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_690_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 28 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1041_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.563 | TNS=-23.872 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_543_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_837_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1073_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1555_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2069_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.563 | TNS=-23.872 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2061_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2739_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.537 | TNS=-23.690 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1556_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1074_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1558_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 28 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2076_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.531 | TNS=-23.648 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2731_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3251_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.520 | TNS=-23.571 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1470_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1951_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.498 | TNS=-23.417 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_641_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_939_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1363_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1854_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_940_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1366_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 28 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1864_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.479 | TNS=-23.284 |
+INFO: [Physopt 32-81] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_827_n_0. Replicated 1 times.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_827_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.471 | TNS=-23.228 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_827_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_946_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1391_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1893_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2549_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3181_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.468 | TNS=-23.207 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2557_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.465 | TNS=-23.186 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1901_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.445 | TNS=-23.046 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1034_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_690_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1035_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1479_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1959_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1955_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_279_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_565_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_857_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 23 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1273_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.435 | TNS=-22.976 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_550_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_732_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1091_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1575_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2108_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1092_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1578_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 28 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2118_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.417 | TNS=-22.850 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 8 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1392_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.401 | TNS=-22.738 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_252_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_262_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_515_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_511_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_511
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_511_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.395 | TNS=-22.696 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2069_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1558_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2070_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2740_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3260_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-571] Net u_top_coprocessor/u_aggregator/ratio_q152_i_3256_n_0 was not replicated.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3256_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1163_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1220_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1747_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2377_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 23 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3054_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.386 | TNS=-22.633 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1898_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_947_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1394_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 28 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1908_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.380 | TNS=-22.591 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1857_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1366_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1858_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2495_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2491_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_696_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_775_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_821_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1199_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1688_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 23 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2264_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.367 | TNS=-22.500 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_110_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_106_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_249_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_252_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_473_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_469_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_469
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_469_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.362 | TNS=-22.465 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3180_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.359 | TNS=-22.444 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2556_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.356 | TNS=-22.423 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1900_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.343 | TNS=-22.332 |
+INFO: [Physopt 32-81] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_826_n_0. Replicated 1 times.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_826_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.332 | TNS=-22.255 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_826_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_942_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1377_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1878_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1380_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1880_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2532_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-571] Net u_top_coprocessor/u_aggregator/ratio_q152_i_2528_n_0 was not replicated.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2528_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1148_n_5. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1208_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1711_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1711_n_0. Critical path length was reduced through logic transformation on cell u_top_coprocessor/u_aggregator/ratio_q152_i_1711_comp.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1707_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.327 | TNS=-22.220 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2103_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2749_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3266_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2112_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2758_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3277_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3273_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_838_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1221_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1756_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 23 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2400_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.304 | TNS=-22.059 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1712_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1708_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1708
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1708_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.286 | TNS=-21.933 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2754_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1578_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2112_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2765_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2761_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_799_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_838_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1226_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1222_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1222
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1222_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.278 | TNS=-21.877 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3180_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2558_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3182_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3524_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 25 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3521_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.260 | TNS=-21.751 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_833_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1057_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1519_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1058_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1521_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 28 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2010_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.254 | TNS=-21.709 |
+INFO: [Physopt 32-710] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1711_n_0. Critical path length was reduced through logic transformation on cell u_top_coprocessor/u_aggregator/ratio_q152_i_1711_comp_1.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1707_n_0_repN. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.252 | TNS=-21.695 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2556_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1902_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2558_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3187_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3183_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1149_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1209_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1713_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2314_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.220 | TNS=-21.471 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1518_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2003_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.220 | TNS=-21.471 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1995_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2679_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.200 | TNS=-21.331 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1707_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2305_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_2305
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2305_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.199 | TNS=-21.324 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1764_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1764_n_0. Critical path length was reduced through logic transformation on cell u_top_coprocessor/u_aggregator/ratio_q152_i_1764_comp.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1760_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.188 | TNS=-21.247 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1871_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2522_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1880_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2524_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3172_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-571] Net u_top_coprocessor/u_aggregator/ratio_q152_i_3168_n_0 was not replicated.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3168_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1208_n_5. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1704_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2300_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2296_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_2296
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2296_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.188 | TNS=-21.247 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1487_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-571] Net u_top_coprocessor/u_aggregator/ratio_q152_i_1483_n_0 was not replicated.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1483_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_483_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_525_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_819_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-601] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_815_n_0. Net driver u_top_coprocessor/u_aggregator/ratio_q152_i_815 was replaced.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_815_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.185 | TNS=-21.226 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_525_n_5. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_279_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_568_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_568_n_0. Critical path length was reduced through logic transformation on cell u_top_coprocessor/u_aggregator/ratio_q152_i_568_comp.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_872_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.181 | TNS=-21.198 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_570_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_566_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-242] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_869_n_0. Rewired (signal push) u_top_coprocessor/u_aggregator/ratio_q152_i_868_n_4 to 1 loads. Replicated 1 times.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_869_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.178 | TNS=-21.177 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2671_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3215_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.150 | TNS=-20.981 |
+INFO: [Physopt 32-710] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1226_n_0. Critical path length was reduced through logic transformation on cell u_top_coprocessor/u_aggregator/ratio_q152_i_1226_comp.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1222_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.143 | TNS=-20.932 |
+INFO: [Physopt 32-710] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2300_n_0. Critical path length was reduced through logic transformation on cell u_top_coprocessor/u_aggregator/ratio_q152_i_2300_comp.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2296_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.142 | TNS=-20.925 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2748_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-571] Net u_top_coprocessor/u_aggregator/ratio_q152_i_2744_n_0 was not replicated.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2744_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1108_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1163_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1677_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1673_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1673
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1673_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.137 | TNS=-20.890 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1754_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1750_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1750
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1750_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.137 | TNS=-20.890 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 25 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2298_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.133 | TNS=-20.862 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2293_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 23 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2916_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.131 | TNS=-20.848 |
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1760_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1760
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1760_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.124 | TNS=-20.799 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2382_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2378_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_2378
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2378_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.121 | TNS=-20.778 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1900_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1394_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1902_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2563_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2559_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1053_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1149_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-601] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1646_n_0. Net driver u_top_coprocessor/u_aggregator/ratio_q152_i_1646 was replaced.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1646_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.107 | TNS=-20.680 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1228_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1224_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1224
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1224_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.106 | TNS=-20.673 |
+INFO: [Physopt 32-601] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1750_n_0. Net driver u_top_coprocessor/u_aggregator/ratio_q152_i_1750 was replaced.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1750_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.100 | TNS=-20.631 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 5 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1760_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.100 | TNS=-20.631 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1052_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1148_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1640_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1636_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1636
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1636_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.079 | TNS=-20.484 |
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1645_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1645
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1645_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.073 | TNS=-20.442 |
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1222_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1222
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1222_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.062 | TNS=-20.365 |
+INFO: [Physopt 32-710] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1712_n_0. Critical path length was reduced through logic transformation on cell u_top_coprocessor/u_aggregator/ratio_q152_i_1712_comp.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1708_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.061 | TNS=-20.358 |
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1204_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.056 | TNS=-20.323 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_865_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_861_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_861_n_0. Critical path length was reduced through logic transformation on cell u_top_coprocessor/u_aggregator/ratio_q152_i_861_comp.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1279_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.052 | TNS=-20.295 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2003_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1521_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2004_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2687_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2683_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1056_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1098_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1153_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1210_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1722_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2325_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 23 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2988_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.049 | TNS=-20.274 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2316_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2316_n_0. Critical path length was reduced through logic transformation on cell u_top_coprocessor/u_aggregator/ratio_q152_i_2316_comp.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2312_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.048 | TNS=-20.267 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1752_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1748_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1748
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1748_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.047 | TNS=-20.260 |
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1750_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1750
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1750_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.046 | TNS=-20.253 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_869_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_866_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_870_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1276_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1811_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2462_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3129_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3126_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/ratio_q152_n_87. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_mmio_if/w10[13].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0_i_3
+INFO: [Physopt 32-735] Processed net u_mmio_if/w10[13]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.044 | TNS=-20.239 |
+INFO: [Physopt 32-710] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1677_n_0. Critical path length was reduced through logic transformation on cell u_top_coprocessor/u_aggregator/ratio_q152_i_1677_comp.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1673_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.041 | TNS=-20.218 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2257_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2884_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2880_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2888_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3287_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3596_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3593_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_40[4].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__3_i_12
+INFO: [Physopt 32-735] Processed net u_mmio_if/mu0_40[4]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.031 | TNS=-20.148 |
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2394_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_2394
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2394_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.029 | TNS=-20.134 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2384_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2380_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_2380
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2380_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.027 | TNS=-20.120 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2317_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2313_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-242] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2958_n_0. Rewired (signal push) u_top_coprocessor/u_aggregator/ratio_q152_i_2323_n_7 to 2 loads. Replicated 1 times.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2958_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.026 | TNS=-20.113 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2310_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-134] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2954_n_0. Rewiring did not optimize the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2954_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2323_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2959_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3355_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 22 pins.
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3353_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.026 | TNS=-20.113 |
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_40[6].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__3_i_10
+INFO: [Physopt 32-735] Processed net u_mmio_if/mu0_40[6]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.024 | TNS=-20.099 |
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_40[7].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__3_i_9
+INFO: [Physopt 32-735] Processed net u_mmio_if/mu0_40[7]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.024 | TNS=-20.099 |
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_40[1].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__3_i_15
+INFO: [Physopt 32-735] Processed net u_mmio_if/mu0_40[1]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.019 | TNS=-20.064 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2319_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2955_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3343_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3645_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-571] Net u_top_coprocessor/u_aggregator/ratio_q152_i_3641_n_0 was not replicated.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3641_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_2[15].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__2_i_1
+INFO: [Physopt 32-735] Processed net u_mmio_if/mu0_2[15]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.018 | TNS=-20.057 |
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1227_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1223_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1223
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1223_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.018 | TNS=-20.057 |
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_40[3].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__3_i_13
+INFO: [Physopt 32-735] Processed net u_mmio_if/mu0_40[3]. Optimization improves timing on the net.
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-3.016 | TNS=-20.043 |
+INFO: [Common 17-14] Message 'Physopt 32-619' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/D[4]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net clk_div_20/inst/clk_out1_clk_wiz_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/G_out[4]_i_2_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/sat_u8[4]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/A[3]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/ratio_q151. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/G_out4_i_18_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/G_out4_n_90. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/B[10]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_34_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_94_n_0_repN. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/sum_wg_9[15]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_126_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_122_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_251_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_543_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_827_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_946_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2556_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1902_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3187_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3183_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1149_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2310_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2954_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2319_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3645_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3641_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/ratio_q152_n_87. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_2[14].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__2_i_2
+INFO: [Physopt 32-735] Processed net u_mmio_if/mu0_2[14]. Optimization improves timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_127_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_123_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_262_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_550_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_732_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1091_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3266_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2112_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3277_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3273_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_838_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1763_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1759_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2405_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_2405
+INFO: [Physopt 32-735] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2405_n_0. Optimization improves timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_260_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_536_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/mul_wg_div100_return[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_409_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1034_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_690_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1487_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1483_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_525_n_5. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_570_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_566_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_869_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_866_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3129_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3126_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_mmio_if/w10[3].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0_i_13
+INFO: [Physopt 32-735] Processed net u_mmio_if/w10[3]. Optimization improves timing on the net.
+INFO: [Common 17-14] Message 'Physopt 32-735' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_826_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_942_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2522_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1880_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3172_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3168_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1208_n_5. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2296_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2921_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_2921
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1878_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1380_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2532_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2528_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1052_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1636_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2185_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_2185
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_641_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_939_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1857_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1366_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2495_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2491_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_696_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2884_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2880_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2888_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3596_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3593_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_40[0].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__3_i_16
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2108_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1092_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2119_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2115_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_755_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1171_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1167_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1167
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2298_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2294_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_2294
+INFO: [Physopt 32-663] Processed net u_mmio_if/w10[9].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0_i_7
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 15 pins.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_837_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1073_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2069_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1558_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3260_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3256_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1163_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3424_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3420_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3428_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3830_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3827_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_42[13].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__6_i_3
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1762_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1758_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1758
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_42[15].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__6_i_1
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_40[9].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__3_i_7
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2397_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3092_n_5. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3465_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3461_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_1[10].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__5_i_6
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_40[8].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__3_i_8
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_42[6].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__6_i_10
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_42[11].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__6_i_5
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2921_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_2921
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_42[3].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__6_i_13
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1148_n_5. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 24 pins.
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_42[4].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__6_i_12
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_40[11].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__3_i_5
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_40[13].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__3_i_3
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_1[0].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__5_i_16
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1706_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1706
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.026 . Memory (MB): peak = 1924.465 ; gain = 0.000
+Phase 3 Critical Path Optimization | Checksum: 237b7ea3c
+
+Time (s): cpu = 00:00:35 ; elapsed = 00:00:20 . Memory (MB): peak = 1924.465 ; gain = 10.062
+
+Phase 4 Critical Path Optimization
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/D[4]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net clk_div_20/inst/clk_out1_clk_wiz_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/G_out[4]_i_2_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/sat_u8[4]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/A[3]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/ratio_q151. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/G_out4_i_18_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/G_out4_n_90. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/B[10]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_34_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_94_n_0_repN. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/sum_wg_9[15]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_38_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_127_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-571] Net u_top_coprocessor/u_aggregator/ratio_q152_i_123_n_0 was not replicated.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_123_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_262_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_272_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_550_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_732_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1091_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1575_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2103_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2749_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3266_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2112_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2758_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3277_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3273_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_838_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1221_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1756_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-571] Net u_top_coprocessor/u_aggregator/ratio_q152_i_2397_n_0 was not replicated.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2397_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3092_n_5. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3465_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-571] Net u_top_coprocessor/u_aggregator/ratio_q152_i_3461_n_0 was not replicated.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3461_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/ratio_q152_n_87. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_1[4].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__5_i_12
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_126_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_122_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_251_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_261_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_271_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_543_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_827_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_946_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1391_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1893_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2556_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1902_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2558_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3187_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3183_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1149_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1209_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1713_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2310_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2310_n_0. Critical path length was reduced through logic transformation on cell u_top_coprocessor/u_aggregator/ratio_q152_i_2310_comp.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_826_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_942_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1377_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1878_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1380_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1880_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2532_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-571] Net u_top_coprocessor/u_aggregator/ratio_q152_i_2528_n_0 was not replicated.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2528_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1148_n_5. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1208_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1708_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-710] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1708_n_0. Critical path length was reduced through logic transformation on cell u_top_coprocessor/u_aggregator/ratio_q152_i_1708_comp_2.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_260_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_270_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_536_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_833_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1057_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1518_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2003_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1521_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2004_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2687_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2683_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1056_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1098_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1153_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1210_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1730_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1726_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1726
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_1[5].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__5_i_11
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_641_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_939_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1363_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1857_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1366_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1858_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2495_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2491_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_696_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_775_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_821_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1199_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1688_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2257_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2884_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2880_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2888_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3287_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3596_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3593_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_40[12].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__3_i_4
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1871_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2522_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1880_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2524_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3172_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-571] Net u_top_coprocessor/u_aggregator/ratio_q152_i_3168_n_0 was not replicated.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3168_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1208_n_5. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1704_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2296_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_2296
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_1[7].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__5_i_9
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_1[1].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__5_i_15
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_1[6].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__5_i_10
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 26 pins.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/D[4]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net clk_div_20/inst/clk_out1_clk_wiz_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/G_out[4]_i_2_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/sat_u8[4]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/A[3]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/ratio_q151. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/G_out4_i_18_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/G_out4_n_90. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/B[10]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_34_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_94_n_0_repN. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/sum_wg_9[15]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_127_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_123_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_262_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_550_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_826_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_942_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1878_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1380_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2532_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2528_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1052_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1637_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 18 pins.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_732_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1091_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3266_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2112_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3277_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3273_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_838_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2397_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3092_n_5. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3465_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3461_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_defuzz/ratio_q152_n_87. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_1[2].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__5_i_14
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_1[11].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__5_i_5
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_260_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_536_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_641_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_939_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1857_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1366_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2495_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2491_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_696_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2884_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2880_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2888_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3596_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3593_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_40[5].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__3_i_11
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_126_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_122_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_251_n_7. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_543_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_837_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1073_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_2069_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1558_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3260_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3256_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1163_n_4. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3424_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3420_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3428_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3830_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3827_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_42[14].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__6_i_2
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/mul_wg_div100_return[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_409_n_3. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1034_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_690_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1487_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1483_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_525_n_5. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_570_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_566_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_869_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_866_n_6. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3129_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_3126_n_0. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_mmio_if/w10[2].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0_i_14
+INFO: [Physopt 32-663] Processed net u_mmio_if/w10[7].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0_i_9
+INFO: [Physopt 32-702] Processed net u_mmio_if/mu0_40[15]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_rules9/mu0_0[0]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-702] Processed net u_mmio_if/mu0_7[1]. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_mmio_if/u_top_coprocessor/muD_zero[3].  Re-placed instance u_mmio_if/mul_wg_div100_return0__0_i_29
+INFO: [Physopt 32-663] Processed net u_mmio_if/mu0_42[9].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0__6_i_7
+INFO: [Physopt 32-663] Processed net u_mmio_if/w10[12].  Re-placed instance u_mmio_if/u_rules9/mul_wg_div100_return0_i_4
+INFO: [Physopt 32-608] Optimized 1 net.  Swapped 17 pins.
+INFO: [Physopt 32-702] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1148_n_5. Optimizations did not improve timing on the net.
+INFO: [Physopt 32-663] Processed net u_top_coprocessor/u_aggregator/ratio_q152_i_1708_n_0.  Re-placed instance u_top_coprocessor/u_aggregator/ratio_q152_i_1708_comp_2
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.029 . Memory (MB): peak = 1924.469 ; gain = 0.000
+Phase 4 Critical Path Optimization | Checksum: 105a8bc0c
+
+Time (s): cpu = 00:00:49 ; elapsed = 00:00:28 . Memory (MB): peak = 1924.469 ; gain = 10.066
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.003 . Memory (MB): peak = 1924.469 ; gain = 0.000
+INFO: [Physopt 32-603] Post Physical Optimization Timing Summary | WNS=-2.894 | TNS=-19.189 |
+
+Summary of Physical Synthesis Optimizations
+============================================
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+|  Optimization   |  WNS Gain (ns)  |  TNS Gain (ns)  |  Added Cells  |  Removed Cells  |  Optimized Cells/Nets  |  Dont Touch  |  Iterations  |  Elapsed   |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+|  DSP Register   |          0.000  |          0.000  |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Critical Path  |          1.728  |         12.096  |            4  |              0  |                   146  |           0  |           2  |  00:00:27  |
+|  Total          |          1.728  |         12.096  |            4  |              0  |                   146  |           0  |           3  |  00:00:27  |
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.003 . Memory (MB): peak = 1924.469 ; gain = 0.000
+Ending Physical Synthesis Task | Checksum: 1ae220f33
+
+Time (s): cpu = 00:00:49 ; elapsed = 00:00:28 . Memory (MB): peak = 1924.469 ; gain = 10.066
+INFO: [Common 17-83] Releasing license: Implementation
+1015 Infos, 0 Warnings, 1 Critical Warnings and 0 Errors encountered.
+phys_opt_design completed successfully
+phys_opt_design: Time (s): cpu = 00:00:50 ; elapsed = 00:00:28 . Memory (MB): peak = 1924.469 ; gain = 14.508
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.012 . Memory (MB): peak = 1932.270 ; gain = 0.004
+Wrote PlaceDB: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.506 . Memory (MB): peak = 1934.195 ; gain = 1.926
+Wrote PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1934.195 ; gain = 0.000
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Wrote RouteStorage: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.021 . Memory (MB): peak = 1934.195 ; gain = 0.000
+Wrote Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.009 . Memory (MB): peak = 1934.195 ; gain = 0.000
+Wrote Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.006 . Memory (MB): peak = 1934.195 ; gain = 0.000
+Write Physdb Complete: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.555 . Memory (MB): peak = 1934.195 ; gain = 1.926
+INFO: [Common 17-1381] The checkpoint 'C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/impl_1/top_wukong_physopt.dcp' has been generated.
+Command: route_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7a100t'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7a100t'
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+
+Starting Routing Task
+INFO: [Route 35-254] Multithreading enabled for route_design using a maximum of 2 CPUs
+
+Phase 1 Build RT Design
+Checksum: PlaceDB: 202b83be ConstDB: 0 ShapeSum: 8848cfac RouteDB: b1d25f96
+Post Restoration Checksum: NetGraph: 950bd296 | NumContArr: 237ad23 | Constraints: c2a8fa9d | Timing: c2a8fa9d
+Phase 1 Build RT Design | Checksum: 21c9574f3
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:32 . Memory (MB): peak = 2047.516 ; gain = 103.875
+
+Phase 2 Router Initialization
+
+Phase 2.1 Fix Topology Constraints
+Phase 2.1 Fix Topology Constraints | Checksum: 21c9574f3
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:32 . Memory (MB): peak = 2047.516 ; gain = 103.875
+
+Phase 2.2 Pre Route Cleanup
+Phase 2.2 Pre Route Cleanup | Checksum: 21c9574f3
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:32 . Memory (MB): peak = 2047.516 ; gain = 103.875
+ Number of Nodes with overlaps = 0
+
+Phase 2.3 Update Timing
+Phase 2.3 Update Timing | Checksum: 184e88ff8
+
+Time (s): cpu = 00:00:38 ; elapsed = 00:00:33 . Memory (MB): peak = 2091.832 ; gain = 148.191
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-2.549 | TNS=-16.785| WHS=-0.120 | THS=-2.000 |
+
+
+Phase 2.4 Soft Constraint Pins - Fast Budgeting
+Phase 2.4 Soft Constraint Pins - Fast Budgeting | Checksum: 271d85db7
+
+Time (s): cpu = 00:00:39 ; elapsed = 00:00:34 . Memory (MB): peak = 2129.098 ; gain = 185.457
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 0 %
+  Global Horizontal Routing Utilization  = 0 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 5927
+    (Failed Nets is the sum of unrouted and partially routed nets)
+  Number of Unrouted Nets             = 5927
+  Number of Partially Routed Nets     = 0
+  Number of Node Overlaps             = 0
+
+Phase 2 Router Initialization | Checksum: 271d85db7
+
+Time (s): cpu = 00:00:39 ; elapsed = 00:00:34 . Memory (MB): peak = 2129.098 ; gain = 185.457
+
+Phase 3 Global Routing
+Phase 3 Global Routing | Checksum: 271d85db7
+
+Time (s): cpu = 00:00:39 ; elapsed = 00:00:34 . Memory (MB): peak = 2129.098 ; gain = 185.457
+
+Phase 4 Initial Routing
+
+Phase 4.1 Initial Net Routing Pass
+Phase 4.1 Initial Net Routing Pass | Checksum: 211c56fdc
+
+Time (s): cpu = 00:00:45 ; elapsed = 00:00:36 . Memory (MB): peak = 2129.098 ; gain = 185.457
+Phase 4 Initial Routing | Checksum: 211c56fdc
+
+Time (s): cpu = 00:00:45 ; elapsed = 00:00:37 . Memory (MB): peak = 2129.098 ; gain = 185.457
+
+Phase 5 Rip-up And Reroute
+
+Phase 5.1 Global Iteration 0
+ Number of Nodes with overlaps = 8506
+ Number of Nodes with overlaps = 3543
+ Number of Nodes with overlaps = 1807
+ Number of Nodes with overlaps = 732
+ Number of Nodes with overlaps = 232
+ Number of Nodes with overlaps = 90
+ Number of Nodes with overlaps = 30
+ Number of Nodes with overlaps = 10
+ Number of Nodes with overlaps = 6
+ Number of Nodes with overlaps = 5
+ Number of Nodes with overlaps = 3
+ Number of Nodes with overlaps = 1
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-6.934 | TNS=-47.294| WHS=N/A    | THS=N/A    |
+
+Phase 5.1 Global Iteration 0 | Checksum: 1d04471de
+
+Time (s): cpu = 00:02:28 ; elapsed = 00:01:34 . Memory (MB): peak = 2139.832 ; gain = 196.191
+
+Phase 5.2 Global Iteration 1
+ Number of Nodes with overlaps = 4562
+ Number of Nodes with overlaps = 2069
+ Number of Nodes with overlaps = 1108
+ Number of Nodes with overlaps = 612
+ Number of Nodes with overlaps = 223
+ Number of Nodes with overlaps = 87
+ Number of Nodes with overlaps = 43
+ Number of Nodes with overlaps = 17
+ Number of Nodes with overlaps = 15
+ Number of Nodes with overlaps = 5
+ Number of Nodes with overlaps = 3
+ Number of Nodes with overlaps = 1
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-6.691 | TNS=-44.646| WHS=N/A    | THS=N/A    |
+
+Phase 5.2 Global Iteration 1 | Checksum: 292d5c0e3
+
+Time (s): cpu = 00:04:00 ; elapsed = 00:02:28 . Memory (MB): peak = 2139.832 ; gain = 196.191
+
+Phase 5.3 Global Iteration 2
+ Number of Nodes with overlaps = 4482
+Phase 5.3 Global Iteration 2 | Checksum: 1e2a6c553
+
+Time (s): cpu = 00:04:05 ; elapsed = 00:02:34 . Memory (MB): peak = 2139.832 ; gain = 196.191
+Phase 5 Rip-up And Reroute | Checksum: 1e2a6c553
+
+Time (s): cpu = 00:04:05 ; elapsed = 00:02:34 . Memory (MB): peak = 2139.832 ; gain = 196.191
+
+Phase 6 Delay and Skew Optimization
+
+Phase 6.1 Delay CleanUp
+
+Phase 6.1.1 Update Timing
+Phase 6.1.1 Update Timing | Checksum: 22eb1458a
+
+Time (s): cpu = 00:04:06 ; elapsed = 00:02:34 . Memory (MB): peak = 2139.832 ; gain = 196.191
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-6.604 | TNS=-44.037| WHS=N/A    | THS=N/A    |
+
+ Number of Nodes with overlaps = 0
+Phase 6.1 Delay CleanUp | Checksum: 23c83a10b
+
+Time (s): cpu = 00:04:06 ; elapsed = 00:02:34 . Memory (MB): peak = 2139.832 ; gain = 196.191
+
+Phase 6.2 Clock Skew Optimization
+Phase 6.2 Clock Skew Optimization | Checksum: 23c83a10b
+
+Time (s): cpu = 00:04:06 ; elapsed = 00:02:34 . Memory (MB): peak = 2139.832 ; gain = 196.191
+Phase 6 Delay and Skew Optimization | Checksum: 23c83a10b
+
+Time (s): cpu = 00:04:06 ; elapsed = 00:02:34 . Memory (MB): peak = 2139.832 ; gain = 196.191
+
+Phase 7 Post Hold Fix
+
+Phase 7.1 Hold Fix Iter
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=-6.549 | TNS=-43.652| WHS=0.157  | THS=0.000  |
+
+Phase 7.1 Hold Fix Iter | Checksum: 262e425c6
+
+Time (s): cpu = 00:04:06 ; elapsed = 00:02:35 . Memory (MB): peak = 2139.832 ; gain = 196.191
+Phase 7 Post Hold Fix | Checksum: 262e425c6
+
+Time (s): cpu = 00:04:06 ; elapsed = 00:02:35 . Memory (MB): peak = 2139.832 ; gain = 196.191
+
+Phase 8 Route finalize
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 1.70893 %
+  Global Horizontal Routing Utilization  = 3.37774 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 0
+    (Failed Nets is the sum of unrouted and partially routed nets)
+  Number of Unrouted Nets             = 0
+  Number of Partially Routed Nets     = 0
+  Number of Node Overlaps             = 0
+
+
+--GLOBAL Congestion:
+Utilization threshold used for congestion level computation: 0.85
+Congestion Report
+North Dir 1x1 Area, Max Cong = 68.4685%, No Congested Regions.
+South Dir 1x1 Area, Max Cong = 70.2703%, No Congested Regions.
+East Dir 1x1 Area, Max Cong = 92.6471%, Congestion bounded by tiles (Lower Left Tile -> Upper Right Tile):
+   INT_L_X10Y9 -> INT_L_X10Y9
+   INT_R_X9Y8 -> INT_R_X9Y8
+   INT_R_X11Y7 -> INT_R_X11Y7
+   INT_R_X9Y6 -> INT_R_X9Y6
+   INT_L_X16Y4 -> INT_L_X16Y4
+West Dir 1x1 Area, Max Cong = 92.6471%, Congestion bounded by tiles (Lower Left Tile -> Upper Right Tile):
+   INT_R_X31Y15 -> INT_R_X31Y15
+   INT_R_X33Y15 -> INT_R_X33Y15
+   INT_R_X35Y15 -> INT_R_X35Y15
+   INT_R_X29Y11 -> INT_R_X29Y11
+   INT_R_X43Y11 -> INT_R_X43Y11
+
+------------------------------
+Reporting congestion hotspots
+------------------------------
+Direction: North
+----------------
+Congested clusters found at Level 0
+Effective congestion level: 0 Aspect Ratio: 1 Sparse Ratio: 0
+Direction: South
+----------------
+Congested clusters found at Level 0
+Effective congestion level: 0 Aspect Ratio: 1 Sparse Ratio: 0
+Direction: East
+----------------
+Congested clusters found at Level 0
+Effective congestion level: 1 Aspect Ratio: 1 Sparse Ratio: 0.75
+Direction: West
+----------------
+Congested clusters found at Level 0
+Effective congestion level: 0 Aspect Ratio: 1 Sparse Ratio: 1
+
+Phase 8 Route finalize | Checksum: 262e425c6
+
+Time (s): cpu = 00:04:06 ; elapsed = 00:02:35 . Memory (MB): peak = 2139.832 ; gain = 196.191
+
+Phase 9 Verifying routed nets
+
+ Verification completed successfully
+Phase 9 Verifying routed nets | Checksum: 262e425c6
+
+Time (s): cpu = 00:04:07 ; elapsed = 00:02:35 . Memory (MB): peak = 2139.832 ; gain = 196.191
+
+Phase 10 Depositing Routes
+Phase 10 Depositing Routes | Checksum: 1a4f72d55
+
+Time (s): cpu = 00:04:07 ; elapsed = 00:02:35 . Memory (MB): peak = 2139.832 ; gain = 196.191
+
+Phase 11 Post Process Routing
+Phase 11 Post Process Routing | Checksum: 1a4f72d55
+
+Time (s): cpu = 00:04:07 ; elapsed = 00:02:35 . Memory (MB): peak = 2139.832 ; gain = 196.191
+
+Phase 12 Post Router Timing
+INFO: [Route 35-57] Estimated Timing Summary | WNS=-6.549 | TNS=-43.652| WHS=0.157  | THS=0.000  |
+
+WARNING: [Route 35-328] Router estimated timing not met.
+Resolution: For a complete and accurate timing signoff, report_timing_summary must be run after route_design. Alternatively, route_design can be run with the -timing_summary option to enable a complete timing signoff at the end of route_design.
+Phase 12 Post Router Timing | Checksum: 1a4f72d55
+
+Time (s): cpu = 00:04:07 ; elapsed = 00:02:35 . Memory (MB): peak = 2139.832 ; gain = 196.191
+Total Elapsed time in route_design: 155.15 secs
+
+Phase 13 Post-Route Event Processing
+Phase 13 Post-Route Event Processing | Checksum: 136a9709d
+
+Time (s): cpu = 00:04:07 ; elapsed = 00:02:35 . Memory (MB): peak = 2139.832 ; gain = 196.191
+INFO: [Route 35-16] Router Completed Successfully
+Ending Routing Task | Checksum: 136a9709d
+
+Time (s): cpu = 00:04:07 ; elapsed = 00:02:35 . Memory (MB): peak = 2139.832 ; gain = 196.191
+
+Routing Is Done.
+INFO: [Common 17-83] Releasing license: Implementation
+1030 Infos, 1 Warnings, 1 Critical Warnings and 0 Errors encountered.
+route_design completed successfully
+route_design: Time (s): cpu = 00:04:08 ; elapsed = 00:02:36 . Memory (MB): peak = 2139.832 ; gain = 205.637
+INFO: [Vivado 12-24828] Executing command : report_drc -file top_wukong_drc_routed.rpt -pb top_wukong_drc_routed.pb -rpx top_wukong_drc_routed.rpx
+Command: report_drc -file top_wukong_drc_routed.rpt -pb top_wukong_drc_routed.pb -rpx top_wukong_drc_routed.rpx
+INFO: [IP_Flow 19-1839] IP Catalog is up to date.
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Vivado_Tcl 2-168] The results of DRC are in file C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/impl_1/top_wukong_drc_routed.rpt.
+report_drc completed successfully
+INFO: [Vivado 12-24828] Executing command : report_methodology -file top_wukong_methodology_drc_routed.rpt -pb top_wukong_methodology_drc_routed.pb -rpx top_wukong_methodology_drc_routed.rpx
+Command: report_methodology -file top_wukong_methodology_drc_routed.rpt -pb top_wukong_methodology_drc_routed.pb -rpx top_wukong_methodology_drc_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [DRC 23-133] Running Methodology with 2 threads
+INFO: [Vivado_Tcl 2-1520] The results of Report Methodology are in file C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/impl_1/top_wukong_methodology_drc_routed.rpt.
+report_methodology completed successfully
+INFO: [Vivado 12-24828] Executing command : report_timing_summary -max_paths 10 -routable_nets -report_unconstrained -file top_wukong_timing_summary_routed.rpt -pb top_wukong_timing_summary_routed.pb -rpx top_wukong_timing_summary_routed.rpx -warn_on_violation 
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 2 CPUs
+CRITICAL WARNING: [Timing 38-282] The design failed to meet the timing requirements. Please see the timing summary report for details on the timing violations.
+INFO: [Vivado 12-24838] Running report commands "report_incremental_reuse, report_route_status" in parallel.
+Running report generation with 2 threads.
+INFO: [Vivado 12-24828] Executing command : report_incremental_reuse -file top_wukong_incremental_reuse_routed.rpt
+INFO: [Vivado_Tcl 4-1062] Incremental flow is disabled. No incremental reuse Info to report.
+INFO: [Vivado 12-24828] Executing command : report_route_status -file top_wukong_route_status.rpt -pb top_wukong_route_status.pb
+INFO: [Vivado 12-24828] Executing command : report_power -file top_wukong_power_routed.rpt -pb top_wukong_power_summary_routed.pb -rpx top_wukong_power_routed.rpx
+Command: report_power -file top_wukong_power_routed.rpt -pb top_wukong_power_summary_routed.pb -rpx top_wukong_power_routed.rpx
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+1047 Infos, 1 Warnings, 2 Critical Warnings and 0 Errors encountered.
+report_power completed successfully
+INFO: [Vivado 12-24828] Executing command : report_clock_utilization -file top_wukong_clock_utilization_routed.rpt
+INFO: [Vivado 12-24828] Executing command : report_bus_skew -warn_on_violation -file top_wukong_bus_skew_routed.rpt -pb top_wukong_bus_skew_routed.pb -rpx top_wukong_bus_skew_routed.rpx
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 2 CPUs
+generate_parallel_reports: Time (s): cpu = 00:00:19 ; elapsed = 00:00:11 . Memory (MB): peak = 2150.613 ; gain = 10.781
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.010 . Memory (MB): peak = 2150.613 ; gain = 0.000
+Wrote PlaceDB: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.476 . Memory (MB): peak = 2150.613 ; gain = 0.000
+Wrote PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2150.613 ; gain = 0.000
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Wrote RouteStorage: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.071 . Memory (MB): peak = 2150.613 ; gain = 0.000
+Wrote Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.010 . Memory (MB): peak = 2150.613 ; gain = 0.000
+Wrote Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.006 . Memory (MB): peak = 2150.613 ; gain = 0.000
+Write Physdb Complete: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.573 . Memory (MB): peak = 2150.613 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/impl_1/top_wukong_routed.dcp' has been generated.
+INFO: [Common 17-206] Exiting Vivado at Wed Nov  5 17:47:28 2025...

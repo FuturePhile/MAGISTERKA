@@ -1,0 +1,318 @@
+m255
+K4
+z2
+Z0 !s12c _opt
+Z1 !s99 nomlopt
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+!s11f vlog 2024.3 2024.09, Sep 10 2024
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/Users/Henri/AppData/Local/quartus
+T_opt
+!s110 1762363297
+VmSXh;<KA5UnU5FJ<<2HM_3
+04 18 4 work tb_top_coprocessor fast 0
+=1-fc4482a13a24-690b87a0-bf-6928
+R1
+!s12f OEM100
+!s12b OEM100
+!s124 OEM10U14 
+!s135 nogc
+o-quiet -auto_acc_if_foreign -work work
+Z2 tCvgOpt 0
+n@_opt
+OL;O;2024.3;79
+vaggregator
+2C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/aggregator.sv
+Z3 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
+Z4 !s110 1762363283
+!i10b 1
+!s100 8aMl8I1l;KniRml8zAH@[3
+IOKIiMFVkLQAJQ7R]c@7h80
+S1
+Z5 dC:/Users/Henri/Desktop/mgr/MGR_top_coproc_final
+Z6 w1761872552
+8C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/aggregator.sv
+FC:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/aggregator.sv
+!i122 77
+L0 5 112
+Z7 VDg1SIo80bB@j0V0VzS_@n1
+Z8 OL;L;2024.3;79
+r1
+!s85 0
+31
+Z9 !s108 1762363283.000000
+!s107 C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/aggregator.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/aggregator.sv|
+!i113 0
+Z10 o-work work -sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R2
+vdefuzz
+2C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/defuzz.sv
+R3
+R4
+!i10b 1
+!s100 T>T?j8G6?TI9iFhNUKX6f2
+I7O>M`cAHHVP6Men0jSo_51
+S1
+R5
+R6
+8C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/defuzz.sv
+FC:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/defuzz.sv
+!i122 78
+L0 4 27
+R7
+R8
+r1
+!s85 0
+31
+R9
+!s107 C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/defuzz.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/defuzz.sv|
+!i113 0
+R10
+R2
+vdt_estimator
+2C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/dt_estimator.sv
+R3
+R4
+!i10b 1
+!s100 fhG@K2RafR=Q@D_djk_hi2
+I[[>WeDX>0jXil2fjFIVC>0
+S1
+R5
+R6
+8C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/dt_estimator.sv
+FC:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/dt_estimator.sv
+!i122 79
+L0 7 75
+R7
+R8
+r1
+!s85 0
+31
+R9
+!s107 C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/dt_estimator.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/dt_estimator.sv|
+!i113 0
+R10
+R2
+vfuzzifier_dT
+2C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/fuzzifier_dT.sv
+R3
+Z11 !s110 1762363284
+!i10b 1
+!s100 9:]k?GR]jQHQgC4ToZY8U0
+Im]c;T=aPhPX_HkeTXZZPO1
+S1
+R5
+R6
+8C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/fuzzifier_dT.sv
+FC:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/fuzzifier_dT.sv
+!i122 80
+Z12 L0 3 24
+R7
+R8
+r1
+!s85 0
+31
+Z13 !s108 1762363284.000000
+!s107 C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/fuzzifier_dT.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/fuzzifier_dT.sv|
+!i113 0
+R10
+R2
+nfuzzifier_d@t
+vfuzzifier_T
+2C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/fuzzifier_T.sv
+R3
+R11
+!i10b 1
+!s100 jjiSe[FM;`I@f6YS7JC5J3
+I>]NYmF89?F2YTAP:63Njc1
+S1
+R5
+R6
+8C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/fuzzifier_T.sv
+FC:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/fuzzifier_T.sv
+!i122 81
+R12
+R7
+R8
+r1
+!s85 0
+31
+R13
+!s107 C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/fuzzifier_T.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/fuzzifier_T.sv|
+!i113 0
+R10
+R2
+nfuzzifier_@t
+vmmio_if
+2C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/mmio_if.sv
+R3
+R11
+!i10b 1
+!s100 `ZUC8UM7?8==iEgR:kTYK3
+Ib`J[6Qk2`MdK?:UOF425c2
+S1
+R5
+R6
+8C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/mmio_if.sv
+FC:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/mmio_if.sv
+!i122 82
+L0 11 151
+R7
+R8
+r1
+!s85 0
+31
+R13
+!s107 C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/mmio_if.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/mmio_if.sv|
+!i113 0
+R10
+R2
+vrules9
+2C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/rules9.sv
+R3
+R11
+!i10b 1
+!s100 H45Wn4n3<dC=fOLkG4[We3
+Ia<lfVA<Lh6UKVb]ZWk2?I1
+S1
+R5
+R6
+8C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/rules9.sv
+FC:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/rules9.sv
+!i122 83
+L0 4 31
+R7
+R8
+r1
+!s85 0
+31
+R13
+!s107 C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/rules9.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/rules9.sv|
+!i113 0
+R10
+R2
+vtb_top_coprocessor
+2C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv_tb/tb_top_coprocessor.sv
+R3
+Z14 !s110 1762363285
+!i10b 1
+!s100 j:I?VzWZ1QibPQnTmFR`A0
+IKQzEP>0i3XJ^Rg7EE:GQ;1
+S1
+R5
+w1762333195
+8C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv_tb/tb_top_coprocessor.sv
+FC:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv_tb/tb_top_coprocessor.sv
+!i122 87
+L0 5 1062
+R7
+R8
+r1
+!s85 0
+31
+Z15 !s108 1762363285.000000
+!s107 C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv_tb/tb_top_coprocessor.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv_tb/tb_top_coprocessor.sv|
+!i113 0
+R10
+R2
+vtop
+2C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/top.sv
+R3
+R11
+!i10b 1
+!s100 bSNjbmKefV>m_0d>ZA>DW0
+ImIFcHWBiefSdj?lYiXL<I3
+S1
+R5
+R6
+8C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/top.sv
+FC:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/top.sv
+!i122 84
+L0 2 128
+R7
+R8
+r1
+!s85 0
+31
+R13
+!s107 C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/top.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/top.sv|
+!i113 0
+R10
+R2
+vtop_coprocessor
+2C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/top_coprocessor.sv
+R3
+R14
+!i10b 1
+!s100 an@5>Xlni1i;QA?QFL]?B0
+I1CQfh<?:`cWNHg>YGJmAl0
+S1
+R5
+R6
+8C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/top_coprocessor.sv
+FC:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/top_coprocessor.sv
+!i122 85
+L0 4 227
+R7
+R8
+r1
+!s85 0
+31
+R13
+!s107 C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/top_coprocessor.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/top_coprocessor.sv|
+!i113 0
+R10
+R2
+vtrapezoid
+2C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/trapezoid.sv
+R3
+R14
+!i10b 1
+!s100 Nl32MT183`gn_;Y>Xnz5z2
+I]GWZl?=SPlAzgS^LRFk`B0
+S1
+R5
+R6
+8C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/trapezoid.sv
+FC:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/trapezoid.sv
+!i122 86
+L0 4 45
+R7
+R8
+r1
+!s85 0
+31
+R15
+!s107 C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/trapezoid.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/trapezoid.sv|
+!i113 0
+R10
+R2

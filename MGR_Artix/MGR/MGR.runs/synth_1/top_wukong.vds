@@ -1,0 +1,384 @@
+#-----------------------------------------------------------
+# Vivado v2025.1.1 (64-bit)
+# SW Build 6233196 on Thu Sep 11 21:27:30 MDT 2025
+# IP Build 6232796 on Fri Sep 12 01:46:16 MDT 2025
+# SharedData Build 6233195 on Thu Sep 11 17:56:43 MDT 2025
+# Start of session at: Wed Nov  5 17:58:33 2025
+# Process ID         : 29436
+# Current directory  : C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/synth_1
+# Command line       : vivado.exe -log top_wukong.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source top_wukong.tcl
+# Log file           : C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/synth_1/top_wukong.vds
+# Journal file       : C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/synth_1\vivado.jou
+# Running On         : LAPTOP-RN2A8KVB
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 19045
+# Processor Detail   : 11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz
+# CPU Frequency      : 2803 MHz
+# CPU Physical cores : 4
+# CPU Logical cores  : 8
+# Host memory        : 16965 MB
+# Swap memory        : 7464 MB
+# Total Virtual      : 24429 MB
+# Available Virtual  : 8158 MB
+#-----------------------------------------------------------
+source top_wukong.tcl -notrace
+create_project: Time (s): cpu = 00:00:08 ; elapsed = 00:00:05 . Memory (MB): peak = 495.340 ; gain = 214.418
+Command: read_checkpoint -auto_incremental -incremental C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.srcs/utils_1/imports/synth_1/top_wukong.dcp
+INFO: [Vivado 12-5825] Read reference checkpoint from C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.srcs/utils_1/imports/synth_1/top_wukong.dcp for incremental synthesis
+INFO: [Vivado 12-7989] Please ensure there are no constraint changes
+Command: synth_design -top top_wukong -part xc7a100tfgg676-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a100t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a100t'
+INFO: [Device 21-403] Loading part xc7a100tfgg676-1
+INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
+INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 22244
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1198.020 ; gain = 488.809
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'top_wukong' [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/top_wukong_mmio.v:3]
+INFO: [Synth 8-6157] synthesizing module 'clk_wiz_0' [C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/synth_1/.Xil/Vivado-29436-LAPTOP-RN2A8KVB/realtime/clk_wiz_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'clk_wiz_0' (0#1) [C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/synth_1/.Xil/Vivado-29436-LAPTOP-RN2A8KVB/realtime/clk_wiz_0_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'mmio_if' [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/mmio_if.v:15]
+INFO: [Synth 8-6155] done synthesizing module 'mmio_if' (0#1) [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/mmio_if.v:15]
+INFO: [Synth 8-6157] synthesizing module 'top_coprocessor' [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/top_coprocessor.v:4]
+INFO: [Synth 8-6157] synthesizing module 'dt_estimator' [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/dt_estimator.v:7]
+INFO: [Synth 8-6155] done synthesizing module 'dt_estimator' (0#1) [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/dt_estimator.v:7]
+INFO: [Synth 8-6157] synthesizing module 'fuzzifier_T' [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/fuzzifier_T.v:3]
+INFO: [Synth 8-6157] synthesizing module 'trapezoid' [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/trapezoid.v:3]
+INFO: [Synth 8-3876] $readmem data file 'inv_q15.hex' is read successfully [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/trapezoid.v:16]
+INFO: [Synth 8-6155] done synthesizing module 'trapezoid' (0#1) [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/trapezoid.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'fuzzifier_T' (0#1) [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/fuzzifier_T.v:3]
+INFO: [Synth 8-6157] synthesizing module 'fuzzifier_dT' [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/fuzzifier_dT.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'fuzzifier_dT' (0#1) [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/fuzzifier_dT.v:3]
+INFO: [Synth 8-6157] synthesizing module 'rules9' [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/rules9.v:4]
+INFO: [Synth 8-6155] done synthesizing module 'rules9' (0#1) [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/rules9.v:4]
+INFO: [Synth 8-6157] synthesizing module 'aggregator' [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/aggregator.v:5]
+INFO: [Synth 8-6155] done synthesizing module 'aggregator' (0#1) [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/aggregator.v:5]
+INFO: [Synth 8-6157] synthesizing module 'defuzz' [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/defuzz.v:4]
+INFO: [Synth 8-3876] $readmem data file 'inv_q15.hex' is read successfully [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/defuzz.v:17]
+INFO: [Synth 8-6155] done synthesizing module 'defuzz' (0#1) [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/defuzz.v:4]
+INFO: [Synth 8-6155] done synthesizing module 'top_coprocessor' (0#1) [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/top_coprocessor.v:4]
+INFO: [Synth 8-6155] done synthesizing module 'top_wukong' (0#1) [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/top_wukong_mmio.v:3]
+WARNING: [Synth 8-6014] Unused sequential element rd_active_reg was removed.  [C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/v/top_wukong_mmio.v:65]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 1315.473 ; gain = 606.262
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 1315.473 ; gain = 606.262
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 1315.473 ; gain = 606.262
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.028 . Memory (MB): peak = 1315.473 ; gain = 0.000
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [c:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.gen/sources_1/ip/clk_wiz_0/clk_wiz_0/clk_wiz_0_in_context.xdc] for cell 'clk_div_20'
+Finished Parsing XDC File [c:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.gen/sources_1/ip/clk_wiz_0/clk_wiz_0/clk_wiz_0_in_context.xdc] for cell 'clk_div_20'
+Parsing XDC File [C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.srcs/constrs_1/new/wukong_pico.xdc]
+CRITICAL WARNING: [Constraints 18-1056] Clock 'sys_clk' completely overrides clock 'clk'.
+New: create_clock -period 20.000 -name sys_clk [get_ports clk], [C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.srcs/constrs_1/new/wukong_pico.xdc:73]
+Previous: create_clock -period 20.000 [get_ports clk], [c:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.gen/sources_1/ip/clk_wiz_0/clk_wiz_0/clk_wiz_0_in_context.xdc:1]
+Resolution: Review the constraint files and remove the redundant clock definition(s). If the clock constraints are not saved in a file, you can first save the constraints to an XDC file and reload the design once the constraints have been corrected.
+Finished Parsing XDC File [C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.srcs/constrs_1/new/wukong_pico.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.srcs/constrs_1/new/wukong_pico.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/top_wukong_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/top_wukong_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1373.316 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.006 . Memory (MB): peak = 1373.316 ; gain = 0.000
+INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
+INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:14 ; elapsed = 00:00:14 . Memory (MB): peak = 1373.316 ; gain = 664.105
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a100tfgg676-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:14 ; elapsed = 00:00:14 . Memory (MB): peak = 1373.316 ; gain = 664.105
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:14 ; elapsed = 00:00:14 . Memory (MB): peak = 1373.316 ; gain = 664.105
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 1373.316 ; gain = 664.105
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   9 Input   22 Bit       Adders := 1     
+	   5 Input   21 Bit       Adders := 1     
+	   9 Input   19 Bit       Adders := 1     
+	   2 Input   16 Bit       Adders := 2     
+	   2 Input    9 Bit       Adders := 1     
+	   3 Input    9 Bit       Adders := 1     
+	   3 Input    8 Bit       Adders := 24    
+	   2 Input    4 Bit       Adders := 3     
++---Registers : 
+	               16 Bit    Registers := 1     
+	                8 Bit    Registers := 34    
+	                4 Bit    Registers := 1     
+	                3 Bit    Registers := 3     
+	                1 Bit    Registers := 19    
++---Muxes : 
+	   2 Input   26 Bit        Muxes := 1     
+	   2 Input   18 Bit        Muxes := 1     
+	 257 Input   16 Bit        Muxes := 14    
+	   2 Input   16 Bit        Muxes := 42    
+	   2 Input    8 Bit        Muxes := 37    
+	   2 Input    4 Bit        Muxes := 2     
+	   2 Input    1 Bit        Muxes := 35    
+	  28 Input    1 Bit        Muxes := 26    
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 240 (col length:80)
+BRAMs: 270 (col length: RAMB18 80 RAMB36 40)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+DSP Report: Generating DSP mu0, operation Mode is: A*B.
+DSP Report: operator mu0 is absorbed into DSP mu0.
+DSP Report: Generating DSP mul_wg_div100_return0, operation Mode is: A*B.
+DSP Report: operator mul_wg_div100_return0 is absorbed into DSP mul_wg_div100_return0.
+DSP Report: Generating DSP mul_wg_div100_return0, operation Mode is: A*B.
+DSP Report: operator mul_wg_div100_return0 is absorbed into DSP mul_wg_div100_return0.
+DSP Report: Generating DSP mul_wg_div100_return0, operation Mode is: A*B.
+DSP Report: operator mul_wg_div100_return0 is absorbed into DSP mul_wg_div100_return0.
+DSP Report: Generating DSP mul_wg_div100_return0, operation Mode is: A*B.
+DSP Report: operator mul_wg_div100_return0 is absorbed into DSP mul_wg_div100_return0.
+DSP Report: Generating DSP mul_wg_div100_return0, operation Mode is: A*B.
+DSP Report: operator mul_wg_div100_return0 is absorbed into DSP mul_wg_div100_return0.
+DSP Report: Generating DSP mul_wg_div100_return0, operation Mode is: A*B.
+DSP Report: operator mul_wg_div100_return0 is absorbed into DSP mul_wg_div100_return0.
+DSP Report: Generating DSP mul_wg_div100_return0, operation Mode is: A*B.
+DSP Report: operator mul_wg_div100_return0 is absorbed into DSP mul_wg_div100_return0.
+DSP Report: Generating DSP mul_wg_div100_return0, operation Mode is: A*B.
+DSP Report: operator mul_wg_div100_return0 is absorbed into DSP mul_wg_div100_return0.
+DSP Report: Generating DSP mul_wg_div100_return0, operation Mode is: A*B.
+DSP Report: operator mul_wg_div100_return0 is absorbed into DSP mul_wg_div100_return0.
+DSP Report: Generating DSP ratio_q152, operation Mode is: A*B.
+DSP Report: operator ratio_q152 is absorbed into DSP ratio_q152.
+DSP Report: Generating DSP G_out4, operation Mode is: (C:0x4000)+A*(B:0x64).
+DSP Report: operator G_out4 is absorbed into DSP G_out4.
+DSP Report: operator G_out5 is absorbed into DSP G_out4.
+DSP Report: Generating DSP u_dt_estimator/dT_prev_q157, operation Mode is: C+A*B.
+DSP Report: operator u_dt_estimator/dT_prev_q157 is absorbed into DSP u_dt_estimator/dT_prev_q157.
+DSP Report: operator u_dt_estimator/dT_prev_q158 is absorbed into DSP u_dt_estimator/dT_prev_q157.
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:28 ; elapsed = 00:00:28 . Memory (MB): peak = 1487.348 ; gain = 778.137
+---------------------------------------------------------------------------------
+ Sort Area is top_coprocessor__GC0 ratio_q152_b : 0 0 : 2140 2140 : Used 1 time 0
+ Sort Area is top_coprocessor__GC0 u_dt_estimator/dT_prev_q157_f : 0 0 : 1125 1125 : Used 1 time 0
+ Sort Area is trapezoid mu0_0 : 0 0 : 878 878 : Used 6 time 0
+ Sort Area is top_coprocessor__GC0 mul_wg_div100_return0_2 : 0 0 : 878 878 : Used 1 time 0
+ Sort Area is top_coprocessor__GC0 mul_wg_div100_return0_3 : 0 0 : 878 878 : Used 1 time 0
+ Sort Area is top_coprocessor__GC0 mul_wg_div100_return0_4 : 0 0 : 878 878 : Used 1 time 0
+ Sort Area is top_coprocessor__GC0 mul_wg_div100_return0_5 : 0 0 : 878 878 : Used 1 time 0
+ Sort Area is top_coprocessor__GC0 mul_wg_div100_return0_6 : 0 0 : 878 878 : Used 1 time 0
+ Sort Area is top_coprocessor__GC0 mul_wg_div100_return0_7 : 0 0 : 878 878 : Used 1 time 0
+ Sort Area is top_coprocessor__GC0 mul_wg_div100_return0_8 : 0 0 : 878 878 : Used 1 time 0
+ Sort Area is top_coprocessor__GC0 mul_wg_div100_return0_9 : 0 0 : 878 878 : Used 1 time 0
+ Sort Area is top_coprocessor__GC0 mul_wg_div100_return0_a : 0 0 : 878 878 : Used 1 time 0
+ Sort Area is top_coprocessor__GC0 G_out4_d : 0 0 : 350 350 : Used 1 time 0
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+DSP: Preliminary Mapping Report (see note below. The ' indicates corresponding REG is set)
++-------------+-----------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name  | DSP Mapping           | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++-------------+-----------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|trapezoid    | A*B                   | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B                   | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B                   | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B                   | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B                   | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B                   | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B                   | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B                   | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B                   | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B                   | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|defuzz       | A*B                   | 18     | 16     | -      | -      | 34     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|defuzz       | (C:0x4000)+A*(B:0x64) | 16     | 7      | 15     | -      | 23     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|dt_estimator | C+A*B                 | 16     | 10     | 24     | -      | 24     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
++-------------+-----------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+Note: The table above is a preliminary report that shows the DSPs inferred at the current stage of the synthesis flow. Some DSP may be reimplemented as non DSP primitives later in the synthesis flow. Multiple instantiated DSPs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:37 ; elapsed = 00:00:37 . Memory (MB): peak = 1589.609 ; gain = 880.398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:40 ; elapsed = 00:00:41 . Memory (MB): peak = 1658.805 ; gain = 949.594
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:45 ; elapsed = 00:00:45 . Memory (MB): peak = 1845.195 ; gain = 1135.984
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:49 ; elapsed = 00:00:50 . Memory (MB): peak = 1861.082 ; gain = 1151.871
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:49 ; elapsed = 00:00:50 . Memory (MB): peak = 1861.082 ; gain = 1151.871
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:49 ; elapsed = 00:00:50 . Memory (MB): peak = 1861.082 ; gain = 1151.871
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:49 ; elapsed = 00:00:50 . Memory (MB): peak = 1861.082 ; gain = 1151.871
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:50 ; elapsed = 00:00:50 . Memory (MB): peak = 1861.082 ; gain = 1151.871
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:50 ; elapsed = 00:00:50 . Memory (MB): peak = 1861.082 ; gain = 1151.871
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+DSP Final Report (the ' indicates corresponding REG is set)
++-------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name  | DSP Mapping | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++-------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|aggregator   | A*B         | 16     | 6      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B         | 16     | 6      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B         | 16     | 6      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B         | 16     | 6      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B         | 16     | 6      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B         | 16     | 5      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B         | 16     | 7      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B         | 16     | 0      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|aggregator   | A*B         | 16     | 7      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|defuzz       | A*B         | 18     | 15     | -      | -      | 34     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|defuzz       | C+A*B       | 16     | 7      | 15     | -      | 23     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|dt_estimator | C+A*B       | 30     | 8      | 48     | -      | 24     | 0    | 0    | 0    | -    | -     | 0    | 0    | 
+|trapezoid    | A*B         | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|trapezoid    | A*B         | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|trapezoid    | A*B         | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|trapezoid    | A*B         | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|trapezoid    | A*B         | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|trapezoid    | A*B         | 16     | 8      | -      | -      | 24     | 0    | 0    | -    | -    | -     | 0    | 0    | 
++-------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+
+Report BlackBoxes: 
++------+--------------+----------+
+|      |BlackBox name |Instances |
++------+--------------+----------+
+|1     |clk_wiz_0     |         1|
++------+--------------+----------+
+
+Report Cell Usage: 
++------+--------+------+
+|      |Cell    |Count |
++------+--------+------+
+|1     |clk_wiz |     1|
+|2     |CARRY4  |   594|
+|3     |DSP48E1 |    18|
+|5     |LUT1    |    92|
+|6     |LUT2    |   910|
+|7     |LUT3    |   896|
+|8     |LUT4    |  1219|
+|9     |LUT5    |   768|
+|10    |LUT6    |  1657|
+|11    |MUXF7   |    14|
+|12    |MUXF8   |     1|
+|13    |FDCE    |   317|
+|14    |FDPE    |    22|
+|15    |IBUF    |    18|
+|16    |OBUF    |    11|
++------+--------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:50 ; elapsed = 00:00:50 . Memory (MB): peak = 1861.082 ; gain = 1151.871
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 1 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:41 ; elapsed = 00:00:49 . Memory (MB): peak = 1861.082 ; gain = 1094.027
+Synthesis Optimization Complete : Time (s): cpu = 00:00:50 ; elapsed = 00:00:51 . Memory (MB): peak = 1861.082 ; gain = 1151.871
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.089 . Memory (MB): peak = 1870.297 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 627 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1873.949 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Synth Design complete | Checksum: 75f771ea
+INFO: [Common 17-83] Releasing license: Synthesis
+45 Infos, 2 Warnings, 1 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:54 ; elapsed = 00:00:57 . Memory (MB): peak = 1873.949 ; gain = 1366.895
+INFO: [runtcl-6] Synthesis results are not added to the cache due to CRITICAL_WARNING
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.027 . Memory (MB): peak = 1873.949 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/Henri/Desktop/mgr/MGR_Artix/MGR/MGR.runs/synth_1/top_wukong.dcp' has been generated.
+INFO: [Vivado 12-24828] Executing command : report_utilization -file top_wukong_utilization_synth.rpt -pb top_wukong_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Wed Nov  5 17:59:39 2025...

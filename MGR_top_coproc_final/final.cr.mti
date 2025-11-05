@@ -1,0 +1,78 @@
+C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/aggregator.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/aggregator.sv
+Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+-- Compiling module aggregator
+
+Top level modules:
+	aggregator
+
+} {} {}} C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/dt_estimator.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/dt_estimator.sv
+Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+-- Compiling module dt_estimator
+
+Top level modules:
+	dt_estimator
+
+} {} {}} C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/top.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/top.sv
+Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+-- Compiling module top
+
+Top level modules:
+	top
+
+} {} {}} C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/defuzz.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/defuzz.sv
+Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+-- Compiling module defuzz
+
+Top level modules:
+	defuzz
+
+} {} {}} C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/mmio_if.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/mmio_if.sv
+Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+-- Compiling module mmio_if
+
+Top level modules:
+	mmio_if
+
+} {} {}} C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/rules9.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/rules9.sv
+Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+-- Compiling module rules9
+
+Top level modules:
+	rules9
+
+} {} {}} C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/top_coprocessor.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/top_coprocessor.sv
+Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+-- Compiling module top_coprocessor
+
+Top level modules:
+	top_coprocessor
+
+} {} {}} C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/fuzzifier_dT.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/fuzzifier_dT.sv
+Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+-- Compiling module fuzzifier_dT
+
+Top level modules:
+	fuzzifier_dT
+
+} {} {}} C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/fuzzifier_T.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/fuzzifier_T.sv
+Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+-- Compiling module fuzzifier_T
+
+Top level modules:
+	fuzzifier_T
+
+} {} {}} C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv_tb/tb_top_coprocessor.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv_tb/tb_top_coprocessor.sv
+Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+-- Compiling module tb_top_coprocessor
+
+Top level modules:
+	tb_top_coprocessor
+
+} {} {}} C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/trapezoid.sv {1 {vlog -work work -vopt -sv -stats=none C:/Users/Henri/Desktop/mgr/MAGISTERKA/hdl/sv/trapezoid.sv
+Questa Intel Starter FPGA Edition-64 vlog 2024.3 Compiler 2024.09 Sep 10 2024
+-- Compiling module trapezoid
+
+Top level modules:
+	trapezoid
+
+} {} {}}
