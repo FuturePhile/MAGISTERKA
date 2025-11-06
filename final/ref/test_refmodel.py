@@ -1,4 +1,4 @@
-# test_refmodel.py — PyTest suite mirroring tb_top_coprocessor.sv (class-based fuzzy_refmodel)
+# test_refmodel.py - PyTest suite mirroring tb_top_coprocessor.sv (class-based fuzzy_refmodel)
 # Covers: REQ-010/020/030/040/050/060/061/062/210/230/310/320
 # - DT_MODE=0: dense GRID, random MAE, VIS CSVs (T@dT=0, dT lines, heatmap)
 # - DT_MODE=1: estimator INIT, ramp up/down, random walk
@@ -241,8 +241,10 @@ def test_estimator_flow_dt_mode1(csv_file):
     for _ in range(100):
         step = random.randint(-5, 5)
         nxt = T + step
-        if nxt > 127: nxt = 127
-        if nxt < -128: nxt = -128
+        if nxt > 127:
+            nxt = 127
+        if nxt < -128:
+            nxt = -128
         T = nxt
         Gimpl, _ = top_step(T, 0, CFG_TB, reg_mode, dt_mode, est)
         _csv_emit(csv_file, "EST_RandWalk", idx_rw, reg_mode, dt_mode, T, 0, -1, Gimpl)
@@ -263,7 +265,8 @@ def test_vis_T_at_dt0_csv():
         Gimpl, _ = top_step(T, dT, CFG_TB, reg_mode, dt_mode=0, estimator=None)
         assert Gimpl == Gexp
         f.write(f"{T},{dT},{Gimpl},{Gexp}\n")
-    f.flush(); f.close()
+    f.flush()
+    f.close()
 
 def test_vis_dT_lines_csv():
     # out/vis_dT_lines.csv for T in {-32,0,32}, dT -60..60 step 4
@@ -278,7 +281,8 @@ def test_vis_dT_lines_csv():
             Gimpl, _ = top_step(T, dT, CFG_TB, reg_mode, dt_mode=0, estimator=None)
             assert Gimpl == Gexp
             f.write(f"{T},{dT},{Gimpl},{Gexp}\n")
-    f.flush(); f.close()
+    f.flush()
+    f.close()
 
 def test_vis_heatmap_csv():
     # out/vis_heatmap.csv for T -64..64 step 8, dT -60..60 step 5
@@ -292,7 +296,8 @@ def test_vis_heatmap_csv():
             Gimpl, _ = top_step(T, dT, CFG_TB, reg_mode, dt_mode=0, estimator=None)
             assert Gimpl == Gexp
             f.write(f"{T},{dT},{Gimpl},{Gexp}\n")
-    f.flush(); f.close()
+    f.flush()
+    f.close()
 
 # ================== Parity extras from TB ==================
 

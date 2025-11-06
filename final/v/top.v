@@ -1,4 +1,5 @@
 // top.v - system top: MCU bus <-> mmio_if (shadow) <-> top_coprocessor (core)
+// Not used in implementation on Artix-7 FPGA
 module top (
   input         clk,
   input         rst_n,

@@ -1,5 +1,5 @@
 // top_coprocessor.v - Fuzzy Logic coprocessor core (direct I/O, no bus)
-// Wersja: DONE po 8 cyklach od START, + wyjścia diagnostyczne.
+// Version: DONE after 8 cycles from START, + diagnostic outputs.
 
 module top_coprocessor (
   input         clk,
@@ -34,25 +34,25 @@ module top_coprocessor (
   input  signed [7:0] dT_pos_b,
   input  signed [7:0] dT_pos_c,
   input  signed [7:0] dT_pos_d,
-  output reg        valid,           // 1-cycle DONE pulse (po 8 cyklach)
-  output reg  [7:0] G_out,           // 0..100 wynik (rejestrowany)
+  output reg        valid,           // 1-cycle DONE pulse (after 8 cycles)
+  output reg  [7:0] G_out,           // 0..100 result (registered)
 
-  // ===== DEBUG (do mmio_if RO) =====
+  // ===== DEBUG (to mmio_if RO) =====
   output      [15:0] dbg_S_w,
   output      [15:0] dbg_S_wg,
   output      [7:0]  dbg_G_q,
   output signed[7:0] dbg_dT_sel
 );
 
-  // Singletony i stałe
+  // Singletons and constants
   localparam [7:0] G00 = 8'd100, G01 = 8'd50,  G02 = 8'd30;
   localparam [7:0] G10 = 8'd50,  G11 = 8'd50,  G12 = 8'd50;
   localparam [7:0] G20 = 8'd80,  G21 = 8'd50,  G22 = 8'd0;
-  localparam [7:0] ALPHA_P = 8'd32;  // ≈ alpha/256
+  localparam [7:0] ALPHA_P = 8'd32;  // ~ alpha/256
   localparam [7:0] KDT_P   = 8'd3;   // divide by 2^k
   localparam [7:0] DMAX_P  = 8'd64;  // clamp Q7.0
 
-  // Edge detect dla start/init
+  // Edge detect for start/init
   reg  start_q, init_q;
   wire start_pulse = start & ~start_q;
   wire init_pulse  = init  & ~init_q;
@@ -64,7 +64,7 @@ module top_coprocessor (
     end
   end
 
-  // Estymator dT
+  // dT estimator
   wire signed [7:0] dT_est;  wire dt_valid;
   dt_estimator u_dt_estimator (
     .clk(clk), .rst_n(rst_n), .T_cur(T_in),
@@ -107,7 +107,7 @@ module top_coprocessor (
     .w20(w20), .w21(w21), .w22(w22)
   );
 
-  // Agregacja
+  // Aggregation
   wire [15:0] S_w, S_wg;
   aggregator u_aggregator (
     .reg_mode(reg_mode),
@@ -122,7 +122,7 @@ module top_coprocessor (
   assign dbg_S_w  = S_w;
   assign dbg_S_wg = S_wg;
 
-  // Defuzyfikacja (rejestrowany wynik)
+  // Defuzzification (registered output)
   wire [7:0] G_q;
   defuzz u_defuzz (
     .clk(clk), .rst_n(rst_n),
@@ -131,7 +131,7 @@ module top_coprocessor (
   );
   assign dbg_G_q = G_q;
 
-  // --- Licznik opóźniający DONE o N cykli ---
+  // --- Counter delaying DONE by N cycles ---
   localparam integer DONE_LAT = 8;
   reg [$clog2(DONE_LAT+1)-1:0] cnt;
   reg running;
@@ -143,7 +143,7 @@ module top_coprocessor (
       valid   <= 1'b0;
       G_out   <= 8'd0;
     end else begin
-      valid <= 1'b0;                 // domyślnie brak DONE
+      valid <= 1'b0;                 // default: no DONE
 
       if (start_pulse && !running) begin
         running <= 1'b1;
@@ -153,11 +153,11 @@ module top_coprocessor (
           cnt <= cnt - 1'b1;
         end else begin
           running <= 1'b0;
-          valid   <= 1'b1;           // DONE 1 takt
+          valid   <= 1'b1;           // DONE 1 cycle
         end
       end
 
-      // Próbkuj wynik w każdym cyklu (weźmiesz najnowszy)
+      // Sample result every cycle (take the newest)
       G_out <= G_q;
     end
   end

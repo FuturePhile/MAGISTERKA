@@ -1,6 +1,6 @@
-// defuzz.v — G = round((S_wg / max(S_w, EPS)) * 100) bez dzielenia
-// Q1.15 wejścia, wynik 0..100 %
-// Wymaga pliku inv_q15.hex (256 x 16) — ten sam co w trapezoid.v
+// defuzz.v - G = round((S_wg / max(S_w, EPS)) * 100) without divider
+// Inputs: Q1.15; output 0..100%
+// Requires inv_q15.hex (256 x 16) - same as in trapezoid.v
 module defuzz (
   input         clk,
   input         rst_n,
@@ -8,27 +8,27 @@ module defuzz (
   input  [15:0] S_wg,     // Q1.15
   output reg [7:0] G_out  // 0..100
 );
-  localparam [15:0] EPS = 16'd1;   // 1 LSB Q1.15
+  localparam [15:0] EPS = 16'd1;   // 1 LSB in Q1.15
 
-  // ROM z odwrotnościami: inv[k] = floor(2^15 / max(k,1)), k=0..255
+  // ROM of reciprocals: inv[k] = floor(2^15 / max(k,1)), k=0..255
   reg [15:0] inv_q15 [0:255];
   initial begin
-    // Podaj pełną ścieżkę jeśli trzeba (ISE: Add Source -> inv_q15.hex)
+    // Provide full path if needed (ISE: Add Source -> inv_q15.hex)
     $readmemh("inv_q15.hex", inv_q15);
   end
 
-  // robocze sygnały
+  // working signals
   reg  [15:0] den_q15;         // max(S_w, EPS)
-  reg  [7:0]  mant;            // 8-bit znormalizowana mantysa (128..255)
-  reg  [3:0]  sh;              // przesunięcie (0..15)
-  reg  [4:0]  msb;             // pozycja MSB den
-  reg  [17:0] inv_den_q15;     // "1/den" w Q0.15 (poszerzone o ewentualne lewo-shifty)
-  reg  [33:0] prod_ratio;      // S_wg * inv_den (do 34 bit)
+  reg  [7:0]  mant;            // 8-bit normalized mantissa (128..255)
+  reg  [3:0]  sh;              // shift amount (0..15)
+  reg  [4:0]  msb;             // MSB position of den
+  reg  [17:0] inv_den_q15;     // "1/den" in Q0.15 (widened for left shifts)
+  reg  [33:0] prod_ratio;      // S_wg * inv_den (up to 34 bits)
   reg  [15:0] ratio_q15;       // Q1.15
-  reg  [31:0] percent_u;       // przed saturacją
+  reg  [31:0] percent_u;       // pre-saturation
   reg  [7:0]  sat_u8;
 
-  // funkcja: pozycja najwyższego '1' w 16-bit (0..15), dla zera zwraca 0
+  // function: position of highest '1' in 16-bit (0..15), returns 0 for zero
   function [4:0] msb_pos16(input [15:0] v);
     begin
       casex (v)
@@ -52,12 +52,12 @@ module defuzz (
     end
   endfunction
 
-  // Uwaga: ręczna lista czułości — bez 'inv_q15'
+  // Note: manual sensitivity list - without 'inv_q15'
   always @(S_w or S_wg) begin
-    // 1) zabezpiecz dzielnik
+    // 1) protect denominator
     den_q15 = (S_w < EPS) ? EPS : S_w;
 
-    // 2) normalizacja do mantysy 8-bit i przesunięcia
+    // 2) normalize to 8-bit mantissa and shift
     msb = msb_pos16(den_q15);
     if (msb >= 5'd7) begin
       // den >= 128: mant = den >> sh, inv_den = inv[mant] >> sh
@@ -68,29 +68,29 @@ module defuzz (
       inv_den_q15 = inv_q15[mant] >> sh;
     end else begin
       // den < 128: mant = den << e, inv_den = inv[mant] << e
-      sh   = 4'd7 - msb[3:0];   // 1..7 (dla den>=1)
+      sh   = 4'd7 - msb[3:0];   // 1..7 (for den>=1)
       mant = (den_q15 << sh);
       if (mant < 8'd1)   mant = 8'd1;
       if (mant > 8'd255) mant = 8'd255;
-      inv_den_q15 = {2'b00, inv_q15[mant]} << sh; // poszerz na zapas
+      inv_den_q15 = {2'b00, inv_q15[mant]} << sh; // widen for safety
     end
 
     // 3) ratio ≈ S_wg * inv_den_q15  (Q1.15)
-    prod_ratio = S_wg * inv_den_q15;  // do 34 bit
-    // wynik w Q1.15 ~ prod_ratio (bo inv_den_q15 to Q0.15); zetnij/saturuj
+    prod_ratio = S_wg * inv_den_q15;  // up to 34 bits
+    // result in Q1.15 ~ prod_ratio (inv_den_q15 is Q0.15); clip/saturate
     if (prod_ratio[33:16] != 18'd0) begin
-      ratio_q15 = 16'h7FFF; // saturacja w górę, gdyby przeszacowało
+      ratio_q15 = 16'h7FFF; // saturate up if it overshoots
     end else begin
       ratio_q15 = prod_ratio[15:0];
     end
 
     // 4) percent = round(ratio_q15 * 100 / 2^15)
-    // użyj tej samej sztuczki co wcześniej: (x*100 + 2^14) >> 15
+    // same trick as above: (x*100 + 2^14) >> 15
     percent_u = (ratio_q15 * 32'd100 + 32'd16384) >> 15;
     sat_u8    = (percent_u > 32'd100) ? 8'd100 : percent_u[7:0];
   end
 
-  // rejestr wyjściowy (latencja 1 cykl jak wcześniej)
+  // registered output (1-cycle latency as before)
   always @(posedge clk or negedge rst_n) begin
     if (!rst_n) G_out <= 8'd0;
     else        G_out <= sat_u8;

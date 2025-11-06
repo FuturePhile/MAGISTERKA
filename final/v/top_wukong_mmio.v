@@ -1,10 +1,10 @@
-// top_wukong.v — Wukong (XC7A100T) + RPi Pico (równoległy interfejs)
+// top_wukong.v - Wukong (XC7A100T) + RPi Pico (parallel interface)
 
 module top_wukong (
   input  wire        clk,
   input  wire        rst_n,
 
-  // --- magistrala Pico ---
+  // --- Pico bus ---
   input  wire        cs_i,
   input  wire        wr_i,
   input  wire        rd_i,
@@ -29,7 +29,7 @@ clk_wiz_0 clk_div_20
 
 assign core_rst_n = rst_n & locked;
 
-// === 1) CDC wejść ===
+// === 1) CDC for inputs ===
 reg [2:0] cs_s, wr_s, rd_s;
 always @(posedge clk20 or negedge core_rst_n) begin
   if(!core_rst_n) begin cs_s<=0; wr_s<=0; rd_s<=0; end
@@ -52,7 +52,7 @@ wire wr_rise = cs & ( wr & ~wr_d);
 wire rd_rise = cs & ( rd & ~rd_d);
 wire rd_fall = cs & (~rd &  rd_d);
 
-// === 2) MMIO sygnały ===
+// === 2) MMIO signals ===
 reg        cs_mm, rd_mm, wr_mm;
 reg [7:0]  wdata;
 wire [7:0] rdata;
@@ -86,7 +86,7 @@ always @(posedge clk20 or negedge core_rst_n) begin
   end
 end
 
-// === 3) Rdzeń + debug ===
+// === 3) Core + debug ===
 wire        start, init, reg_mode, dt_mode, valid;
 wire  [7:0] G_out;
 wire signed [7:0]
@@ -119,7 +119,7 @@ mmio_if u_mmio_if (
   .dT_pos_a(dT_pos_a), .dT_pos_b(dT_pos_b), .dT_pos_c(dT_pos_c), .dT_pos_d(dT_pos_d),
   .valid(valid), .G_out(G_out),
 
-  // debug wejścia do mapowania RO
+  // debug inputs mapped to RO
   .dbg_S_w(dbg_S_w),
   .dbg_S_wg(dbg_S_wg),
   .dbg_G_q(dbg_G_q),
@@ -135,18 +135,18 @@ top_coprocessor u_top_coprocessor (
   .T_zero_a(T_zero_a), .T_zero_b(T_zero_b), .T_zero_c(T_zero_c), .T_zero_d(T_zero_d),
   .T_pos_a(T_pos_a), .T_pos_b(T_pos_b), .T_pos_c(T_pos_c), .T_pos_d(T_pos_d),
   .dT_neg_a(dT_neg_a), .dT_neg_b(dT_neg_b), .dT_neg_c(dT_neg_c), .dT_neg_d(dT_neg_d),
-  .dT_zero_a(dT_zero_a), .dT_zero_b(dT_zero_b), .dT_zero_c(dT_zero_c), .dT_zero_d(dT_zero_d),
+  .dT_zero_a(T_zero_a), .dT_zero_b(T_zero_b), .dT_zero_c(T_zero_c), .dT_zero_d(T_zero_d),
   .dT_pos_a(dT_pos_a), .dT_pos_b(dT_pos_b), .dT_pos_c(dT_pos_c), .dT_pos_d(dT_pos_d),
   .valid(valid), .G_out(G_out),
 
-  // debug wyjścia
+  // debug outputs
   .dbg_S_w(dbg_S_w),
   .dbg_S_wg(dbg_S_wg),
   .dbg_G_q(dbg_G_q),
   .dbg_dT_sel(dbg_dT_sel)
 );
 
-// === 4) Odczyt z 1T i RDY poziomowy ===
+// === 4) 1T read latency and level RDY ===
 reg rd_pipe, rd_ready;
 always @(posedge clk20 or negedge core_rst_n) begin
   if(!core_rst_n) begin
